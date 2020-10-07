@@ -1,0 +1,42 @@
+\section{General analytical solution}
+
+The wave equation in one spatial and one time dimension
+\begin{equation}
+	0 =  \frac{\partial^2 \phi}{\partial t^2}- c^2 \frac{\partial^2 \phi}{\partial x^2} = \partial_{tt} \phi -c^2 \partial_{xx} \phi
+\end{equation}
+
+can according to the symmetry of second derivatives be divided up into two factors
+\begin{equation}
+	0 = \left(\partial_{t} - c \partial_{x} \right) 	
+	\left( \partial_{t} + c \partial_{x} \right)  \phi
+\end{equation}.
+With introduction of two variables, $\xi = x-ct $ and $\nu= x+ct$, now we can write:
+\begin{equation}
+	0 = \partial_{\xi}\partial_{\nu} \phi  
+\end{equation}
+Therefor the wave equation has the general solution
+\begin{equation}
+	\phi(t,x) =f(\xi) + g(\nu)=  f(x-ct) + g(x+ct)
+\end{equation}
+with initial value boundaries
+\begin{align}
+	\phi_0(x) = \phi(0,x) &= f(x) + g(x) =: A(x) \\
+	\big(\partial_t \phi(0,x)\big) &= cf'(x) - cg'(x) =: B(x)
+\end{align}
+After integrating the initial time derivative to
+\begin{equation}
+	f(x)-g(x)= \int_{x_0}^x B(s)\,\mathrm{d}s
+\end{equation}
+the separated solution is given by (here $x_0 = x(t=0)$ )
+\begin{align}
+	f(x) & =\frac{1}{2}
+	\left( A(x)+\frac{1}{c}\int_{x_0}^x B(s)\,\mathrm{d}s \right)\\
+	g(x) & = \frac{1}{2}
+	\left( A(x)-\frac{1}{c} \int_{x_0}^x B(s)\,\mathrm{d}s \right)
+\end{align}.
+When we put these together, we get the general solution in dependence of the initial values:
+\begin{equation}
+	\phi(t,x) =\frac{1}{2}
+	\left( A(x-ct) +A(x+ct) + \frac{1}{c}\int_{x-ct}^{x+ct} B(s)\,
+	\mathrm{d}s \right)
+\end{equation}

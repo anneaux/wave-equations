@@ -1,0 +1,8 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Theoretical Background}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}General Analytical Solution}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Rewriting the WE as two differential equations out of one}{1}{subsection.1.2}%
+\contentsline {paragraph}{\nonumberline Example 1: $\Pi (0,x) = 0$}{2}{section*.2}%
+\contentsline {paragraph}{\nonumberline Example 2: $\Pi (0,x) = \text {const.}$}{2}{section*.3}%
+\contentsline {subsection}{\numberline {1.3}Rewriting the WE as a fully first order system / eigenvalue problem}{2}{subsection.1.3}%
+\contentsline {paragraph}{\nonumberline Example 1:}{2}{section*.4}%

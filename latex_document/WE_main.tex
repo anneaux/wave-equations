@@ -1,0 +1,120 @@
+\documentclass[a4paper,headsepline,12pt,oneside]{scrartcl}
+
+
+\usepackage{scrlayer-scrpage}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\graphicspath{{./images/}}
+\usepackage[format=plain,bf, indention=1.5cm]{caption}
+\usepackage{subcaption}
+\usepackage[subfigure,titles]{tocloft}
+\usepackage{placeins}		%allows FloatBarrier command
+\usepackage{import}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{epstopdf}		%converts every .eps-file to a .pdf-file, which can then be included
+\usepackage{booktabs}		%table_package
+\usepackage{url}
+
+
+\usepackage{geometry}
+\geometry{lmargin=2.5cm, rmargin=2.0cm ,bmargin = 2cm}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
+
+
+\usepackage{physics}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[version=4]{mhchem}
+\newcommand{\s}[1]{\mathrm{#1}}
+
+
+\automark*{section}
+\clearpairofpagestyles
+\ihead{\headmark}
+\ohead{\pagemark}
+
+
+\usepackage[numbers,square,sort&compress]{natbib}
+\usepackage{sectsty}
+\fontfamily{lmr}\selectfont
+\allsectionsfont{\fontfamily{lmr}\selectfont}
+%colorful linking within a PDF-Viewer
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=cyan,
+    urlcolor=cyan,
+    citecolor=green
+}
+
+\usepackage{lipsum}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%\maketitle
+%\thispagestyle{empty}
+%\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Titelseite%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+	\centering
+
+	{\scshape\Large \textbf{Solution of the Initial Boundary Value Problem with the Wave Equation} \par}
+	\vspace{1cm}
+	{\scshape\Large Report on Research Labworks \par}
+	\vspace{1.5cm}
+%	\includegraphics[width=0.4\textwidth]{uni_jena_bildmarke_700x700}\par
+	{\huge\bfseries \par}
+	\vspace{2cm}
+	{\scshape\large Friedrich-Schiller-Universität Jena\par}
+	{\scshape\large Physikalisch-Astronomische Fakultät\par}
+	\vfill
+	{\Large Anne Weber and Johannes Nicklaus\par}
+	\vfill
+	{Student's numbers: 162587 and 170099\par}
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%Gutachterseite%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%Inhaltsangabe%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\setcounter{page}{0}
+\tableofcontents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\setcounter{page}{1}
+
+\import{sections/}{WE_general_analytical_solution}
+
+\clearpage
+
+%\import{sections/}{WE_finite_differencing_approximation}
+
+
+\clearpage
+%\import{sections/}{WE_convergence}
+
+\clearpage
+%\import{sections/}{WE_Runge_Kutta_time_integration}
+
+\clearpage
+%\import{sections/}{WE_periodic_boundary_condition}
+
+
+
+
+\end{document}
