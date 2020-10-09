@@ -1,1 +1,68 @@
-\section{Finite differencing approximation}
+\section{Numerical Differentiation}
+\subsection{Forward, Backward and Central Difference Quotients}
+In order to numerically solve a wave equation one typically approximates all the derivatives by finite differences with regard to discrete grid points.
+Hence, the first step is to choose a discretization. For brevity we consider a uniform partition in the spatial dimension, so that
+\[
+x_i = i h  \quad \text{with } i = 0,...,n-1
+\]
+and stepsize $h = 1/(n-1)$ specifies the position on the domain $\Omega = [0,1] $.
+
+Now we want to find a formula for the approximation of the derivative of the field function $u(x)$ (we neglect the temporal depency for a moment and will tackle that later).
+We consider the Taylor expansion of the field at "the next position", i.e. $u(x + h)$:
+\begin{equation}
+   u(x+h) = \sum_{j = 0}^{\infty} \frac{h^j}{j!} \left(\frac{\mathrm{d}^n u}{\mathrm{d} x^n} \right)_{x+h}
+   = u(x) + h \frac{\mathrm{d} u}{\mathrm{d} x} + \frac{h^2}{2!} \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} + \frac{h^3}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} + ...
+   \label{eq:taylorfw}
+ \end{equation}
+ Solving this for the first derivative yields
+ \begin{equation}
+   \frac{\mathrm{d} u}{\mathrm{d} x} = \frac{u(x+h) - u(x)}{h} - \frac{h}{2!} \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} - \frac{h^2}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} - ...
+ \end{equation}
+Taking into account only the first term of the right-hand side, this is called the \emph{forward difference quotient}:
+\begin{equation}
+  \mathrm{D}^+_h u(x) = \frac{u(x+h) - u(x)}{h}
+  \label{eq:discfw}
+\end{equation}
+Similarly one can approximate the derivatve by expanding the value $u(x-h)$ in a Taylor series. This results in the \emph{backward difference quotient}
+\begin{equation}
+  \mathrm{D}^-_h u(x) = \frac{u(x) - u(x-h)}{h}~.
+\end{equation}
+In order two minimize errors we can combine the forward and backward difference to a \emph{central difference quotient}
+\begin{equation}
+  \mathrm{D}_h u(x)= \frac{1}{2}[\mathrm{D}^+_h+ \mathrm{D}^-_h ] u(x)= \frac{u(x+h) - u(x-h)}{2h}~.
+\end{equation}
+
+
+\subsection{Error Estimations}
+The discretization error is the deviation of the numerical approximation compared to the analytical value
+\begin{equation}
+  \mathrm{E}_h = |\frac{\mathrm{d} u}{\mathrm{d} x} - \mathrm{D}_h u(x)|~.
+\end{equation}
+It stems from the finiteness of step size $h$, as well as from rounding errors arising from the computer accuracy when conducting numerical calculations. In the following we want to find expressions for the former error to compare them for the various difference quotients.
+In general both, forward and backward difference quotient, are consistent, i.e. for $h \rightarrow 0$ the approximated derivative approaches the analytical derivative. From the comparison of \ref{eq:taylorfw} with \ref{eq:discfw} we find that the discretization error for the forward differentiation method is
+\begin{align}
+  \mathrm{E}^+_h &= \frac{h}{2!} \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} + \frac{h^2}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} + ... \\
+  &= \mathcal{O}(h)~.
+\end{align}
+The same holds for the backward differentiation method.
+However, for the central difference quotient we get
+\begin{align}
+\mathrm{E}_h &= \frac{h^2}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} + \frac{h^3}{4!} \frac{\mathrm{d}^4 u}{\mathrm{d} x^4}... \\
+&= \mathcal{O}(h^2)~.
+\end{align}
+\subsection{Approximating the Second Derivative}
+To approximate the second derivative of function $u(x)$ we recall the Taylor expansion of $u(x+h)$ and $u(x-h)$:
+\begin{align}
+  u(x+h) &= u(x) + h \frac{\mathrm{d} u}{\mathrm{d} x} + \frac{h^2}{2!} \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} + \frac{h^3}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} + ... \\
+  u(x-h) &= u(x) - h \frac{\mathrm{d} u}{\mathrm{d} x} + \frac{h^2}{2!} \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} - \frac{h^3}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} + ...
+\end{align}
+Adding up both sides respectively and solving for the second derivative yields
+\begin{equation}
+  \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} = \frac{u(x-h) - 2 u(x) + u(x+h)}{h^2} - \frac{h^2}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} - ...
+\end{equation}
+
+which results in the differential operator
+\begin{equation}
+  \mathrm{D}^2_h u(x) = \frac{u(x-h) - 2 u(x) + u(x+h)}{h^2}
+\end{equation}
+with the error of $\mathcal{O}(h^2)$.
