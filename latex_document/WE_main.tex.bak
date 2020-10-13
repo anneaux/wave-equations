@@ -4,7 +4,7 @@
 \usepackage{scrlayer-scrpage}
 \usepackage{graphicx}
 \usepackage{pdfpages}
-\graphicspath{{./images/}}
+\graphicspath{{./graphics/}}
 \usepackage[format=plain,bf, indention=1.5cm]{caption}
 \usepackage{subcaption}
 \usepackage[subfigure,titles]{tocloft}
@@ -67,8 +67,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%Titelseite%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{titlepage}
 	\centering
-	
-	{\scshape\Large \textbf{Wave Equations} \par}
+
+	{\scshape\Large \textbf{Solution of the Initial Boundary Value Problem with the Wave Equation} \par}
 	\vspace{1cm}
 	{\scshape\Large Report on Research Labworks \par}
 	\vspace{1.5cm}
@@ -76,11 +76,11 @@
 	{\huge\bfseries \par}
 	\vspace{2cm}
 	{\scshape\large Friedrich-Schiller-Universität Jena\par}
-	{\scshape\large Physikalisch-Astronomische-Fakultät\par}
+	{\scshape\large Physikalisch-Astronomische Fakultät\par}
 	\vfill
 	{\Large Anne Weber and Johannes Nicklaus\par}
 	\vfill
-	{Matrikelnummer: 170099\par}
+	{Student's numbers: 162587 and 170099\par}
 
 	\vfill
 
@@ -102,15 +102,7 @@
 
 \clearpage
 
-\import{sections/}{WE_rewriting_the_wave_equation}
-
-\clearpage
-
-\import{sections/}{WE_fully_first_order_system_in_matrix_form}
-
-\clearpage
-
-%\import{sections/}{WE_finite_differencing_approximation}
+\import{sections/}{WE_finite_differencing_approximation}
 
 
 \clearpage
