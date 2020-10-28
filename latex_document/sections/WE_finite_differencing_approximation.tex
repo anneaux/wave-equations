@@ -61,15 +61,26 @@ Adding up both sides respectively and solving for the second derivative yields
   \frac{\mathrm{d}^2 u}{\mathrm{d} x^2} = \frac{u(x-h) - 2 u(x) + u(x+h)}{h^2} - \frac{h^2}{3!} \frac{\mathrm{d}^3 u}{\mathrm{d} x^3} - ...
 \end{equation}
 
-which results in the differential operator
+which results in the differential operator with the error of $\mathcal{O}(h^2)$:
 \begin{equation}
   \mathrm{D}^2_h u(x) = \frac{u(x-h) - 2 u(x) + u(x+h)}{h^2}
 \end{equation}
-with the error of $\mathcal{O}(h^2)$.
+
+\subsection{Approximating to a higher order}
+As we plan to use a Runge-Kutta time-integration with a error term that accumulates to $\mathcal{O}(h^4)$. Therefor it is useful to provide the derivatives with the same fourth order error term. We conduct this in the similar manner as the first and second order differential operators while simply including more terms of higher order. This leads to the following central derivative stencils:
+
+\begin{equation}
+  \mathrm{D}^1_h u(x) = \frac{-u(x+2h)+8u(x + h) - 8u(x - h)+ u(x-2h)}{12h}
+\end{equation}
+\begin{equation}
+  \mathrm{D}^2_h u(x) = \frac{-u(x+2h) + 16u(x+h) - 30u(x) + 16u(x-h) - u(x-2h)}{12h^2}
+\end{equation}
+
 \subsection{Convergence}
 In the following we show the results of the finite difference approximation in 1st and 2nd order for a set of example functions. These are:
 
 
+\fontsize{10}{12}\selectfont
 \begin{align*}
 	f_1 &=(x-\frac{1}{2})^2+x 
 		& f_1' &=2x
@@ -84,56 +95,13 @@ In the following we show the results of the finite difference approximation in 1
 		& f_4' &= 12 \pi \cos(12\pi x)
 		& f_4'' &= -(12\pi)^2 \sin(12\pi x)\\  
 	f_5 &= \sin^4(12\pi x)
-		& f_5' &= 4\cdot 12\pi \sin^3(12\pi x) \cos(12\pi x) 
+		& f_5' &= 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x) 
 		&  \begin{split}f_5''= 
-		&4\cdot  (12\pi)^2 \cdot
-	 	\\&\big(3\sin^2(12\pi x)\cos^2(12\pi x) \\&- \sin^4(12\pi x) \big) \end{split}\\ 
-	g_a &= \exp(-ax^2) 
+		&4  (12\pi)^2 
+	 	\\&\big(3\sin^2(12\pi x)\cos^2(12\pi x) - \sin^4(12\pi x) \big) \end{split}\\ 
+	f_6=g_a &= \exp(-ax^2) 
 		& g_a' &= -2ax\exp(-ax^2) 
 		& g_a'' &= \exp(-ax^2) ((2ax)^2-2a)\\ 
 \end{align*}
+\fontsize{12}{14}\selectfont
 
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_1_n_20}
-		\caption{Upper panel: Function $f_1$ in blue, dashed lines symbolize its analytical derivatives, dotted lines the finite difference approximation to the derivative. $n= 20$  Lower panel: The cyan and pink lines show the difference between analytical and numerically generated derivatives.}
-\end{figure}
-
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_2_n_20}
-		\caption{$f_2$ , $n= 20$}
-\end{figure}
-
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_3_n_20}
-		\caption{$f_3$ , $n= 20$}
-\end{figure}
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_3_n_40}
-		\caption{$f_3$ , $n= 40$}
-\end{figure}
-
-
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_4_n_20}
-		\caption{$f_4$ , $n= 20$}
-\end{figure}
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_4_n_40}
-		\caption{$f_4$ , $n= 40$}
-\end{figure}
-
-
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_5_n_20}
-		\caption{$f_5$ , $n= 20$}
-\end{figure}
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_5_n_40}
-		\caption{$f_5$ , $n= 40$}
-\end{figure}
-
-
-\begin{figure}
-		\includegraphics[scale=0.7]{plot_differences_analytical_finite_differences_f_a_n_20_a_1}
-		\caption{$g_a$, $n= 20$ , $a=1$}
-\end{figure}

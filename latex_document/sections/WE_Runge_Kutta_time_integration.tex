@@ -6,10 +6,10 @@ After the former chapters treated numerical method to calculate the (spatial) de
   \label{eq:drvtv}
 \end{equation}
 and the initial value $u(t = 0) = u_0$.
-We assume $F(u)$ to be continous, especially Lipschitz continous, to make sure that there exists exactly one solution for the IVP.
+We assume $F(u)$ to be continuous, especially Lipschitz continuous, to make sure that there exists exactly one solution for the IVP.
 % QUELLE : 2011_Book_Numerik-Algorithmen
 \subsection{General Principle of Numerical Integration Methods}
-Simliarly to the spatial differentian methods, the first step is to discretize the respective intervall. Generally, this discretization does not have to be equidistant, so we define
+Similarly to the spatial differential methods, the first step is to discretize the respective interval. Generally, this discretization does not have to be equidistant, so we define
 \begin{equation}
   \Delta t_i = t_{i+1} - t_i >0
 \end{equation}
@@ -19,10 +19,10 @@ By integrating both sides of \ref{eq:drvtv} over $t$ we find
 \begin{equation}
   u(t_{i+1}) = u(t_i) + \int_{t_i}^{t_{i+1}} F(t,u(t)) \mathrm{d}t \qquad \text{for } i = 0,...,n-1
 \end{equation}
-Different methods are distinguished, depending on how the integral is solved. \emph{One-step methods} take into acocunt only the previous value, hence calculating $U_{i+1}$ from $U_i$. \emph{Multi-step methods} use more than one previous values and \emph{extrapolation algorithms} use the Richardson approximation to improve results from integration by trapezoidal or rectangular integration methods.
+Different methods are distinguished, depending on how the integral is solved. \emph{One-step methods} take into account only the previous value, hence calculating $U_{i+1}$ from $U_i$. \emph{Multi-step methods} use more than one previous values and \emph{extrapolation algorithms} use the Richardson approximation to improve results from integration by trapezoidal or rectangular integration methods.
 In the following we want to focus on the one-step methods, especially the Runge-Kutta methods, as this is the most common one in usage.
 
-One very simple approach is the Euler-Cauchy method, where $U_{i+1}$ is approximated just as a linear continuitation from $U_i$. As this method failes even for very simple functions (e.g. think of a quadratic function which very fast will diverge from that tangential approximation), this method was improved by taking into account the function's further derivatives (tangents).
+One very simple approach is the Euler-Cauchy method, where $U_{i+1}$ is approximated just as a linear continuation from $U_i$. As this method fails even for very simple functions (e.g. think of a quadratic function which very fast will diverge from that tangential approximation), this method was improved by taking into account the function's further derivatives (tangents).
 % HIER EVTL NEN BILD EINFÜGEN
 
 \subsection{Runge-Kutta Methods}
@@ -34,7 +34,7 @@ U_{n+1} &= U_n + \Delta t_n \sum_{i=1}^s b_i k_i(t_n, U_n, \Delta t_n) \\
 \end{align}
 with the set of characteristic coefficients $(a_{ij}, b_i, c_i)$ for $i = 1,...,s$ where $s$ denotes the so-called \emph{stage} of the algorithm.
 It estimates a function's next point by evaluating the weighted average of various derivates at pieces of the next time step.
-The most common variant of doing so is using half time steps and therefor getting four helping tangents, whichs average value then acts as the linear continuitation's increase. Hence, this version is referred to as the \emph{Fourth Order RK method, RK4} or simply \emph{Classical RK method} and will be treated in more detail below.
+The most common variant of doing so is using half time steps and therefor getting four helping tangents, the average value of which then acts as the linear continuations increase. Hence, this version is referred to as the \emph{Fourth Order RK method, RK4} or simply \emph{Classical RK method} and will be treated in more detail below.
 
 \paragraph{The Butcher Table}
 % Butcher table
