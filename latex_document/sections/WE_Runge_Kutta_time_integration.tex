@@ -74,7 +74,7 @@ For larger stage numbers this linear relation will flatten so that the order of 
 % QUELLE: Pertsch-Skript
 
 
-\paragraph{Example Code for the 4-stage RK Method}
+\paragraph{The classical RK method: RK4}
 % sehr schöne Darstellung des Verfahrens: http://www.kohorst-lemgo.de/modell/runge.htm
 
 ....
@@ -103,3 +103,49 @@ which by being weighted yield the estimated function value
 \begin{equation}
   U_{n+1} = U_n + \Delta t \left(\frac{1}{6} k_1 + \frac{1}{3} k_2 + \frac{1}{3} k_3 + \frac{1}{6} k_4 \right)~.
 \end{equation}
+\paragraph{Example: Solving the Harmonic Oscillator Equation using RK4}
+Given is the Hamiltonian for the harmonic oscillator
+\begin{equation}
+  H(q,p) = \frac{1}{2} \left(\frac{p^2}{m} + q^2m \right)
+\end{equation}
+where $q = \omega x$ and $p = m \dot{x}$, as well as the initial values $q_0$ and $p_0$. The Hamiltonian yields the equations of movement, i.e. the time-derivatives of the generalized coordinates $q$ and $p$
+\begin{align}
+  \dot{q} = \frac{\partial H}{\partial q} = \frac{p}{m} \qquad \qquad
+  \dot{p} = \frac{\partial H}{\partial p} = -q m
+\end{align}
+so that we can write our system of ODEs in simple vector form, introducing $u = \{q,p\}$:
+\begin{equation}
+  \tfrac{\mathrm{d}}{\mathrm{d}t} u =
+  \begin{bmatrix} \frac{p}{m} \\ - q m
+  \end{bmatrix}.
+  \label{eq:dudt}
+\end{equation}
+In the following we present a possible implementation to solve this initial value problem, given by \ref{eq:dudt} and $u_0 = {q_0, p_0}$, using the RK4 method.
+The implementation is divided in two functions: \lstinline{F(u,t)} and \lstinline{rk4(u0, deltat, T, F)}. The former returns the differentiation of $u$, i.e. \ref{eq:dudt}. The latter is the actual approximation of function values. Here, above's algorithm is straight-forward implemented.
+\begin{lstlisting}
+def F(u,t):
+  dqdt = u[1]/m
+  dpdt = -u[0]*m
+  return np.array([dqdt,dpdt])
+
+def rk4(u0,deltat,T,F):
+  u = np.zeros([n,2])
+  u[0,0] = q0
+  u[0,1] = p0
+  t=1
+  for i in range(0,n-1):
+    k1 = F(u[i,:], t)
+    k2 = F(u[i,:] + 0.5*deltat* k1,t + 0.5*deltat)
+    k3 = F(u[i,:] + 0.5*deltat* k2,t + 0.5*deltat)
+    k4 = F(u[i,:] + deltat* k3,t + deltat)
+    u[i+1,:] = u[i,:] + deltat*(1/6*k1 + 1/3*k2 +1/3*k3 + 1/6*k4)
+  return u
+
+u_rk4 = rk4(u0,deltat,T,F)
+\end{lstlisting}
+It shall be noted, first, that \lstinline{u} is an array of 2 columns (one for values of $q$ and $p$ respectively) and as long as the number of time steps. Second, there occurs a time variable \lstinline{t} in the implemented function \lstinline{F(u,t)} which is actually unnecessary for the harmonic oscillator. Nevertheless it is written there, just to show, that there could possibly be a time dependence (e.g. for the heat equation this is the case).
+
+
+
+
+

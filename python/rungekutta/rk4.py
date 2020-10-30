@@ -3,23 +3,27 @@ import numpy as np
 
 ### initial conditions ###
 p0 = 10
-q0 = 5
+q0 = 0
 m = 1
-deltat = 0.1
-T =10
+deltat = 0.5
+T = 16
 n = int(T/deltat)
+
+def energy(q,p):
+  return 0.5* p**2 / m + 0.5* q**2 *m
 
 ### analytic solutions ###
 def q_analytic(t):
   return p0/m * np.sin(t) + q0 * np.cos(t)
 def dqdt_analytic(t):
   return p0/m * np.cos(t) - q0* np.sin(t)
+times = np.arange(0,T,deltat)
+energy_analytic = energy(q_analytic(times),dqdt_analytic(times))
 
 ### Euler ###
 def euler(q0,p0,deltat,T):
   q = np.zeros([n])
   p = np.zeros([n])
-
   p[0] = p0
   q[0] = q0
   for i in range(0,n-1):
@@ -27,6 +31,7 @@ def euler(q0,p0,deltat,T):
     q[i+1] = q[i] + deltat * p[i] # (more stable if one takes p[i+1] (=simplectic Euler))
   return q, p
 q_euler, dqdt_euler = euler(q0,p0,deltat,T)
+energy_euler = energy(q_euler,dqdt_euler)
 
 ### Runge Kutta 4th order ###
 # u = [q, p] = [q dqdt] (ungefähr)
@@ -54,16 +59,46 @@ def rk4(u0,deltat,T, F):
 u_rk4 = rk4(u0,deltat,T,F)
 q_rk4 = u_rk4[:,0]
 dqdt_rk4 = u_rk4[:,1]
+energy_rk4 = energy(q_rk4,dqdt_rk4)
 
-times = np.arange(1,T,deltat)
+### Plotting the solutions in a phase path diagram ###
+# plt.plot(q_analytic(times), dqdt_analytic(times), label ='analytic')
+# plt.plot(q_rk4, dqdt_rk4, label ='RK4')
+# plt.plot(q_euler, dqdt_euler, label ='Euler')
+# plt.xlabel('q(t)')
+# plt.ylabel('dq/dt (t)')
+# plt.axis('square')
+# plt.xlim(-12,12)
+# plt.ylim(-12,12)
+# plt.legend()
+# plt.grid(color = 'gainsboro')
+# plt.savefig("plot-phasepath.pdf")
 
-### Plotting the solutions in a phase diagram ###
-plt.plot(q_analytic(times), dqdt_analytic(times), label ='analytic')
-plt.plot(q_euler, dqdt_euler, label ='Euler')
-plt.plot(q_rk4, dqdt_rk4, label ='RK4')
+### Plotting the solutions in a energy evolution diagram ###
+# plt.plot(times, energy_analytic, label ='analytic')
+# plt.plot(times, energy_rk4, label ='RK4')
+# plt.plot(times, energy_euler, label ='Euler')
+# plt.xlabel('t')
+# plt.ylabel('energy(t)')
+# # plt.axis('square')
+# # plt.xlim(-12,12)
+# plt.ylim(49.94,50.008)
+# plt.legend()
+# plt.grid(color = 'gainsboro')
+# plt.savefig("plot-energy.pdf")
 
-plt.xlabel('q(t)')
-plt.ylabel('dq/dt (t)')
+### Plotting the solutions in a position-time diagram, or possibly the error ###
+# plt.plot(times, q_analytic(times), label ='analytic')
+# plt.plot(times, dqdt_analytic(times), label ='analytic')
+# plt.plot(times, q_rk4, label ='RK4')
+plt.plot(times, q_analytic(times)-q_rk4) #, label = "error = q_analytic - q_rk4")
+# plt.plot(times, dqdt_rk4, label ='RK4 velocity')
+# plt.plot(times, q_euler, label ='Euler')
+plt.xlabel('t')
+plt.ylabel('error = q_analytic - q_rk4')
+# plt.axis('square')
+# plt.xlim(-12,12)
+# plt.ylim(49.94,50.008)
 plt.legend()
 plt.grid(color = 'gainsboro')
-plt.savefig("plot.pdf")
+plt.savefig("plot-error.pdf")
