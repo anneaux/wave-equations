@@ -11,7 +11,7 @@ tex_f_1= r'$f_1=(x-\frac{1}{2})^{2}+x$'
 def f_2(x):
     return (x-1/2)**3+(x-1/2)**2+x
 def f_2_prime(x):
-    return 3*x**2-x+(3/4)
+    return 3*(x**2)-x+(3/4)
 def f_2_prime_prime(x):
     return 6*x-1
 tex_f_2 = r'$f_2=(x-\frac{1}{2})^{3}+(x-\frac{1}{2})^{2}+x$'
@@ -19,9 +19,9 @@ tex_f_2 = r'$f_2=(x-\frac{1}{2})^{3}+(x-\frac{1}{2})^{2}+x$'
 def f_3(x):
     return np.sqrt(x)
 def f_3_prime(x):
-    return (1/2)*x**(-1/2)
+    return (1/2)*(x**(-1/2))
 def f_3_prime_prime(x):
-    return (-1/4)*x**(-3/2)
+    return (-1/4)*(x**(-3/2))
 tex_f_3 = r'$f_3=\sqrt{x}$'
 
 def f_4(x):
