@@ -134,4 +134,77 @@ By introducing the new variable $w := R^{-1} \vec{u}$, this becomes
 and we arrive at a decoupled system.
 
 
+\color{deepblue}
+\subsection{Rewriting the WE as a fully first order system / eigenvalue problem / Matrix form of the wave equation}
 
+Similar to the definition of the velocity variable $\Pi(t,x)$ we now introduce the slope variable as the spatial derivative of the field: $\chi = \partial_x \phi$.
+Thereby we can write the waveequation \ref{eq:we} as a first order system
+\begin{equation}
+	\partial_t \vec{u} + \hat{M} \partial_x \vec{u} = \vec{S} ~.
+	\label{eq:we-matrix}
+\end{equation}
+Herein $u$ is the state vector $\vec{u} = \{ \phi, \Pi , \chi \}$, $S$ is a source term and the matrix $\hat{M}$ can be found by simple coefficient comparision to be
+\[
+\hat{M} = \begin{pmatrix}
+		0 & 0 & 0 \\
+		0 & 0 & c^2 \\
+		0 & 1 & 0 \\
+	\end{pmatrix}~. \]
+The source the then is of type $S = \{\Pi,0,0 \}$.
+
+
+\subsubsection{Detailed matrix derivation}
+\subsubsection{Choices for Initial Values}
+???
+
+\subsubsection{Eigenvalue Problem}
+The matrix formulation \ref{eq:we-matrix} in fact is an eigenvalue problem, where the eigenvalues can be easily found: $\lambda_1 = 0$ with eigenvector $v_1 = \{1,0,0\}$. For $\lambda_{2/3} = + c$, eigenvectors are $v_2 = \{0,c,1\}$ and $v_3 = \{0, -c, 1\}$.
+Horizontally concatenated these yield the transformation matrix
+\[  R =
+\begin{pmatrix}
+	1 & 0 & 0 \\
+	0 & c & -c \\
+	0 & 1 & 1
+\end{pmatrix}
+\]
+by which we can diagonalize matrix $\hat{M}$:
+\begin{align*}
+	\Lambda &= \text{diag} \hat{M} = R^{-1} \hat{M} R =
+	\begin{pmatrix}
+	1 & 0 	  & 0 	\\
+	0 & 1/2c  & 1/2 \\
+	0 & -1/2c & 1/2
+	\end{pmatrix}
+	\begin{pmatrix}
+		0 & 0 & 0 \\
+		0 & 0 & c^2 \\
+		0 & 1 & 0 \\
+	\end{pmatrix}
+	\begin{pmatrix}
+	1 & 0 & 0 \\
+	0 & c & -c \\
+	0 & 1 & 1
+	\end{pmatrix}
+ &=
+	\begin{pmatrix}
+	0 & 0 & 0 \\
+	0 & c & 0 \\
+	0 & 0 & -c
+	\end{pmatrix}
+\end{align*}
+Here, one can see that the diagonalized matrix simply has the eigenvalues on the diagonal.
+For the eigenvalue problem $\hat{M} R = \Lambda R$ holds, so that $\hat{M} = R \Lambda R^{-1}$, which we can plug in \ref{eq:we-matrix}:
+\begin{equation}
+	\partial_t \vec{u} +  R \Lambda R^{-1} \partial_x \vec{u} = \vec{S}~.
+\end{equation}
+Multiplying both sides by $R^{-1}$ yields
+\begin{equation}
+	R^{-1} \partial_t \vec{u} +  \Lambda R^{-1} \partial_x \vec{u} = R^{-1} \vec{S}~.
+\end{equation}
+By introducing the new variable $w := R^{-1} \vec{u}$, this becomes
+\begin{equation}
+\partial_t w +  \Lambda \partial_x w = R^{-1} \vec{S}
+\end{equation}
+and we arrive at a decoupled system.
+
+\color{black}

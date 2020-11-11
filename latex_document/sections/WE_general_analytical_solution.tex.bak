@@ -1,42 +1,210 @@
-\section{General analytical solution}
+\section{Theoretical Background}
+\subsection{General Analytical Solution}
 
-The wave equation in one spatial and one time dimension
+The wave equation (WE) for the scalar field $\phi (t,x) $ in one spatial and one time dimension is
 \begin{equation}
 	0 =  \frac{\partial^2 \phi}{\partial t^2}- c^2 \frac{\partial^2 \phi}{\partial x^2} = \partial_{tt} \phi -c^2 \partial_{xx} \phi
+	\label{eq:we}
 \end{equation}
-
-can according to the symmetry of second derivatives be divided up into two factors
+with $c \in \mathbb{R}$.
+According to the symmetry of second derivatives this can be divided into two factors
 \begin{equation}
-	0 = \left(\partial_{t} - c \partial_{x} \right) 	
-	\left( \partial_{t} + c \partial_{x} \right)  \phi
-\end{equation}.
+	0 = \left(\partial_{t} - c \partial_{x} \right)
+	\left( \partial_{t} + c \partial_{x} \right)  \phi ~.
+\end{equation}
 With introduction of two variables, $\xi = x-ct $ and $\nu= x+ct$, now we can write:
 \begin{equation}
-	0 = \partial_{\xi}\partial_{\nu} \phi  
+	0 = \partial_{\xi}\partial_{\nu} \phi ~.
 \end{equation}
 Therefor the wave equation has the general solution
 \begin{equation}
 	\phi(t,x) =f(\xi) + g(\nu)=  f(x-ct) + g(x+ct)
 \end{equation}
-with initial value boundaries
+which is a composition of a forward and a backward propagating elementary wave.
+As boundary condition we assume the initial time value and its derivative:
 \begin{align}
 	\phi_0(x) = \phi(0,x) &= f(x) + g(x) =: A(x) \\
-	\big(\partial_t \phi(0,x)\big) &= cf'(x) - cg'(x) =: B(x)
+	\big(\partial_t \phi(0,x)\big) &= cf'(x) - cg'(x) =: B(x)~.
+	\label{eq:iv-time}
 \end{align}
-After integrating the initial time derivative to
+Integrating eq. \ref{eq:iv-time} results in
 \begin{equation}
 	f(x)-g(x)= \int_{x_0}^x B(s)\,\mathrm{d}s
 \end{equation}
-the separated solution is given by (here $x_0 = x(t=0)$ )
+so that the separated solution is given by (here $x_0 = x(t=0)$ )
 \begin{align}
 	f(x) & =\frac{1}{2}
 	\left( A(x)+\frac{1}{c}\int_{x_0}^x B(s)\,\mathrm{d}s \right)\\
 	g(x) & = \frac{1}{2}
-	\left( A(x)-\frac{1}{c} \int_{x_0}^x B(s)\,\mathrm{d}s \right)
-\end{align}.
-When we put these together, we get the general solution in dependence of the initial values:
+	\left( A(x)-\frac{1}{c} \int_{x_0}^x B(s)\,\mathrm{d}s \right) ~.
+\end{align}
+Putting these together yields the general solution in dependence of the initial values, the d'Alembert's formula:
 \begin{equation}
 	\phi(t,x) =\frac{1}{2}
 	\left( A(x-ct) +A(x+ct) + \frac{1}{c}\int_{x-ct}^{x+ct} B(s)\,
 	\mathrm{d}s \right)
 \end{equation}
+This means, for given initial parameters the wave's evolution in time is clearly defined.
+
+
+\subsection{Rewriting the WE as two differential equations out of one}
+Now we introduce the time derivative of the field as a new variable: $\Pi (t,x) = \partial_t \phi$. Thereby the initial wave equation eq. \ref{eq:we} can be rewritten as a wave equation including the first-order derivative in time and second-order derivative in space:
+\begin{equation}
+	\partial_t \Pi = \partial_{tt} \phi =  c^2 \partial_{xx}\phi ~.
+\end{equation}
+Now one can, in accordance to the notation we introduced above, regard the field's derivative at the initial time $\Pi(0,x)$ as $B(x)$.
+Typical values for this initial velocity $\Pi (0,x)$ are either 0 or a constant.
+
+\paragraph{Example 1: $\Pi(0,x) = 0$}
+If we consider the field's initial velocity to be zero, $\Pi(0,x) = 0$ almost everywhere, this means the wave roughly is a pulse. Furthermore, if we assume no spatial boundaries the pulse will dominate the shape of the wave as time moves forward.
+\paragraph{Example 2: $\Pi(0,x) = \text{const.}$}
+If we consider the initial velocity to be a constant, the wave function is at rest in a suitable inertial frame of reference. Hence, there will be no wave propagation.
+
+
+
+\subsection{Rewriting the WE as a fully first order system / eigenvalue problem / Matrix form of the wave equation}
+
+Similar to the definition of the velocity variable $\Pi(t,x)$ we now introduce the slope variable as the spatial derivative of the field: $\chi = \partial_x \phi$.
+Thereby we can write the waveequation \ref{eq:we} as a first order system
+\begin{equation}
+	\partial_t \vec{u} + \hat{M} \partial_x \vec{u} = \vec{S} ~.
+	\label{eq:we-matrix}
+\end{equation}
+Herein $u$ is the state vector $\vec{u} = \{ \phi, \Pi , \chi \}$, $S$ is a source term and the matrix $\hat{M}$ can be found by simple coefficient comparision to be
+\[
+\hat{M} = \begin{pmatrix}
+		c & 0 & 0 \\
+		0 & 0 & c^2 \\
+		0 & 1 & 0 \\
+	\end{pmatrix}~. \]
+The source the then is of type $S = \{\Pi + c \chi,0,0 \}$.
+
+\subsubsection{Detailed matrix derivation}
+\subsubsection{Choices for Initial Values}
+???
+
+\subsubsection{Eigenvalue Problem}
+The matrix formulation \ref{eq:we-matrix} in fact is an eigenvalue problem, whichs eigenvalues can be easily found to be $\lambda_{1/2} = \pm c$. For $\lambda_1 = + c$, eigenvectors are $v_1 = \{1,0,0\}$ and $v_2 = \{0,c,1\}$, for $\lambda_2 = -c$ the eigenvector is $v_3 = \{0, -c, 1\}$.
+Horizontally concatenated these yield the transformation matrix
+\[  R =
+\begin{pmatrix}
+	0 & 0 & 1 \\
+	-c & c & 0 \\
+	1 & 1 & 0
+\end{pmatrix}
+\]
+by which we can diagonalize matrix $\hat{M}$:
+\begin{align*}
+	\Lambda &= \text{diag} \hat{M} = R^{-1} \hat{M} R =
+	\begin{pmatrix}
+	0 & -1/2c & 1/2\\
+	0 & 1/2c & 1/2 \\
+	1 & 0 & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+		c & 0 & 0 \\
+		0 & 0 & c^2 \\
+		0 & 1 & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+		0 & 0 & 1 \\
+		-c & c & 0 \\
+		1 & 1 & 0
+	\end{pmatrix} \\
+ &=
+ \begin{pmatrix}
+ 	-c & 0 & 0 \\
+ 	0 & c & 0 \\
+ 	0 & 0& c
+ \end{pmatrix}
+\end{align*}
+Here, one can see that the diagonalized matrix simply has the eigenvalues on the diagonal.
+For the eigenvalue problem $\hat{M} R = \Lambda R$ holds, so that $\hat{M} = R \Lambda R^{-1}$, which we can plug in \ref{eq:we-matrix}:
+\begin{equation}
+	\partial_t \vec{u} +  R \Lambda R^{-1} \partial_x \vec{u} = \vec{S}~.
+\end{equation}
+Multiplying both sides by $R^{-1}$ yields
+\begin{equation}
+	R^{-1} \partial_t \vec{u} +  \Lambda R^{-1} \partial_x \vec{u} = R^{-1} \vec{S}~.
+\end{equation}
+By introducing the new variable $w := R^{-1} \vec{u}$, this becomes
+\begin{equation}
+\partial_t w +  \Lambda \partial_x w = R^{-1} \vec{S}
+\end{equation}
+and we arrive at a decoupled system.
+
+
+\color{deepblue}
+\subsection{Rewriting the WE as a fully first order system / eigenvalue problem / Matrix form of the wave equation}
+
+Similar to the definition of the velocity variable $\Pi(t,x)$ we now introduce the slope variable as the spatial derivative of the field: $\chi = \partial_x \phi$.
+Thereby we can write the waveequation \ref{eq:we} as a first order system
+\begin{equation}
+	\partial_t \vec{u} + \hat{M} \partial_x \vec{u} = \vec{S} ~.
+	\label{eq:we-matrix}
+\end{equation}
+Herein $u$ is the state vector $\vec{u} = \{ \phi, \Pi , \chi \}$, $S$ is a source term and the matrix $\hat{M}$ can be found by simple coefficient comparision to be
+\[
+\hat{M} = \begin{pmatrix}
+		0 & 0 & 0 \\
+		0 & 0 & c^2 \\
+		0 & 1 & 0 \\
+	\end{pmatrix}~. \]
+The source the then is of type $S = \{\Pi,0,0 \}$.
+
+
+\subsubsection{Detailed matrix derivation}
+\subsubsection{Choices for Initial Values}
+???
+
+\subsubsection{Eigenvalue Problem}
+The matrix formulation \ref{eq:we-matrix} in fact is an eigenvalue problem, where the eigenvalues can be easily found: $\lambda_1 = 0$ with eigenvector $v_1 = \{1,0,0\}$. For $\lambda_{2/3} = + c$, eigenvectors are $v_2 = \{0,c,1\}$ and $v_3 = \{0, -c, 1\}$.
+Horizontally concatenated these yield the transformation matrix
+\[  R =
+\begin{pmatrix}
+	1 & 0 & 0 \\
+	0 & c & -c \\
+	0 & 1 & 1
+\end{pmatrix}
+\]
+by which we can diagonalize matrix $\hat{M}$:
+\begin{align*}
+	\Lambda &= \text{diag} \hat{M} = R^{-1} \hat{M} R =
+	\begin{pmatrix}
+	1 & 0 	  & 0 	\\
+	0 & 1/2c  & 1/2 \\
+	0 & -1/2c & 1/2
+	\end{pmatrix}
+	\begin{pmatrix}
+		0 & 0 & 0 \\
+		0 & 0 & c^2 \\
+		0 & 1 & 0 \\
+	\end{pmatrix}
+	\begin{pmatrix}
+	1 & 0 & 0 \\
+	0 & c & -c \\
+	0 & 1 & 1
+	\end{pmatrix}
+ &=
+	\begin{pmatrix}
+	0 & 0 & 0 \\
+	0 & c & 0 \\
+	0 & 0 & -c
+	\end{pmatrix}
+\end{align*}
+Here, one can see that the diagonalized matrix simply has the eigenvalues on the diagonal.
+For the eigenvalue problem $\hat{M} R = \Lambda R$ holds, so that $\hat{M} = R \Lambda R^{-1}$, which we can plug in \ref{eq:we-matrix}:
+\begin{equation}
+	\partial_t \vec{u} +  R \Lambda R^{-1} \partial_x \vec{u} = \vec{S}~.
+\end{equation}
+Multiplying both sides by $R^{-1}$ yields
+\begin{equation}
+	R^{-1} \partial_t \vec{u} +  \Lambda R^{-1} \partial_x \vec{u} = R^{-1} \vec{S}~.
+\end{equation}
+By introducing the new variable $w := R^{-1} \vec{u}$, this becomes
+\begin{equation}
+\partial_t w +  \Lambda \partial_x w = R^{-1} \vec{S}
+\end{equation}
+and we arrive at a decoupled system.
+
+\color{black}
