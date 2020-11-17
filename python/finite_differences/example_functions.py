@@ -40,7 +40,7 @@ def f_5_prime_prime(x):
     return 4*((12*np.pi)**2)*(3*(np.sin(12*np.pi*x)**2)*(np.cos(12*np.pi*x)**2)-np.sin(12*np.pi*x)**4)
 tex_f_5 = r'$f_5=\sin^4 (12\pi x)$'
 
-              #set parameter for function g_a
+#set parameter for function g_a
 def g_a(x):
     return np.exp(-a*x**2)
 def g_a_prime(x):
