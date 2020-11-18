@@ -5,26 +5,23 @@
 \contentsline {paragraph}{\nonumberline Example 1: $\Pi (0,x) = 0$}{2}{section*.2}
 \contentsline {paragraph}{\nonumberline Example 2: $\Pi (0,x) = \text {const.}$}{2}{section*.3}
 \contentsline {subsection}{\numberline {1.3}Rewriting the WE as a fully first order system / eigenvalue problem / Matrix form of the wave equation}{2}{subsection.1.3}
-\contentsline {subsubsection}{\numberline {1.3.1}Detailed matrix derivation}{2}{subsubsection.1.3.1}
-\contentsline {subsubsection}{\numberline {1.3.2}Choices for Initial Values}{2}{subsubsection.1.3.2}
-\contentsline {subsubsection}{\numberline {1.3.3}Eigenvalue Problem}{2}{subsubsection.1.3.3}
-\contentsline {subsection}{\numberline {1.4}Rewriting the WE as a fully first order system / eigenvalue problem / Matrix form of the wave equation}{3}{subsection.1.4}
-\contentsline {subsubsection}{\numberline {1.4.1}Detailed matrix derivation}{3}{subsubsection.1.4.1}
-\contentsline {subsubsection}{\numberline {1.4.2}Choices for Initial Values}{3}{subsubsection.1.4.2}
-\contentsline {subsubsection}{\numberline {1.4.3}Eigenvalue Problem}{4}{subsubsection.1.4.3}
-\contentsline {section}{\numberline {2}Numerical Differentiation}{5}{section.2}
-\contentsline {subsection}{\numberline {2.1}Forward, Backward and Central Difference Quotients}{5}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Error Estimations}{5}{subsection.2.2}
-\contentsline {subsection}{\numberline {2.3}Approximating the Second Derivative}{6}{subsection.2.3}
-\contentsline {subsection}{\numberline {2.4}Approximating to a higher order}{6}{subsection.2.4}
-\contentsline {subsection}{\numberline {2.5}Convergence}{7}{subsection.2.5}
-\contentsline {section}{\numberline {3}Runge-Kutta time-integration}{8}{section.3}
-\contentsline {subsection}{\numberline {3.1}General Principle of Numerical Integration Methods}{8}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Runge-Kutta Methods}{8}{subsection.3.2}
-\contentsline {paragraph}{\nonumberline The Butcher Table}{9}{section*.4}
-\contentsline {paragraph}{\nonumberline Explicit and Implicit RK methods}{9}{section*.5}
-\contentsline {paragraph}{\nonumberline Estimated Error}{9}{section*.6}
-\contentsline {paragraph}{\nonumberline The classical RK method: RK4}{9}{section*.7}
-\contentsline {paragraph}{\nonumberline Example: Solving the Harmonic Oscillator Equation using RK4}{10}{section*.8}
-\contentsline {section}{\numberline {A}Derivatives for example functions}{11}{appendix.A}
-\contentsline {section}{\numberline {B}Plots of Runge Kutta Method}{12}{appendix.B}
+\contentsline {subsection}{\numberline {1.4}Rewriting the WE as a fully first order system / eigenvalue problem / Matrix form of the wave equation}{2}{subsection.1.4}
+\contentsline {subsubsection}{\numberline {1.4.1}Detailed matrix derivation}{2}{subsubsection.1.4.1}
+\contentsline {subsubsection}{\numberline {1.4.2}Choices for Initial Values}{2}{subsubsection.1.4.2}
+\contentsline {subsubsection}{\numberline {1.4.3}Eigenvalue Problem}{2}{subsubsection.1.4.3}
+\contentsline {section}{\numberline {2}Numerical Differentiation}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Forward, Backward and Central Difference Quotients}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Error Estimations}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Approximating the Second Derivative}{5}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Approximating to a higher order}{5}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Convergence}{6}{subsection.2.5}
+\contentsline {section}{\numberline {3}Runge-Kutta time-integration}{7}{section.3}
+\contentsline {subsection}{\numberline {3.1}General Principle of Numerical Integration Methods}{7}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Runge-Kutta Methods}{7}{subsection.3.2}
+\contentsline {paragraph}{\nonumberline The Butcher Table}{8}{section*.4}
+\contentsline {paragraph}{\nonumberline Explicit and Implicit RK methods}{8}{section*.5}
+\contentsline {paragraph}{\nonumberline Estimated Error}{8}{section*.6}
+\contentsline {paragraph}{\nonumberline The classical RK method: RK4}{8}{section*.7}
+\contentsline {paragraph}{\nonumberline Example: Solving the Harmonic Oscillator Equation using RK4}{9}{section*.8}
+\contentsline {section}{\numberline {A}Derivatives for example functions}{10}{appendix.A}
+\contentsline {section}{\numberline {B}Plots of Runge Kutta Method}{11}{appendix.B}

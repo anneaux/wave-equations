@@ -79,29 +79,40 @@ As we plan to use a Runge-Kutta time-integration with a error term that accumula
 \subsection{Convergence}
 In the following we show the results of the finite difference approximation in 1st and 2nd order for a set of example functions. These are:
 
-
 \fontsize{10}{12}\selectfont
-\begin{align*}
-	f_1 &=(x-\frac{1}{2})^2+x 
+\begin{alignat*}{3}
+	f_1 &=(x-\tfrac{1}{2})^2+x
 		& f_1' &=2x
-		& f_1'' &=2 \\ 
-	f_2 &=(x-\frac{1}{2})^3+(x-\frac{1}{2})^2+x 
-		& f_2' &= 3(x-\frac{1}{2})^2+2(x-\frac{1}{2})+1
-		& f_2'' &= 6x-1\\ 
-	f_3 &= \sqrt{x} 
-		& f_3' &=\frac{1}{2\sqrt{x}} 
-		& f_3'' &=-\frac{1}{4}x^{-\frac{3}{2}} \\ 
+		& f_1'' &=2 \\
+	f_2 &=(x-\tfrac{1}{2})^3+(x-\tfrac{1}{2})^2+x \hspace{0.3cm}
+		& f_2' &= 3(x-\tfrac{1}{2})^2+2(x-\tfrac{1}{2})+1
+		& f_2'' &= 6x-1\\
+	f_3 &= \sqrt{x}
+		& f_3' &=\tfrac{1}{2\sqrt{x}}
+		& f_3'' &=-\tfrac{1}{4}x^{-\tfrac{3}{2}} \\
 	f_4 &= \sin(12\pi x)
 		& f_4' &= 12 \pi \cos(12\pi x)
-		& f_4'' &= -(12\pi)^2 \sin(12\pi x)\\  
+		& f_4'' &= -(12\pi)^2 \sin(12\pi x)\\
 	f_5 &= \sin^4(12\pi x)
-		& f_5' &= 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x) 
-		&  \begin{split}f_5''= 
-		&4  (12\pi)^2 
-	 	\\&\big(3\sin^2(12\pi x)\cos^2(12\pi x) - \sin^4(12\pi x) \big) \end{split}\\ 
-	f_6=g_a &= \exp(-ax^2) 
-		& g_a' &= -2ax\exp(-ax^2) 
-		& g_a'' &= \exp(-ax^2) ((2ax)^2-2a)\\ 
-\end{align*}
+		& f_5' &= 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x) \hspace{0.3cm}
+		&  f_5'' &= 4  (12\pi \sin(12\pi x))^2 \\ & & & & &~~~\cdot\big(3\cos^2(12\pi x) - \sin^2(12\pi x) \big) \\
+	f_6 &=g_a = \exp(-ax^2)
+		& g_a' &= -2ax\exp(-ax^2)
+		& g_a'' &= \exp(-ax^2) ((2ax)^2-2a)\\
+\end{alignat*}
+% f_5 &= \sin^4(12\pi x)
+%   & f_5' &= 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x)
+%   &  \begin{split}f_5''=
+%   &4  (12\pi)^2
+%   \\&\big(3\sin^2(12\pi x)\cos^2(12\pi x) - \sin^4(12\pi x) \big) \end{split}\\
+% f_6=g_a &= \exp(-ax^2)
+%   & g_a' &= -2ax\exp(-ax^2)
+%   & g_a'' &= \exp(-ax^2) ((2ax)^2-2a)\\
 \fontsize{12}{14}\selectfont
+
+If a sequence $x_1,x_2,...,x_n$ converges to a value $r$ and if there exist real numbers $\lambda >0 $ and $\alpha \geq 1$ such that
+\begin{equation}
+	\lim_{n \to \infty} \frac{|x_{n+1}-r|}{|x_n-r|^\alpha}= \lambda
+\end{equation} 
+then we say that $\alpha$ is the rate of convergence of the sequence.
 

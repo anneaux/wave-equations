@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  11 NOV 2020 11:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  18 NOV 2020 10:06
 entering extended mode
 **./WE_main.tex
 (WE_main.tex
@@ -1973,11 +1973,7 @@ File: lstlang1.sty 2018/09/02 1.7 listings language file
 "
 Package: lipsum 2014/07/27 v1.3 150 paragraphs of Lorem Ipsum dummy text
 \c@lips@count=\count298
-) (WE_main.aux
-
-LaTeX Warning: Label `eq:we-matrix' multiply defined.
-
-)
+) (WE_main.aux)
 \openout1 = `WE_main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 100.
@@ -2087,7 +2083,7 @@ LaTeX Info: Redefining \nameref on input line 100.
 \openout3 = `WE_main.out'.
 
 \c@lstlisting=\count306
-<graphics/fsulogo.jpg, id=91, 1204.5pt x 403.5075pt>
+<graphics/fsulogo.jpg, id=79, 1204.5pt x 403.5075pt>
 File: graphics/fsulogo.jpg Graphic file (type jpg)
 <use graphics/fsulogo.jpg>
 Package pdftex.def Info: graphics/fsulogo.jpg  used on input line 140.
@@ -2157,8 +2153,8 @@ gnored
 l.60 \paragraph
                {Example 2: $\Pi(0,x) = \text{const.}$} [1
 
-] [2] [3]) [4]
-(sections/WE_finite_differencing_approximation.tex [5
+] [2]) [3]
+(sections/WE_finite_differencing_approximation.tex [4
 
 ]
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -2167,19 +2163,18 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 83.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 83.
- [6]) [7]
-(sections/WE_Runge_Kutta_time_integration.tex [8
+ [5]) [6]
+(sections/WE_Runge_Kutta_time_integration.tex [7
 
-
-] [9]
+] [8]
 LaTeX Font Info:    Try loading font information for T1+lmtt on input line 124.
 
 
 ("C:\Users\hannes\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ))
-[10] (sections/WE_app_derivatives_of_example_functions.tex
-<./graphics/plot_differences_analytical_finite_differences_f_1_n_20.png, id=278
+[9] (sections/WE_app_derivatives_of_example_functions.tex
+<./graphics/plot_differences_analytical_finite_differences_f_1_n_20.png, id=253
 , 722.7pt x 650.43pt>
 File: ./graphics/plot_differences_analytical_finite_differences_f_1_n_20.png Gr
 aphic file (type png)
@@ -2195,7 +2190,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 4--6
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./graphics/plot_differences_analytical_finite_differences_f_2_n_20.png, id=280
+<./graphics/plot_differences_analytical_finite_differences_f_2_n_20.png, id=255
 , 722.7pt x 650.43pt>
 File: ./graphics/plot_differences_analytical_finite_differences_f_2_n_20.png Gr
 aphic file (type png)
@@ -2208,7 +2203,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 10--11
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_3_n_20.png, id=281
+<./graphics/plot_differences_analytical_finite_differences_f_3_n_20.png, id=256
 , 722.7pt x 650.43pt>
 File: ./graphics/plot_differences_analytical_finite_differences_f_3_n_20.png Gr
 aphic file (type png)
@@ -2221,7 +2216,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 15--16
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png, id=282
+<./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png, id=257
 , 722.7pt x 650.43pt>
 File: ./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png Gr
 aphic file (type png)
@@ -2234,7 +2229,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 20--21
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png, id=283
+<./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png, id=258
 , 722.7pt x 650.43pt>
 File: ./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png Gr
 aphic file (type png)
@@ -2248,7 +2243,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 26--27
  []
 
 <./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png, id
-=284, 722.7pt x 650.43pt>
+=259, 722.7pt x 650.43pt>
 File: ./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.pn
 g Graphic file (type png)
 <use ./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png
@@ -2262,7 +2257,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 32--33
  []
 
 <./graphics/convergence/convergence_to_analytical_derivative/convergence_f_6_n_
-40.png, id=285, 722.7pt x 361.35pt>
+40.png, id=260, 722.7pt x 361.35pt>
 File: ./graphics/convergence/convergence_to_analytical_derivative/convergence_f
 _6_n_40.png Graphic file (type png)
 <use ./graphics/convergence/convergence_to_analytical_derivative/convergence_f_
@@ -2275,47 +2270,43 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 37--38
 [][] 
  []
 
-[11
+[10
 
 
 ]) (sections/WE_rungekutta.tex
-<../python/rungekutta/plot-phasepath.pdf, id=291, 462.52798pt x 346.89601pt>
+<../python/rungekutta/plot-phasepath.pdf, id=265, 462.52798pt x 346.89601pt>
 File: ../python/rungekutta/plot-phasepath.pdf Graphic file (type pdf)
 <use ../python/rungekutta/plot-phasepath.pdf>
 Package pdftex.def Info: ../python/rungekutta/plot-phasepath.pdf  used on input
  line 4.
 (pdftex.def)             Requested size: 469.47049pt x 352.11954pt.
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 208.
- [12 <../python/rungekutta/plot-phasepath.pdf>] [13 <./graphics/plot_difference
-s_analytical_finite_differences_f_1_n_20.png>] [14 <./graphics/plot_differences
-_analytical_finite_differences_f_2_n_20.png>] [15 <./graphics/plot_differences_
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 206.
+ [11 <../python/rungekutta/plot-phasepath.pdf>] [12 <./graphics/plot_difference
+s_analytical_finite_differences_f_1_n_20.png>] [13 <./graphics/plot_differences
+_analytical_finite_differences_f_2_n_20.png>] [14 <./graphics/plot_differences_
 analytical_finite_differences_f_3_n_20.png>]
-[16 <./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png>]
-[17 <./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png>]
-[18 <./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png
->] [19 <./graphics/convergence/convergence_to_analytical_derivative/convergence
+[15 <./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png>]
+[16 <./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png>]
+[17 <./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png
+>] [18 <./graphics/convergence/convergence_to_analytical_derivative/convergence
 _f_6_n_40.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 208.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 206.
  (WE_main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 208.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 208.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 206.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 206.
 Package rerunfilecheck Info: File `WE_main.out' has not changed.
-(rerunfilecheck)             Checksum: 7D888328F7DE9833787BAA12DEEEB0ED;1881.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 208.
+(rerunfilecheck)             Checksum: F1FA3D40F747940D583932BA16C63DF6;1628.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 206.
  ) 
 Here is how much of TeX's memory you used:
- 26685 strings out of 492973
- 490641 string characters out of 3126249
+ 26675 strings out of 492973
+ 490475 string characters out of 3126249
  901345 words of memory out of 3000000
- 30083 multiletter control sequences out of 15000+200000
+ 30080 multiletter control sequences out of 15000+200000
  627768 words of font info for 81 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 54i,21n,84p,9088b,1396s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 54i,21n,84p,9088b,1394s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.e
 nc}{C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mat
 hit.enc}{C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/l
@@ -2344,9 +2335,9 @@ blic/lm/lmsy7.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/lm/lmsy8.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/
 type1/public/lm/lmtt10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/f
 onts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on WE_main.pdf (21 pages, 1223288 bytes).
+Output written on WE_main.pdf (20 pages, 1220932 bytes).
 PDF statistics:
- 470 PDF objects out of 1000 (max. 8388607)
- 129 named destinations out of 1000 (max. 500000)
- 222 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 442 PDF objects out of 1000 (max. 8388607)
+ 122 named destinations out of 1000 (max. 500000)
+ 198 words of extra memory for PDF output out of 10000 (max. 10000000)
 
