@@ -18,7 +18,7 @@ Nt = int(endT/deltat)
 timevalues = np.linspace(0,endT,Nt)
 
 endX = 1
-deltax = 0.2
+deltax = 0.05
 Nx = int(endX/deltax)
 xvalues = np.linspace(0,endX,Nx)
 # print(Nx)
@@ -88,9 +88,6 @@ phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 # plt.legend()
 # plt.grid(color = 'gainsboro')
 # plt.savefig("plot-phi(x,t).pdf")
-
-
-
 
 
 ### Plotting the time evolution in an animation ######################
