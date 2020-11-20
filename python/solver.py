@@ -12,16 +12,20 @@ c = 1
 # d Pi / d t = c^2 d^2 phi / d x^2
 
 ### discretize time and space with uniform grid
-endT = 10
-deltat = 0.1
+endT = 1
+deltat = 0.0125
 Nt = int(endT/deltat)
 timevalues = np.linspace(0,endT,Nt)
 
 endX = 1
-deltax = 0.2
+deltax = 0.01
 Nx = int(endX/deltax)
 xvalues = np.linspace(0,endX,Nx)
-# print(Nx)
+print("Nx = %.1f" % Nx)
+
+courant = c * deltat / deltax
+print("courant number = %.2f" % courant)
+
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
   Nt = len(timevalues)
   Nx = len(xvalues)
@@ -57,12 +61,14 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
 phi0 = f_4(xvalues)
 Pi0 = 0
 phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
-
+# print(phi0)
 ############################################
 
-# ### Plotting the solutions in a position-time diagram ###
+# ### Plotting the solutions in a position-time diagram ##############
+# phi_x = phi[:,2]
+# print("x-position = %.4f" % xvalues[2])
 # times = np.arange(0,Nt*deltat,deltat)
-# plt.plot(times, phi_t)
+# plt.plot(times, phi_x)
 # plt.xlabel('t')
 # plt.ylabel('phi(t)')
 # # # plt.axis('square')
@@ -72,49 +78,47 @@ phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 # plt.grid(color = 'gainsboro')
 # plt.savefig("plot-phi_t.pdf")
 
-### Plotting the time evolution in a diagram with multiple lines
-# from matplotlib import cm
+### Plotting the time evolution in a diagram with multiple lines ############
+from matplotlib import cm
 
-# Nt_plot = 10 # how many snap shots are plotted
-# Blues = cm.get_cmap('Blues_r',Nt_plot)
+Nt_plot = 7 # how many snap shots are plotted
+Blues = cm.get_cmap('Blues_r',Nt_plot+20)
 
-# for i in np.linspace(0,Nt-1,Nt_plot).astype(int):
-#   plt.plot(xvalues, phi[i,:], label ="%.2f s" % timevalues[i], c = Blues(i/Nt))
-# plt.xlabel('x')
-# plt.ylabel('phi(x,t)')
-# # # plt.axis('square')
-# plt.xlim(0, max(xvalues))
-# plt.ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
-# plt.legend()
-# plt.grid(color = 'gainsboro')
-# plt.savefig("plot-phi(x,t).pdf")
-
-
+for i in np.linspace(0,Nt-1,Nt_plot).astype(int):
+  plt.plot(xvalues, phi[i,:], label ="%.2f s" % timevalues[i], c = Blues(i/(Nt+20)))
+plt.xlabel('x')
+plt.ylabel('phi(x,t)')
+# # plt.axis('square')
+plt.xlim(0, max(xvalues))
+plt.ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+plt.legend()
+plt.grid(color = 'gainsboro')
+plt.savefig("plot-phi(x,t).pdf")
 
 
 
 ### Plotting the time evolution in an animation ######################
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.animation
+# import matplotlib
+# matplotlib.use('Agg')
+# import matplotlib.animation
 
-def init_animation():
-  global line
-  line, = ax.plot(xvalues, np.zeros_like(xvalues))
-  ax.set_xlim(0, max(xvalues))
-  ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+# def init_animation():
+#   global line
+#   line, = ax.plot(xvalues, np.zeros_like(xvalues))
+#   ax.set_xlim(0, max(xvalues))
+#   ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
 
-def animate(i):
-  line.set_ydata(phi[i,:])
-  timelabel.set_text('time: %.2f s' % timevalues[i])
-  return line, timelabel
+# def animate(i):
+#   line.set_ydata(phi[i,:])
+#   timelabel.set_text('time: %.2f s' % timevalues[i])
+#   return line, timelabel
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.set_xlabel("x")
-ax.set_ylabel("phi(x,t)")
-ax.set_title("time evolution of 1D wave")
-timelabel = ax.text(0.02, 0.95, 'hello', transform=ax.transAxes)
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# ax.set_xlabel("x")
+# ax.set_ylabel("phi(x,t)")
+# ax.set_title("time evolution of 1D wave")
+# timelabel = ax.text(0.02, 0.95, 'hello', transform=ax.transAxes)
 
-ani = matplotlib.animation.FuncAnimation(fig, animate, init_func=init_animation, frames=Nt)
-ani.save('WE-animation.gif', writer='imagemagick', fps=10)
+# ani = matplotlib.animation.FuncAnimation(fig, animate, init_func=init_animation, frames=Nt)
+# ani.save('WE-animation.gif', writer='imagemagick', fps=10)
