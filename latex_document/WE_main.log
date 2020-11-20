@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  20 NOV 2020 09:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  20 NOV 2020 10:30
 entering extended mode
 **./WE_main.tex
 (WE_main.tex
@@ -2083,7 +2083,7 @@ LaTeX Info: Redefining \nameref on input line 100.
 \openout3 = `WE_main.out'.
 
 \c@lstlisting=\count306
-<graphics/fsulogo.jpg, id=79, 1204.5pt x 403.5075pt>
+<graphics/fsulogo.jpg, id=71, 1204.5pt x 403.5075pt>
 File: graphics/fsulogo.jpg Graphic file (type jpg)
 <use graphics/fsulogo.jpg>
 Package pdftex.def Info: graphics/fsulogo.jpg  used on input line 140.
@@ -2175,7 +2175,7 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ))
 [9] (sections/WE_app_derivatives_of_example_functions.tex
 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
-_differences_f_1_n_20.png, id=253, 722.7pt x 650.43pt>
+_differences_f_1_n_20.png, id=244, 722.7pt x 650.43pt>
 File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
 inite_differences_f_1_n_20.png Graphic file (type png)
 <use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
@@ -2192,7 +2192,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 4--6
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
-_differences_f_2_n_20.png, id=255, 722.7pt x 650.43pt>
+_differences_f_2_n_20.png, id=246, 722.7pt x 650.43pt>
 File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
 inite_differences_f_2_n_20.png Graphic file (type png)
 <use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
@@ -2206,7 +2206,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 10--11
  []
 
 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
-_differences_f_3_n_20.png, id=256, 722.7pt x 650.43pt>
+_differences_f_3_n_20.png, id=247, 722.7pt x 650.43pt>
 File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
 inite_differences_f_3_n_20.png Graphic file (type png)
 <use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
@@ -2220,7 +2220,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 15--16
  []
 
 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
-_differences_f_4_n_20.png, id=257, 722.7pt x 650.43pt>
+_differences_f_4_n_20.png, id=248, 722.7pt x 650.43pt>
 File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
 inite_differences_f_4_n_20.png Graphic file (type png)
 <use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
@@ -2234,7 +2234,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 20--21
  []
 
 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
-_differences_f_5_n_40.png, id=258, 722.7pt x 650.43pt>
+_differences_f_5_n_40.png, id=249, 722.7pt x 650.43pt>
 File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
 inite_differences_f_5_n_40.png Graphic file (type png)
 <use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
@@ -2248,7 +2248,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 26--27
  []
 
 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
-_differences_f_a_n_20_a_1.png, id=259, 722.7pt x 650.43pt>
+_differences_f_a_n_20_a_1.png, id=250, 722.7pt x 650.43pt>
 File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
 inite_differences_f_a_n_20_a_1.png Graphic file (type png)
 <use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
@@ -2261,17 +2261,69 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 32--33
 [][] 
  []
 
+<./graphics/convergence/convergence_to_analytical_derivative/convergence_f_2_n_
+40.png, id=251, 722.7pt x 361.35pt>
+File: ./graphics/convergence/convergence_to_analytical_derivative/convergence_f
+_2_n_40.png Graphic file (type png)
+<use ./graphics/convergence/convergence_to_analytical_derivative/convergence_f_
+2_n_40.png>
+Package pdftex.def Info: ./graphics/convergence/convergence_to_analytical_deriv
+ative/convergence_f_2_n_40.png  used on input line 39.
+(pdftex.def)             Requested size: 469.47049pt x 234.73688pt.
+
+! LaTeX Error: File `self_convergence_f_2_n_40' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.44 ...hics[scale=0.7]{self_convergence_f_2_n_40}
+                                                  
+I could not locate the file with any of these extensions:
+.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPEG,.JBIG2,.JB2,.eps,.ep
+s
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+<./graphics/convergence/convergence_to_analytical_derivative/convergence_f_3_n_
+20.png, id=252, 722.7pt x 361.35pt>
+File: ./graphics/convergence/convergence_to_analytical_derivative/convergence_f
+_3_n_20.png Graphic file (type png)
+<use ./graphics/convergence/convergence_to_analytical_derivative/convergence_f_
+3_n_20.png>
+Package pdftex.def Info: ./graphics/convergence/convergence_to_analytical_deriv
+ative/convergence_f_3_n_20.png  used on input line 49.
+(pdftex.def)             Requested size: 505.88655pt x 252.94327pt.
+
+Overfull \hbox (36.41606pt too wide) in paragraph at lines 49--50
+[][] 
+ []
+
+<./graphics/convergence/convergence_to_analytical_derivative/modified_convergen
+ce_f_5_n_200.png, id=253, 722.7pt x 361.35pt>
+File: ./graphics/convergence/convergence_to_analytical_derivative/modified_conv
+ergence_f_5_n_200.png Graphic file (type png)
+<use ./graphics/convergence/convergence_to_analytical_derivative/modified_conve
+rgence_f_5_n_200.png>
+Package pdftex.def Info: ./graphics/convergence/convergence_to_analytical_deriv
+ative/modified_convergence_f_5_n_200.png  used on input line 54.
+(pdftex.def)             Requested size: 505.88655pt x 252.94327pt.
+
+Overfull \hbox (36.41606pt too wide) in paragraph at lines 54--55
+[][] 
+ []
+
 <./graphics/convergence/convergence_to_analytical_derivative/convergence_f_6_n_
-40.png, id=260, 722.7pt x 361.35pt>
+40.png, id=254, 722.7pt x 361.35pt>
 File: ./graphics/convergence/convergence_to_analytical_derivative/convergence_f
 _6_n_40.png Graphic file (type png)
 <use ./graphics/convergence/convergence_to_analytical_derivative/convergence_f_
 6_n_40.png>
 Package pdftex.def Info: ./graphics/convergence/convergence_to_analytical_deriv
-ative/convergence_f_6_n_40.png  used on input line 37.
+ative/convergence_f_6_n_40.png  used on input line 59.
 (pdftex.def)             Requested size: 505.88655pt x 252.94327pt.
 
-Overfull \hbox (36.41606pt too wide) in paragraph at lines 37--38
+Overfull \hbox (36.41606pt too wide) in paragraph at lines 59--60
 [][] 
  []
 
@@ -2279,7 +2331,7 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 37--38
 
 
 ]) (sections/WE_rungekutta.tex
-<../python/rungekutta/plot-phasepath.pdf, id=265, 462.52798pt x 346.89601pt>
+<../python/rungekutta/plot-phasepath.pdf, id=260, 462.52798pt x 346.89601pt>
 File: ../python/rungekutta/plot-phasepath.pdf Graphic file (type pdf)
 <use ../python/rungekutta/plot-phasepath.pdf>
 Package pdftex.def Info: ../python/rungekutta/plot-phasepath.pdf  used on input
@@ -2297,21 +2349,31 @@ es_f_4_n_20.png>] [16 <./graphics/finite_differences_vs_analytical/plot_differe
 nces_analytical_finite_differences_f_5_n_40.png>] [17 <./graphics/finite_differ
 ences_vs_analytical/plot_differences_analytical_finite_differences_f_a_n_20_a_1
 .png>] [18 <./graphics/convergence/convergence_to_analytical_derivative/converg
-ence_f_6_n_40.png>]
+ence_f_2_n_40.png> <./graphics/convergence/convergence_to_analytical_derivative
+/convergence_f_3_n_20.png>] [19 <./graphics/convergence/convergence_to_analytic
+al_derivative/modified_convergence_f_5_n_200.png> <./graphics/convergence/conve
+rgence_to_analytical_derivative/convergence_f_6_n_40.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 206.
  (WE_main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 206.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 206.
-Package rerunfilecheck Info: File `WE_main.out' has not changed.
-(rerunfilecheck)             Checksum: F1FA3D40F747940D583932BA16C63DF6;1628.
+
+
+Package rerunfilecheck Warning: File `WE_main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `WE_main.out':
+(rerunfilecheck)             Before: 80A93D52ADAA2CC4A6043AC4E09531DF;1492
+(rerunfilecheck)             After:  F1FA3D40F747940D583932BA16C63DF6;1628.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 206.
  ) 
 Here is how much of TeX's memory you used:
- 26676 strings out of 492973
- 491311 string characters out of 3126249
+ 26714 strings out of 492973
+ 492767 string characters out of 3126249
  901391 words of memory out of 3000000
- 30080 multiletter control sequences out of 15000+200000
- 627768 words of font info for 81 fonts, out of 3000000 for 9000
+ 30097 multiletter control sequences out of 15000+200000
+ 630763 words of font info for 82 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  54i,21n,84p,9088b,1394s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.e
@@ -2320,31 +2382,32 @@ hit.enc}{C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/l
 m-mathsy.enc}{C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips
 /lm/lm-rm.enc}{C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvip
 s/lm/lm-mathex.enc}<C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
-e1/public/lm/lmbx12.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/public/lm/lmcsc10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.
-9/fonts/type1/public/lm/lmex10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKT
-eX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Users/hannes/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/lm/lmmi12.pfb><C:/Users/hannes/AppData/Local/Pro
-grams/MiKTeX 2.9/fonts/type1/public/lm/lmmi6.pfb><C:/Users/hannes/AppData/Local
-/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmmi7.pfb><C:/Users/hannes/AppData/L
-ocal/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pfb><C:/Users/hannes/AppDa
-ta/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Users/hannes/A
-ppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Users/hann
-es/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Users/
-hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C:/Use
-rs/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb><C:/
-Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr8.pfb><
-C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmri12.
+e1/public/lm/lmbx10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/font
+s/type1/public/lm/lmbx12.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9
+/fonts/type1/public/lm/lmcsc10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKT
+eX 2.9/fonts/type1/public/lm/lmex10.pfb><C:/Users/hannes/AppData/Local/Programs
+/MiKTeX 2.9/fonts/type1/public/lm/lmmi10.pfb><C:/Users/hannes/AppData/Local/Pro
+grams/MiKTeX 2.9/fonts/type1/public/lm/lmmi12.pfb><C:/Users/hannes/AppData/Loca
+l/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmmi6.pfb><C:/Users/hannes/AppData/
+Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmmi7.pfb><C:/Users/hannes/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmmi8.pfb><C:/Users/hannes/
+AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/Users/han
+nes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Users
+/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/U
+sers/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr6.pfb><C
+:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr7.pfb
+><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lmr8.
 pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/lm/lm
-ro12.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/
-lm/lmsy10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
-blic/lm/lmsy7.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type
-1/public/lm/lmsy8.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/
-type1/public/lm/lmtt10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on WE_main.pdf (20 pages, 1220663 bytes).
+ri12.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/
+lm/lmro12.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/lm/lmsy10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
+e1/public/lm/lmsy7.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts
+/type1/public/lm/lmsy8.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/f
+onts/type1/public/lm/lmtt10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 
+2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on WE_main.pdf (21 pages, 1348251 bytes).
 PDF statistics:
- 442 PDF objects out of 1000 (max. 8388607)
- 122 named destinations out of 1000 (max. 500000)
- 198 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 455 PDF objects out of 1000 (max. 8388607)
+ 127 named destinations out of 1000 (max. 500000)
+ 197 words of extra memory for PDF output out of 10000 (max. 10000000)
 

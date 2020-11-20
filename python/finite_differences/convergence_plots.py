@@ -17,7 +17,7 @@ tex_f = ex.tex_f
 ################## function selection #########################
 #input options = 0, 1, 2, 3, 4, 5(for g_a)
 ex.a = 1
-fs = 2
+fs = 1
 ########### set grid ###############################
 n = 40      #grid points
 x = np.linspace(0,1,n)
@@ -45,21 +45,27 @@ for a in range(t):
 ################### outer convergence test ################
 for a in range(t):
     r[a] = y_prime - dydx[a]
-
-Q = abs(r[0])/(4*abs(r[1]))
+Q = abs(r[0])/(abs(r[1]))
+Q_mod = Q/4
 ################### self convergence test #################
 T = (dydx[0]-dydx[1])/((dydx[1]-dydx[2]))
 ############################# plots #######################
 #plt.rc('text', usetex=True)
+# here select which plot you wish to see :
+# input options: T for self convergence, Q for outer convergence,
+# Q_mod for modified outer convergence
+A = Q
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
 ax.set_ylabel('')
 ax.set_xlabel('x',loc='center')
-ax.plot(x,T, linestyle= 'dotted',
-    marker = 'o',
-    label='$[D^1_h-D^1_{h/2}] / [D^1_{h/2}-D^1_{h/4}] $')
-ax.set_title('self-convergence for ' '%s'  %(tex_f[fs]))
+ax.plot(x,Q, linestyle= 'solid',
+    #marker = 'o',
+    #label='$[D^1_h-D^1_{h/2}] / [D^1_{h/2}-D^1_{h/4}] $'
+    marker = None,
+    label = '$[f^{(1)} - D_h^1 f]/[f^{(1)} - D_{h/2}^1 f]]$')
+ax.set_title('convergence for ' '%s'  %(tex_f[fs]))
 ax.legend( title='grid size n=%d' % (n) )
 ax.grid(color = 'gainsboro')
 
