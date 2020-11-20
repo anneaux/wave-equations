@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  18 NOV 2020 12:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  20 NOV 2020 09:15
 entering extended mode
 **./WE_main.tex
 (WE_main.tex
@@ -2174,13 +2174,14 @@ LaTeX Font Info:    Try loading font information for T1+lmtt on input line 124.
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ))
 [9] (sections/WE_app_derivatives_of_example_functions.tex
-<./graphics/plot_differences_analytical_finite_differences_f_1_n_20.png, id=253
-, 722.7pt x 650.43pt>
-File: ./graphics/plot_differences_analytical_finite_differences_f_1_n_20.png Gr
-aphic file (type png)
-<use ./graphics/plot_differences_analytical_finite_differences_f_1_n_20.png>
-Package pdftex.def Info: ./graphics/plot_differences_analytical_finite_differen
-ces_f_1_n_20.png  used on input line 4.
+<./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
+_differences_f_1_n_20.png, id=253, 722.7pt x 650.43pt>
+File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_1_n_20.png Graphic file (type png)
+<use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
+nite_differences_f_1_n_20.png>
+Package pdftex.def Info: ./graphics/finite_differences_vs_analytical/plot_diffe
+rences_analytical_finite_differences_f_1_n_20.png  used on input line 4.
 (pdftex.def)             Requested size: 505.88655pt x 455.2979pt.
 
 Overfull \hbox (36.41606pt too wide) in paragraph at lines 4--6
@@ -2190,66 +2191,70 @@ Overfull \hbox (36.41606pt too wide) in paragraph at lines 4--6
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<./graphics/plot_differences_analytical_finite_differences_f_2_n_20.png, id=255
-, 722.7pt x 650.43pt>
-File: ./graphics/plot_differences_analytical_finite_differences_f_2_n_20.png Gr
-aphic file (type png)
-<use ./graphics/plot_differences_analytical_finite_differences_f_2_n_20.png>
-Package pdftex.def Info: ./graphics/plot_differences_analytical_finite_differen
-ces_f_2_n_20.png  used on input line 10.
+<./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
+_differences_f_2_n_20.png, id=255, 722.7pt x 650.43pt>
+File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_2_n_20.png Graphic file (type png)
+<use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
+nite_differences_f_2_n_20.png>
+Package pdftex.def Info: ./graphics/finite_differences_vs_analytical/plot_diffe
+rences_analytical_finite_differences_f_2_n_20.png  used on input line 10.
 (pdftex.def)             Requested size: 505.88655pt x 455.2979pt.
 
 Overfull \hbox (36.41606pt too wide) in paragraph at lines 10--11
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_3_n_20.png, id=256
-, 722.7pt x 650.43pt>
-File: ./graphics/plot_differences_analytical_finite_differences_f_3_n_20.png Gr
-aphic file (type png)
-<use ./graphics/plot_differences_analytical_finite_differences_f_3_n_20.png>
-Package pdftex.def Info: ./graphics/plot_differences_analytical_finite_differen
-ces_f_3_n_20.png  used on input line 15.
+<./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
+_differences_f_3_n_20.png, id=256, 722.7pt x 650.43pt>
+File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_3_n_20.png Graphic file (type png)
+<use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
+nite_differences_f_3_n_20.png>
+Package pdftex.def Info: ./graphics/finite_differences_vs_analytical/plot_diffe
+rences_analytical_finite_differences_f_3_n_20.png  used on input line 15.
 (pdftex.def)             Requested size: 505.88655pt x 455.2979pt.
 
 Overfull \hbox (36.41606pt too wide) in paragraph at lines 15--16
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png, id=257
-, 722.7pt x 650.43pt>
-File: ./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png Gr
-aphic file (type png)
-<use ./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png>
-Package pdftex.def Info: ./graphics/plot_differences_analytical_finite_differen
-ces_f_4_n_20.png  used on input line 20.
+<./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
+_differences_f_4_n_20.png, id=257, 722.7pt x 650.43pt>
+File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_4_n_20.png Graphic file (type png)
+<use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
+nite_differences_f_4_n_20.png>
+Package pdftex.def Info: ./graphics/finite_differences_vs_analytical/plot_diffe
+rences_analytical_finite_differences_f_4_n_20.png  used on input line 20.
 (pdftex.def)             Requested size: 505.88655pt x 455.2979pt.
 
 Overfull \hbox (36.41606pt too wide) in paragraph at lines 20--21
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png, id=258
-, 722.7pt x 650.43pt>
-File: ./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png Gr
-aphic file (type png)
-<use ./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png>
-Package pdftex.def Info: ./graphics/plot_differences_analytical_finite_differen
-ces_f_5_n_40.png  used on input line 26.
+<./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
+_differences_f_5_n_40.png, id=258, 722.7pt x 650.43pt>
+File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_5_n_40.png Graphic file (type png)
+<use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
+nite_differences_f_5_n_40.png>
+Package pdftex.def Info: ./graphics/finite_differences_vs_analytical/plot_diffe
+rences_analytical_finite_differences_f_5_n_40.png  used on input line 26.
 (pdftex.def)             Requested size: 505.88655pt x 455.2979pt.
 
 Overfull \hbox (36.41606pt too wide) in paragraph at lines 26--27
 [][] 
  []
 
-<./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png, id
-=259, 722.7pt x 650.43pt>
-File: ./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.pn
-g Graphic file (type png)
-<use ./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png
->
-Package pdftex.def Info: ./graphics/plot_differences_analytical_finite_differen
-ces_f_a_n_20_a_1.png  used on input line 32.
+<./graphics/finite_differences_vs_analytical/plot_differences_analytical_finite
+_differences_f_a_n_20_a_1.png, id=259, 722.7pt x 650.43pt>
+File: ./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_a_n_20_a_1.png Graphic file (type png)
+<use ./graphics/finite_differences_vs_analytical/plot_differences_analytical_fi
+nite_differences_f_a_n_20_a_1.png>
+Package pdftex.def Info: ./graphics/finite_differences_vs_analytical/plot_diffe
+rences_analytical_finite_differences_f_a_n_20_a_1.png  used on input line 32.
 (pdftex.def)             Requested size: 505.88655pt x 455.2979pt.
 
 Overfull \hbox (36.41606pt too wide) in paragraph at lines 32--33
@@ -2282,15 +2287,17 @@ Package pdftex.def Info: ../python/rungekutta/plot-phasepath.pdf  used on input
 (pdftex.def)             Requested size: 469.47049pt x 352.11954pt.
 )
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 206.
- [11 <../python/rungekutta/plot-phasepath.pdf>] [12 <./graphics/plot_difference
-s_analytical_finite_differences_f_1_n_20.png>] [13 <./graphics/plot_differences
-_analytical_finite_differences_f_2_n_20.png>] [14 <./graphics/plot_differences_
-analytical_finite_differences_f_3_n_20.png>]
-[15 <./graphics/plot_differences_analytical_finite_differences_f_4_n_20.png>]
-[16 <./graphics/plot_differences_analytical_finite_differences_f_5_n_40.png>]
-[17 <./graphics/plot_differences_analytical_finite_differences_f_a_n_20_a_1.png
->] [18 <./graphics/convergence/convergence_to_analytical_derivative/convergence
-_f_6_n_40.png>]
+ [11 <../python/rungekutta/plot-phasepath.pdf>] [12 <./graphics/finite_differen
+ces_vs_analytical/plot_differences_analytical_finite_differences_f_1_n_20.png>]
+ [13 <./graphics/finite_differences_vs_analytical/plot_differences_analytical_f
+inite_differences_f_2_n_20.png>] [14 <./graphics/finite_differences_vs_analytic
+al/plot_differences_analytical_finite_differences_f_3_n_20.png>] [15 <./graphic
+s/finite_differences_vs_analytical/plot_differences_analytical_finite_differenc
+es_f_4_n_20.png>] [16 <./graphics/finite_differences_vs_analytical/plot_differe
+nces_analytical_finite_differences_f_5_n_40.png>] [17 <./graphics/finite_differ
+ences_vs_analytical/plot_differences_analytical_finite_differences_f_a_n_20_a_1
+.png>] [18 <./graphics/convergence/convergence_to_analytical_derivative/converg
+ence_f_6_n_40.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 206.
  (WE_main.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 206.
@@ -2300,9 +2307,9 @@ Package rerunfilecheck Info: File `WE_main.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 206.
  ) 
 Here is how much of TeX's memory you used:
- 26675 strings out of 492973
- 490475 string characters out of 3126249
- 901345 words of memory out of 3000000
+ 26676 strings out of 492973
+ 491311 string characters out of 3126249
+ 901391 words of memory out of 3000000
  30080 multiletter control sequences out of 15000+200000
  627768 words of font info for 81 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -2335,7 +2342,7 @@ blic/lm/lmsy7.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/lm/lmsy8.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/fonts/
 type1/public/lm/lmtt10.pfb><C:/Users/hannes/AppData/Local/Programs/MiKTeX 2.9/f
 onts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on WE_main.pdf (20 pages, 1220974 bytes).
+Output written on WE_main.pdf (20 pages, 1220663 bytes).
 PDF statistics:
  442 PDF objects out of 1000 (max. 8388607)
  122 named destinations out of 1000 (max. 500000)
