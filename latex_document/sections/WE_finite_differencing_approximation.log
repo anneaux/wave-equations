@@ -1,11 +1,8 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.9)  29 OCT 2020 15:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6800 64-bit) (preloaded format=pdflatex 2018.9.19)  18 NOV 2020 12:05
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**WE_finite_differencing_approximation.tex
-(./WE_finite_differencing_approximation.tex
-LaTeX2e <2020-02-02> patch level 5
-L3 programming layer <2020-06-03>
+**./WE_finite_differencing_approximation.tex
+(WE_finite_differencing_approximation.tex
+LaTeX2e <2018-04-01> patch level 5
 ! Undefined control sequence.
 l.1 \section
             {Numerical Differentiation}
@@ -364,7 +361,7 @@ and I'll forget about whatever was undefined.
 
 Overfull \hbox (109.61128pt too wide) detected at line 7
 \OML/cmm/m/it/10 x[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 ih []i \OT1/cmr/m/n/10 
-= 0\OML/cmm/m/it/10 ; :::; n \OMS/cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 1
+= 0\OML/cmm/m/it/10 ; :::; n \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 1
  []
 
 Missing character: There is no a in font nullfont!
@@ -418,7 +415,7 @@ Overfull \hbox (16.3171pt too wide) in paragraph at lines 7--9
 
 Overfull \hbox (27.66908pt too wide) in paragraph at lines 7--9
 \OT1/cmr/m/n/10 1\OML/cmm/m/it/10 =\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 n \OMS/cms
-y/m/n/10 ^^@
+y/m/n/10  
  []
 
 
@@ -721,8 +718,7 @@ Missing character: There is no d in font nullfont!
 Missing character: There is no s in font nullfont!
 
 Overfull \hbox (188.87933pt too wide) detected at line 20
-[] \OT1/cmr/m/n/10 = [] \OMS/cmsy/m/n/10 ^^@ [][] ^^@ [][] ^^@ \OML/cmm/m/it/10
- :::
+[] \OT1/cmr/m/n/10 = [] \OMS/cmsy/m/n/10   [][]   [][]   \OML/cmm/m/it/10 :::
  []
 
 Missing character: There is no T in font nullfont!
@@ -929,7 +925,7 @@ Missing character: There is no e in font nullfont!
 
 Overfull \hbox (23.10655pt too wide) in paragraph at lines 25--27
           $\OML/cmm/m/it/10 u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/
-10 ^^@
+10  
  []
 
 
@@ -1225,9 +1221,9 @@ Overfull \hbox (20.0pt too wide) in paragraph at lines 36--38
 
 
 Overfull \hbox (87.15015pt too wide) detected at line 40
-\OT1/cmr/m/n/10 E[] = \OMS/cmsy/m/n/10 j[] ^^@ \OT1/cmr/m/n/10 D[]\OML/cmm/m/it
-/10 u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 j []\
-OML/cmm/m/it/10 :
+\OT1/cmr/m/n/10 E[] = \OMS/cmsy/m/n/10 j[]   \OT1/cmr/m/n/10 D[]\OML/cmm/m/it/1
+0 u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 j []\OM
+L/cmm/m/it/10 :
  []
 
 Missing character: There is no I in font nullfont!
@@ -2137,8 +2133,8 @@ I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 ! Extra }, or forgotten $.
-\frac  #1#2->{\begingroup #1\endgroup \over #2}
-                                               
+\frac #1#2->{\begingroup #1\endgroup \over #2}
+                                              
 l.56 ...u(x) + h \frac{\mathrm{d} u}{\mathrm{d} x}
                                                    + \frac{h^2}{2!} \frac{\m...
 I've deleted a group-closing symbol because it seems to be
@@ -2358,7 +2354,7 @@ Overfull \hbox (9.65048pt too wide) in paragraph at lines 40--60
 
 
 Overfull \hbox (23.10655pt too wide) in paragraph at lines 40--60
-\OML/cmm/m/it/10 u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+\OML/cmm/m/it/10 u\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
@@ -2373,7 +2369,7 @@ Overfull \hbox (230.8501pt too wide) in paragraph at lines 40--60
 
 
 Overfull \hbox (211.66711pt too wide) detected at line 62
-[] \OT1/cmr/m/n/10 = [] \OMS/cmsy/m/n/10 ^^@ [][] ^^@ \OML/cmm/m/it/10 :::
+[] \OT1/cmr/m/n/10 = [] \OMS/cmsy/m/n/10   [][]   \OML/cmm/m/it/10 :::
  []
 
 
@@ -3011,14 +3007,14 @@ Overfull \hbox (20.0pt too wide) in paragraph at lines 79--81
  []
 
 
-! LaTeX Error: Environment table undefined.
+! LaTeX Error: Environment alignat* undefined.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.82 \begin{table}
-                  []
+l.83 \begin{alignat*}
+                     {3}
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -3030,101 +3026,22 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.82 \begin{table}[
-                   ]
-You're in trouble here.  Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-Missing character: There is no [ in font nullfont!
-Missing character: There is no ] in font nullfont!
-Missing character: There is no f in font nullfont!
-Missing character: There is no u in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no e in font nullfont!
-
-! LaTeX Error: \begin{document} ended by \end{table}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.88 \end{table}
-                
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-Overfull \hbox (20.0pt too wide) in paragraph at lines 82--89
-[]
- []
-
-
-! LaTeX Error: Environment align* undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.93 \begin{align*}
-                   
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-
-! LaTeX Error: Missing \begin{document}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.94 	f
-       _1 &=(x-\frac{1}{2})^2+x
+l.83 \begin{alignat*}{3
+                       }
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.94 	f_
-        1 &=(x-\frac{1}{2})^2+x
+l.84 	f_
+        1 &=(x-\tfrac{1}{2})^2+x
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
 ! Misplaced alignment tab character &.
-l.94 	f_1 &
-           =(x-\frac{1}{2})^2+x
+l.84 	f_1 &
+           =(x-\tfrac{1}{2})^2+x
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3132,8 +3049,17 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
+! Undefined control sequence.
+l.84 	f_1 &=(x-\tfrac
+                     {1}{2})^2+x
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
 ! Misplaced alignment tab character &.
-l.95 		&
+l.85 		&
          f_1' &=2x
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3143,7 +3069,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.95 		& f_1' &
+l.85 		& f_1' &
                =2x
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3153,7 +3079,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.96 		&
+l.86 		&
          f_1'' &=2 \\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3163,7 +3089,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.96 		& f_1'' &
+l.86 		& f_1'' &
                 =2 \\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3173,8 +3099,36 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.97 	f_2 &
-           =(x-\frac{1}{2})^3+(x-\frac{1}{2})^2+x
+l.87 	f_2 &
+           =(x-\tfrac{1}{2})^3+(x-\tfrac{1}{2})^2+x \hspace{0.3cm}
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.87 	f_2 &=(x-\tfrac
+                     {1}{2})^3+(x-\tfrac{1}{2})^2+x \hspace{0.3cm}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.87 	f_2 &=(x-\tfrac{1}{2})^3+(x-\tfrac
+                                        {1}{2})^2+x \hspace{0.3cm}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.88 		&
+         f_2' &= 3(x-\tfrac{1}{2})^2+2(x-\tfrac{1}{2})+1
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3183,8 +3137,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.98 		&
-         f_2' &= 3(x-\frac{1}{2})^2+2(x-\frac{1}{2})+1
+l.88 		& f_2' &
+               = 3(x-\tfrac{1}{2})^2+2(x-\tfrac{1}{2})+1
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3192,18 +3146,26 @@ up above has ended a previous alignment prematurely,
 you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
-! Misplaced alignment tab character &.
-l.98 		& f_2' &
-               = 3(x-\frac{1}{2})^2+2(x-\frac{1}{2})+1
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
+! Undefined control sequence.
+l.88 		& f_2' &= 3(x-\tfrac
+                           {1}{2})^2+2(x-\tfrac{1}{2})+1
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.88 		& f_2' &= 3(x-\tfrac{1}{2})^2+2(x-\tfrac
+                                               {1}{2})+1
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 ! Misplaced alignment tab character &.
-l.99 		&
+l.89 		&
          f_2'' &= 6x-1\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3213,7 +3175,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.99 		& f_2'' &
+l.89 		& f_2'' &
                 = 6x-1\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3223,8 +3185,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.100 	f_3 &
-            = \sqrt{x}
+l.90 	f_3 &
+           = \sqrt{x}
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3233,8 +3195,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.101 		&
-          f_3' &=\frac{1}{2\sqrt{x}}
+l.91 		&
+         f_3' &=\tfrac{1}{2\sqrt{x}}
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3243,8 +3205,27 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.101 		& f_3' &
-                =\frac{1}{2\sqrt{x}}
+l.91 		& f_3' &
+               =\tfrac{1}{2\sqrt{x}}
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.91 		& f_3' &=\tfrac
+                      {1}{2\sqrt{x}}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.92 		&
+         f_3'' &=-\tfrac{1}{4}x^{-\tfrac{3}{2}} \\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3253,8 +3234,36 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.102 		&
-          f_3'' &=-\frac{1}{4}x^{-\frac{3}{2}} \\
+l.92 		& f_3'' &
+                =-\tfrac{1}{4}x^{-\tfrac{3}{2}} \\
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Undefined control sequence.
+l.92 		& f_3'' &=-\tfrac
+                        {1}{4}x^{-\tfrac{3}{2}} \\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.92 		& f_3'' &=-\tfrac{1}{4}x^{-\tfrac
+                                        {3}{2}} \\
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Misplaced alignment tab character &.
+l.93 	f_4 &
+           = \sin(12\pi x)
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3263,8 +3272,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.102 		& f_3'' &
-                 =-\frac{1}{4}x^{-\frac{3}{2}} \\
+l.94 		&
+         f_4' &= 12 \pi \cos(12\pi x)
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3273,8 +3282,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.103 	f_4 &
-            = \sin(12\pi x)
+l.94 		& f_4' &
+               = 12 \pi \cos(12\pi x)
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3283,8 +3292,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.104 		&
-          f_4' &= 12 \pi \cos(12\pi x)
+l.95 		&
+         f_4'' &= -(12\pi)^2 \sin(12\pi x)\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3293,8 +3302,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.104 		& f_4' &
-                = 12 \pi \cos(12\pi x)
+l.95 		& f_4'' &
+                = -(12\pi)^2 \sin(12\pi x)\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3303,8 +3312,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.105 		&
-          f_4'' &= -(12\pi)^2 \sin(12\pi x)\\
+l.96 	f_5 &
+           = \sin^4(12\pi x)
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3313,8 +3322,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.105 		& f_4'' &
-                 = -(12\pi)^2 \sin(12\pi x)\\
+l.97 		&
+         f_5' &= 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x) \hspace{0.3cm}
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3323,8 +3332,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.106 	f_5 &
-            = \sin^4(12\pi x)
+l.97 		& f_5' &
+               = 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x) \hspace{0.3cm}
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3333,8 +3342,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.107 		&
-          f_5' &= 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x)
+l.98 		&
+          f_5'' &= 4  (12\pi \sin(12\pi x))^2 \\ & & & & &~~~\cdot\big(3\cos...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3343,41 +3352,8 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.107 		& f_5' &
-                = 4 \cdot 12\pi \sin^3(12\pi x) \cos(12\pi x)
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-! Misplaced alignment tab character &.
-l.108 		&
-           \begin{split}f_5''=
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-
-! LaTeX Error: Environment split undefined.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.108 		&  \begin{split}
-                        f_5''=
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Misplaced alignment tab character &.
-l.109 		&
-         4  (12\pi)^2
+l.98 		&  f_5'' &
+                 = 4  (12\pi \sin(12\pi x))^2 \\ & & & & &~~~\cdot\big(3\cos...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3388,31 +3364,8 @@ might try typing `S' now just to see what is salvageable.
 ! Misplaced alignment tab character &.
 <recently read> &
                  
-l.110 	 	\\&
-            \big(3\sin^2(12\pi x)\cos^2(12\pi x) - \sin^4(12\pi x) \big) \en...
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
-
-
-! LaTeX Error: \begin{document} ended by \end{split}.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.110 ...pi x) - \sin^4(12\pi x) \big) \end{split}
-                                                  \\
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-! Misplaced alignment tab character &.
-l.111 	f_6=g_a &
-                = \exp(-ax^2)
+l.98 		&  f_5'' &= 4  (12\pi \sin(12\pi x))^2 \\ &
+                                                   & & & &~~~\cdot\big(3\cos...
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
 simple: Just type `I\&' now. But if some right brace
@@ -3421,7 +3374,57 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.112 		&
+l.98 ...f_5'' &= 4  (12\pi \sin(12\pi x))^2 \\ & &
+                                                   & & &~~~\cdot\big(3\cos^2...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.98 ...5'' &= 4  (12\pi \sin(12\pi x))^2 \\ & & &
+                                                   & &~~~\cdot\big(3\cos^2(1...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.98 ...' &= 4  (12\pi \sin(12\pi x))^2 \\ & & & &
+                                                   &~~~\cdot\big(3\cos^2(12\...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.98 ...&= 4  (12\pi \sin(12\pi x))^2 \\ & & & & &
+                                                  ~~~\cdot\big(3\cos^2(12\pi...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.99 	f_6 &
+           =g_a = \exp(-ax^2)
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.100 		&
           g_a' &= -2ax\exp(-ax^2)
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3431,7 +3434,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.112 		& g_a' &
+l.100 		& g_a' &
                 = -2ax\exp(-ax^2)
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3441,7 +3444,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.113 		&
+l.101 		&
           g_a'' &= \exp(-ax^2) ((2ax)^2-2a)\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3451,7 +3454,7 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 ! Misplaced alignment tab character &.
-l.113 		& g_a'' &
+l.101 		& g_a'' &
                  = \exp(-ax^2) ((2ax)^2-2a)\\
 I can't figure out why you would want to use a tab mark
 here. If you just want an ampersand, the remedy is
@@ -3461,14 +3464,14 @@ you're probably due for more error messages, and you
 might try typing `S' now just to see what is salvageable.
 
 
-! LaTeX Error: \begin{document} ended by \end{align*}.
+! LaTeX Error: \begin{document} ended by \end{alignat*}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.114 \end{align*}
-                  
+l.102 \end{alignat*}
+                    
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
@@ -3476,8 +3479,8 @@ or  <return>  to continue without it.
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.114 \end{align*}
-                  
+l.102 \end{alignat*}
+                    
 I've inserted something that you may have forgotten.
 (See the <inserted text> above.)
 With luck, this will get me unwedged. But if you
@@ -3485,213 +3488,224 @@ really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
 
-Overfull \hbox (38.09721pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 f$[] =
+Overfull \hbox (25.00002pt too wide) in paragraph at lines 83--112
+[]\OT1/cmr/m/n/10 3
  []
 
 
-Overfull \hbox (17.38197pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (18.09721pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 f$[] =
  []
 
 
-Overfull \hbox (22.53896pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 )[] +
+Overfull \hbox (17.38197pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (25.65277pt too wide) in paragraph at lines 94--116
+Overfull \hbox (26.15286pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12)[] +
+ []
+
+
+Overfull \hbox (25.65277pt too wide) in paragraph at lines 83--112
 \OML/cmm/m/it/10 xf[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (32.35417pt too wide) in paragraph at lines 94--116
+Overfull \hbox (32.35417pt too wide) in paragraph at lines 83--112
 \OT1/cmr/m/n/10 2\OML/cmm/m/it/10 xf[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (5.00002pt too wide) in paragraph at lines 94--116
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 83--112
 \OT1/cmr/m/n/10 2[] 
  []
 
 
-Overfull \hbox (19.9375pt too wide) in paragraph at lines 94--116
+Overfull \hbox (19.9375pt too wide) in paragraph at lines 83--112
 \OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (17.38197pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (17.38197pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (22.53896pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 )[] +
+Overfull \hbox (26.15286pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12)[] +
  []
 
 
-Overfull \hbox (17.38197pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (17.38197pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (22.53896pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 )[] +
+Overfull \hbox (26.15286pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12)[] +
  []
 
 
-Overfull \hbox (25.65277pt too wide) in paragraph at lines 94--116
-\OML/cmm/m/it/10 xf[] \OT1/cmr/m/n/10 =
+Overfull \hbox (34.18867pt too wide) in paragraph at lines 83--112
+\OML/cmm/m/it/10 x f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (22.38199pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 3(\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (22.38199pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 3(\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (22.53896pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 )[] +
+Overfull \hbox (26.15286pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12)[] +
  []
 
 
-Overfull \hbox (22.38199pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 2(\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (22.38199pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 2(\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (18.05283pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 ) +
+Overfull \hbox (21.66673pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12) +
  []
 
 
-Overfull \hbox (26.6389pt too wide) in paragraph at lines 94--116
+Overfull \hbox (26.6389pt too wide) in paragraph at lines 83--112
 \OT1/cmr/m/n/10 1\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (18.49309pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 6\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (18.49309pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 6\OML/cmm/m/it/10 x \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (5.00002pt too wide) in paragraph at lines 94--116
+Overfull \hbox (5.00002pt too wide) in paragraph at lines 83--112
 \OT1/cmr/m/n/10 1[] 
  []
 
 
-Overfull \hbox (19.9375pt too wide) in paragraph at lines 94--116
+Overfull \hbox (19.9375pt too wide) in paragraph at lines 83--112
 \OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (33.98613pt too wide) in paragraph at lines 94--116
+Overfull \hbox (33.98613pt too wide) in paragraph at lines 83--112
 []\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (39.12921pt too wide) in paragraph at lines 94--116
-[]\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
+Overfull \hbox (45.68755pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 1[]\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (32.43204pt too wide) in paragraph at lines 94--116
-\OMS/cmsy/m/n/10 ^^@[]\OML/cmm/m/it/10 x[][] 
+Overfull \hbox (38.21538pt too wide) in paragraph at lines 83--112
+\OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 14\OML/cmm/m/it/10 x[][] 
  []
 
 
-Overfull \hbox (19.9375pt too wide) in paragraph at lines 94--116
+Overfull \hbox (19.9375pt too wide) in paragraph at lines 83--112
 \OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (61.76746pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 ^^Yx\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 f[]
+Overfull \hbox (61.76746pt too wide) in paragraph at lines 83--112
+[]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 f[] \
+OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (82.30565pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12\OML/cmm/m/it/10  []\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 x\O
+T1/cmr/m/n/10 )\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (79.5974pt too wide) in paragraph at lines 83--112
+\OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 \OT1/cmr/m/n/10 )[] [](1
+2\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 )[] 
+ []
+
+
+Overfull \hbox (19.9375pt too wide) in paragraph at lines 83--112
+\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
+ []
+
+
+Overfull \hbox (66.25359pt too wide) in paragraph at lines 83--112
+[][]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 f[]
  \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (82.30565pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 12\OML/cmm/m/it/10 ^^Y []\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 ^^
-Yx\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
+Overfull \hbox (7.7778pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 4 \OMS/cmsy/m/n/10 
  []
 
 
-Overfull \hbox (79.5974pt too wide) in paragraph at lines 94--116
-\OMS/cmsy/m/n/10 ^^@\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 ^^Y\OT1/cmr/m/n/10 )[] 
-[](12\OML/cmm/m/it/10 ^^Yx\OT1/cmr/m/n/10 )[] 
+Overfull \hbox (138.82426pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 12\OML/cmm/m/it/10  [][]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 x
+\OT1/cmr/m/n/10 ) [](12\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 ) \OML/cmm/m/it/10 f[
+] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (19.9375pt too wide) in paragraph at lines 94--116
+Overfull \hbox (76.81961pt too wide) in paragraph at lines 83--112
+\OT1/cmr/m/n/10 4(12\OML/cmm/m/it/10  []\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 x
+\OT1/cmr/m/n/10 ))[][] 
+ []
+
+
+Overfull \hbox (7.22221pt too wide) in paragraph at lines 83--112
+[] [] [] \OMS/cmsy/m/n/10 
+ []
+
+
+Overfull \hbox (66.45499pt too wide) in paragraph at lines 83--112
+[]\OT1/cmr/m/n/10 3 [][](12\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/1
+0  
+ []
+
+
+Overfull \hbox (50.89944pt too wide) in paragraph at lines 83--112
+[][]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 x\OT1/cmr/m/n/10 )[][] 
+ []
+
+
+Overfull \hbox (19.9375pt too wide) in paragraph at lines 83--112
 \OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (66.25359pt too wide) in paragraph at lines 94--116
-[][]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 ^^Yx\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 f
-[] \OT1/cmr/m/n/10 =
- []
-
-
-Overfull \hbox (7.7778pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 4 \OMS/cmsy/m/n/10 ^^A
- []
-
-
-Overfull \hbox (130.28836pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 12\OML/cmm/m/it/10 ^^Y [][]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 
-^^Yx\OT1/cmr/m/n/10 ) [](12\OML/cmm/m/it/10 ^^Yx\OT1/cmr/m/n/10 )\OML/cmm/m/it/
-10 f[] \OT1/cmr/m/n/10 =
- []
-
-
-Overfull \hbox (33.32303pt too wide) in paragraph at lines 94--116
-\OT1/cmr/m/n/10 4(12\OML/cmm/m/it/10 ^^Y\OT1/cmr/m/n/10 )[][] 
- []
-
-
-Overfull \hbox (114.4377pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 3 [][](12\OML/cmm/m/it/10 ^^Yx\OT1/cmr/m/n/10 ) [][](12\OML/c
-mm/m/it/10 ^^Yx\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10 ^^@
- []
-
-
-Overfull \hbox (50.89944pt too wide) in paragraph at lines 94--116
-[][]\OT1/cmr/m/n/10 (12\OML/cmm/m/it/10 ^^Yx\OT1/cmr/m/n/10 )[][] 
- []
-
-
-Overfull \hbox (19.9375pt too wide) in paragraph at lines 94--116
-\OML/cmm/m/it/10 f[] \OT1/cmr/m/n/10 =
- []
-
-
-Overfull \hbox (20.16284pt too wide) in paragraph at lines 94--116
+Overfull \hbox (20.16284pt too wide) in paragraph at lines 83--112
 \OML/cmm/m/it/10 g[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (66.48355pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 (\OMS/cmsy/m/n/10 ^^@\OML/cmm/m/it/10 ax[]\OT1/cmr/m/n/10 )\O
-ML/cmm/m/it/10 g[] \OT1/cmr/m/n/10 =
+Overfull \hbox (66.48355pt too wide) in paragraph at lines 83--112
+[]\OT1/cmr/m/n/10 (\OMS/cmsy/m/n/10  \OML/cmm/m/it/10 ax[]\OT1/cmr/m/n/10 )\OML
+/cmm/m/it/10 g[] \OT1/cmr/m/n/10 =
  []
 
 
-Overfull \hbox (92.5614pt too wide) in paragraph at lines 94--116
-\OMS/cmsy/m/n/10 ^^@\OT1/cmr/m/n/10 2\OML/cmm/m/it/10 ax []\OT1/cmr/m/n/10 (\OM
-S/cmsy/m/n/10 ^^@\OML/cmm/m/it/10 ax[]\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 g[] \OT
-1/cmr/m/n/10 =
+Overfull \hbox (92.5614pt too wide) in paragraph at lines 83--112
+\OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 2\OML/cmm/m/it/10 ax []\OT1/cmr/m/n/10 (\OMS/
+cmsy/m/n/10  \OML/cmm/m/it/10 ax[]\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 g[] \OT1/cm
+r/m/n/10 =
  []
 
 
-Overfull \hbox (86.25252pt too wide) in paragraph at lines 94--116
-[]\OT1/cmr/m/n/10 (\OMS/cmsy/m/n/10 ^^@\OML/cmm/m/it/10 ax[]\OT1/cmr/m/n/10 )((
-2\OML/cmm/m/it/10 ax\OT1/cmr/m/n/10 )[] \OMS/cmsy/m/n/10 ^^@
+Overfull \hbox (86.25252pt too wide) in paragraph at lines 83--112
+[]\OT1/cmr/m/n/10 (\OMS/cmsy/m/n/10  \OML/cmm/m/it/10 ax[]\OT1/cmr/m/n/10 )((2\
+OML/cmm/m/it/10 ax\OT1/cmr/m/n/10 )[] \OMS/cmsy/m/n/10  
  []
 
 
-Overfull \hbox (14.1748pt too wide) in paragraph at lines 94--116
+Overfull \hbox (14.1748pt too wide) in paragraph at lines 83--112
 \OT1/cmr/m/n/10 2\OML/cmm/m/it/10 a\OT1/cmr/m/n/10 )[] 
  []
 
@@ -3703,17 +3717,17 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.116 
+l.112 
       
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+[1{C:/Users/hannes/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 ! Undefined control sequence.
 <write> \newlabel{eq:taylorfw}{{1}{\thepage 
                                             }}
-l.116 
+l.112 
       
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3725,7 +3739,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> \newlabel{eq:discfw}{{3}{\thepage 
                                           }}
-l.116 
+l.112 
       
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -3734,19 +3748,279 @@ spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
 \newlabel{eq:discfw}{{3}{}}
-])
+]
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.113 I
+       f a sequence $x_1,x_2,...,x_n$ converges to a value $r$ and if there ...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 113.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 113.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 113.
+
+Overfull \hbox (27.82909pt too wide) in paragraph at lines 113--114
+[]\OT1/cmr/m/n/12 If
+ []
+
+
+Overfull \hbox (5.87494pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 a
+ []
+
+
+Overfull \hbox (13.77347pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 se-
+ []
+
+
+Overfull \hbox (34.92325pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 quence
+ []
+
+
+Overfull \hbox (60.77173pt too wide) in paragraph at lines 113--114
+\OML/cmm/m/it/12 x[]; x[]; :::; x[]$
+ []
+
+
+Overfull \hbox (21.54144pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 con-
+ []
+
+
+Overfull \hbox (31.39828pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 verges
+ []
+
+
+Overfull \hbox (10.44434pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 to
+ []
+
+
+Overfull \hbox (5.87494pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 a
+ []
+
+
+Overfull \hbox (26.43723pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 value
+ []
+
+
+Overfull \hbox (5.62148pt too wide) in paragraph at lines 113--114
+\OML/cmm/m/it/12 r$
+ []
+
+
+Overfull \hbox (18.93036pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 and
+ []
+
+
+Overfull \hbox (6.8541pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 if
+ []
+
+
+Overfull \hbox (26.11084pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 there
+ []
+
+
+Overfull \hbox (15.34012pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 ex-
+ []
+
+
+Overfull \hbox (12.46793pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 ist
+ []
+
+
+Overfull \hbox (18.93036pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 real
+ []
+
+
+Overfull \hbox (26.43723pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 num-
+ []
+
+
+Overfull \hbox (21.28033pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 bers
+ []
+
+
+Overfull \hbox (19.32617pt too wide) in paragraph at lines 113--114
+\OML/cmm/m/it/12  >
+ []
+
+
+Overfull \hbox (5.87494pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 0$
+ []
+
+
+Overfull \hbox (18.93036pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 and
+ []
+
+
+Overfull \hbox (20.21657pt too wide) in paragraph at lines 113--114
+\OML/cmm/m/it/12  \OMS/cmsy/m/n/12 
+ []
+
+
+Overfull \hbox (5.87494pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 1$
+ []
+
+
+Overfull \hbox (22.58588pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 such
+ []
+
+
+Overfull \hbox (21.54144pt too wide) in paragraph at lines 113--114
+\OT1/cmr/m/n/12 that 
+ []
+
+
+Overfull \hbox (99.36768pt too wide) detected at line 116
+[] [] \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 
+ []
+
+
+Overfull \hbox (22.84698pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 then
+ []
+
+
+Overfull \hbox (13.3818pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 we
+ []
+
+
+Overfull \hbox (16.38455pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 say
+ []
+
+
+Overfull \hbox (21.54144pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 that
+ []
+
+
+Overfull \hbox (7.54993pt too wide) in paragraph at lines 116--118
+\OML/cmm/m/it/12 $
+ []
+
+
+Overfull \hbox (7.89853pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 is
+ []
+
+
+Overfull \hbox (16.31927pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 the
+ []
+
+
+Overfull \hbox (16.7639pt too wide) in paragraph at lines 116--118
+\OT1/cmr/bx/n/12 or-
+ []
+
+
+Overfull \hbox (19.17361pt too wide) in paragraph at lines 116--118
+\OT1/cmr/bx/n/12 der
+ []
+
+
+Overfull \hbox (18.93036pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 and
+ []
+
+
+Overfull \hbox (6.8541pt too wide) in paragraph at lines 116--118
+\OML/cmm/m/it/12 $
+ []
+
+
+Overfull \hbox (16.31927pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 the
+ []
+
+
+Overfull \hbox (23.48611pt too wide) in paragraph at lines 116--118
+\OT1/cmr/bx/n/12 rate
+ []
+
+
+Overfull \hbox (9.46518pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 of
+ []
+
+
+Overfull \hbox (21.54144pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 con-
+ []
+
+
+Overfull \hbox (19.58313pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 ver-
+ []
+
+
+Overfull \hbox (28.06915pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 gence
+ []
+
+
+Overfull \hbox (9.46518pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 of
+ []
+
+
+Overfull \hbox (16.31927pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 the
+ []
+
+
+Overfull \hbox (13.77347pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 se-
+ []
+
+
+Overfull \hbox (38.1871pt too wide) in paragraph at lines 116--118
+\OT1/cmr/m/n/12 quence. 
+ []
+
+)
 ! Emergency stop.
-<*> WE_finite_differencing_approximation.tex
-                                            
+<*> ./WE_finite_differencing_approximation.tex
+                                              
 *** (job aborted, no legal \end found)
 
  
 Here is how much of TeX's memory you used:
- 33 strings out of 480478
- 709 string characters out of 5905959
- 251147 words of memory out of 5000000
- 16154 multiletter control sequences out of 15000+600000
- 533290 words of font info for 27 fonts, out of 8000000 for 9000
+ 42 strings out of 492973
+ 772 string characters out of 3126249
+ 67709 words of memory out of 3000000
+ 4000 multiletter control sequences out of 15000+200000
+ 7337 words of font info for 26 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 18i,6n,15p,442b,96s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 18i,6n,14p,444b,89s stack positions out of 5000i,500n,10000p,200000b,50000s
 !  ==> Fatal error occurred, no output PDF file produced!

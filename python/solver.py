@@ -18,7 +18,11 @@ Nt = int(endT/deltat)
 timevalues = np.linspace(0,endT,Nt)
 
 endX = 1
+<<<<<<< HEAD
 deltax = 0.01
+=======
+deltax = 0.05
+>>>>>>> 3a373363c94e36f1963e4666f32b479548e37bb9
 Nx = int(endX/deltax)
 xvalues = np.linspace(0,endX,Nx)
 print("Nx = %.1f" % Nx)
@@ -84,6 +88,7 @@ from matplotlib import cm
 Nt_plot = 7 # how many snap shots are plotted
 Blues = cm.get_cmap('Blues_r',Nt_plot+20)
 
+<<<<<<< HEAD
 for i in np.linspace(0,Nt-1,Nt_plot).astype(int):
   plt.plot(xvalues, phi[i,:], label ="%.2f s" % timevalues[i], c = Blues(i/(Nt+20)))
 plt.xlabel('x')
@@ -97,6 +102,8 @@ plt.savefig("plot-phi(x,t).pdf")
 
 
 
+=======
+>>>>>>> 3a373363c94e36f1963e4666f32b479548e37bb9
 ### Plotting the time evolution in an animation ######################
 # import matplotlib
 # matplotlib.use('Agg')
