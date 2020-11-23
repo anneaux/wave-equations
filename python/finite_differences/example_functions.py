@@ -41,11 +41,11 @@ def f_5_prime_prime(x):
 tex_f_5 = r'$f_5=\sin^4 (12\pi x)$'
 
 #set parameter for function g_a
-def g_a(x):
+def g_a(x,a):
     return np.exp(-a*x**2)
-def g_a_prime(x):
+def g_a_prime(x,a):
     return np.exp(-a*x**2)*(-2*a*x)
-def g_a_prime_prime(x):
+def g_a_prime_prime(x,a):
     return np.exp(-a*x**2)*(4*a**2*x**2-2*a)
 tex_g_a = r'$g_a=\exp(-ax^2)$'
 

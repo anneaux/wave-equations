@@ -12,16 +12,20 @@ c = 1
 # d Pi / d t = c^2 d^2 phi / d x^2
 
 ### discretize time and space with uniform grid
-endT = 10
+endT = 1
 deltat = 0.01
 Nt = int(endT/deltat)
 timevalues = np.linspace(0,endT,Nt)
 
 endX = 1
-deltax = 0.05
+deltax = 0.01
 Nx = int(endX/deltax)
 xvalues = np.linspace(0,endX,Nx)
-# print(Nx)
+# print("Nx = %.1f" % Nx)
+
+courant = c * deltat / deltax
+print("courant number = %.2f" % courant)
+
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
   Nt = len(timevalues)
   Nx = len(xvalues)
@@ -54,7 +58,11 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
   return phi, Pi
 
 # choose f_4, f_5 or g_a here (for the latter specify a = ...)
-phi0 = f_4(xvalues)
+# phi0 = g_a(xvalues,0.025)
+def gaussian(x,sigma,mu):
+  return 1/np.sqrt(2*np.pi*sigma**2) * np.exp(- (x-mu)**2/np.sqrt(2*sigma**2))
+phi0 = gaussian(xvalues,0.005,0.5)
+
 Pi0 = 0
 phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 
@@ -106,12 +114,20 @@ def animate(i):
   timelabel.set_text('time: %.2f s' % timevalues[i])
   return line, timelabel
 
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.set_xlabel("x")
-ax.set_ylabel("phi(x,t)")
-ax.set_title("time evolution of 1D wave")
-timelabel = ax.text(0.02, 0.95, 'hello', transform=ax.transAxes)
+fig3, ax3 = plt.subplots()
+ax3.set(xlabel = "x", ylabel = "phi(x)")
+line, = ax3.plot(xvalues, np.zeros_like(xvalues))
+# ax3.set_xlim(0, max(xvalues))
+ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+#, title = "time evolution of 1D wave")
 
-ani = matplotlib.animation.FuncAnimation(fig, animate, init_func=init_animation, frames=Nt)
-ani.save('WE-animation.gif', writer='imagemagick', fps=10)
+timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
+ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
+
+### write as gif
+ani.save('WE-animation.gif', writer='imagemagick', fps=15)
+
+### write as mp4
+# Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
+# mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
+# ani.save('WE-animation.mp4', writer=mywriter)
