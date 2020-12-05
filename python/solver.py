@@ -21,7 +21,6 @@ endX = 1
 deltax = 0.01
 Nx = int(endX/deltax)
 xvalues = np.linspace(0,endX,Nx)
-# print("Nx = %.1f" % Nx)
 
 courant = c * deltat / deltax
 print("courant number = %.2f" % courant)
@@ -29,18 +28,24 @@ print("courant number = %.2f" % courant)
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
   Nt = len(timevalues)
   Nx = len(xvalues)
-  phi = np.zeros([Nt,Nx])
-  Pi = np.zeros([Nt,Nx])
+  phi = np.zeros([Nt,Nx+2])
+  Pi = np.zeros([Nt,Nx+2])
 
-  phi[0,:] = phi0
+  phi[0,1:Nx+1] = phi0
+  ### this just copies the ast values to the ghost points
+  phi[0,0] = phi0[0]
+  phi[0,Nx+1] = phi0[Nx-1]
+
   Pi[0,:] = Pi0
 
   def time_diff(phi, Pi, t): # where u = [phi, Pi]
     dphidt = Pi # because d/dt phi = Pi
     # d/dt Pi = c^2 * d2/dx2 phi, the latter shall be computed using FD (along the discretized x axis)
-    d2phidx2= np.zeros(Nx)
-    for i in range(1,Nx-1): # weil nur die inneren Werte genommen werden sollen, die Randwerte = 0
-      d2phidx2[i] = 1/deltax**2 * (phi[i+1] - 2*phi[i] + phi[i-1])
+    d2phidx2= np.zeros(Nx+2)
+    for ix in range(1,Nx+1): # computing only inner points
+      d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
+    d2phidx2[0] = d2phidx2[1]
+    d2phidx2[-1] = d2phidx2[-2]
     dPidt = c**2 * d2phidx2
     return dphidt, dPidt
 
@@ -54,8 +59,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
 
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
-
-  return phi, Pi
+  return phi[:,1:Nx+1], Pi[:,1:Nx+1]
 
 # choose f_4, f_5 or g_a here (for the latter specify a = ...)
 # phi0 = g_a(xvalues,0.025)
