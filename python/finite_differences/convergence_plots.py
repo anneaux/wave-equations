@@ -66,7 +66,7 @@ ax.plot(x,Q, linestyle= 'solid',
     marker = None,
     label = '$[f^{(1)} - D_h^1 f]/[f^{(1)} - D_{h/2}^1 f]]$')
 ax.set_title('convergence for ' '%s'  %(tex_f[fs]))
-ax.legend( title='grid size n=%d' % (n) )
+ax.legend( title='grid size n=%d' %(n) )
 ax.grid(color = 'gainsboro')
 
 plt.show()

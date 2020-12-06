@@ -86,37 +86,46 @@ Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
 phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 ############################################
 
-### Plotting the solutions in a position-time diagram ##############
-# phivalues = phi[:,2]
+# ### Plotting the solutions in a position-time diagram ###
 # times = np.arange(0,Nt*deltat,deltat)
+# plt.plot(times, phi_t)
+# plt.xlabel('t')
+# plt.ylabel('phi(t)')
+# # # plt.axis('square')
+# # # plt.xlim(-12,12)
+# # # plt.ylim(49.94,50.008)
+# # plt.legend()
+# plt.grid(color = 'gainsboro')
+# plt.savefig("plot-phi_t.pdf")
 
-# fig1,ax1 = plt.subplots()
-# ax1.plot(times, phivalues)
-# ax1.set(xlabel = 't', ylabel = 'phi(t) at x = %.2f' % xvalues[2])
-# ax1.grid(color = 'gainsboro')
-# fig1.savefig("plot-phi(t).pdf")
-
-
-### Plotting the time evolution in a diagram with multiple lines ############
+### Plotting the time evolution in a diagram with multiple lines
 # from matplotlib import cm
-# Nt_plot = 7 # how many snapshots are plotted
-# Blues = cm.get_cmap('Blues_r',Nt_plot+20) # +20 because otherwise some lines are white
 
-# fig2, ax2 = plt.subplots()
+# Nt_plot = 10 # how many snap shots are plotted
+# Blues = cm.get_cmap('Blues_r',Nt_plot)
+
 # for i in np.linspace(0,Nt-1,Nt_plot).astype(int):
-#   ax2.plot(xvalues, phi[i,:], label ="%.2f s" % timevalues[i], c = Blues(i/(Nt+20)))
-# ax2.set(xlabel = 'x', ylabel = 'phi(x,t)')
-# # ax2.xlim(0, max(xvalues))
-# # ax2.ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
-# ax2.legend()
-# ax2.grid(color = 'gainsboro')
-# fig2.savefig("plot-phi(x,t).pdf")
+#   plt.plot(xvalues, phi[i,:], label ="%.2f s" % timevalues[i], c = Blues(i/Nt))
+# plt.xlabel('x')
+# plt.ylabel('phi(x,t)')
+# # # plt.axis('square')
+# plt.xlim(0, max(xvalues))
+# plt.ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+# plt.legend()
+# plt.grid(color = 'gainsboro')
+# plt.savefig("plot-phi(x,t).pdf")
 
 
-## Plotting the time evolution in an animation ######################
+### Plotting the time evolution in an animation ######################
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.animation
+
+def init_animation():
+  global line
+  line, = ax.plot(xvalues, np.zeros_like(xvalues))
+  ax.set_xlim(0, max(xvalues))
+  ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
 
 def animate(i):
   line.set_ydata(phi[i,:])
