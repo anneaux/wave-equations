@@ -11,12 +11,12 @@ c = 1
 
 ### discretize time and space with uniform grid
 endT = 1
-deltat = 0.01
+deltat = 0.001
 Nt = int(endT/deltat)
 timevalues = np.linspace(0,endT,Nt)
 
 endX = 1
-deltax = 0.01
+deltax = 0.001
 Nx = int(endX/deltax)
 xvalues = np.linspace(0,endX,Nx)
 
@@ -77,12 +77,21 @@ def gaussian(x,sigma,mu):
 def gaussian_drv(x,sigma,mu):
   return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
 
-# phi0 = g_a(xvalues,20)#
-# Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
+
+### example function 4 (sin(12*pi))
+phi0 = f_4(xvalues)
+Pi0 = -c*f_4_prime(xvalues)
+
+### example function g(x)
+# phi0 = g_a(xvalues,20)
+# Pi0 = +c * g_a_prime(xvalues,20)
 
 ### gaussian wave packet
-phi0 = gaussian(xvalues,0.005,0.5)
-Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
+# phi0 = gaussian(xvalues,0.005,0.5)
+# Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
+
+
+
 phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 ############################################
 
