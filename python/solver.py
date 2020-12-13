@@ -72,7 +72,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
     phi[i, 0] = phi[i,-2]
     Pi[i, 0] = Pi[i,-2]
 
-
     k1_phi, k1_Pi  = time_diff(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = time_diff(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = time_diff(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
@@ -91,18 +90,16 @@ def gaussian_drv(x,sigma,mu):
   return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
 
 ### example function 4 (sin(12*pi))
-phi0 = f_4(xvalues)
-Pi0 = -c*f_4_prime(xvalues)
+# phi0 = f_4(xvalues)
+# Pi0 = -c*f_4_prime(xvalues)
 
 ### example function g(x)
 # phi0 = g_a(xvalues,20)
 # Pi0 = +c * g_a_prime(xvalues,20)
 
 ### gaussian wave packet
-# phi0 = gaussian(xvalues,0.005,0.5)
-# Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
-
-
+phi0 = gaussian(xvalues,0.005,0.5)
+Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
 
 phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 
@@ -142,35 +139,35 @@ def plot_xt_evolution(timevalues,xvalues,phi,Nt_plot):
 import matplotlib
 import matplotlib.animation
 def plot_animation(xvalues, timevalues, phi, Pi):
-    matplotlib.use('Agg')
-    def init_animation(xvalues,phi):
-      global line
-      line, = ax.plot(xvalues, np.zeros_like(xvalues))
-      ax.set_xlim(0, max(xvalues))
-      ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+  matplotlib.use('Agg')
+  def init_animation(xvalues,phi):
+    global line
+    line, = ax.plot(xvalues, np.zeros_like(xvalues))
+    ax.set_xlim(0, max(xvalues))
+    ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
 
-    def animate(i):
-      line.set_ydata(phi[i,:])
-      timelabel.set_text('time: %.2f s' % timevalues[i])
-      return line, timelabel
+  def animate(i):
+    line.set_ydata(phi[i,:])
+    timelabel.set_text('time: %.2f s' % timevalues[i])
+    return line, timelabel
 
-    fig3, ax3 = plt.subplots()
-    ax3.set(xlabel = "x", ylabel = "phi(x)")
-    line, = ax3.plot(xvalues, np.zeros_like(xvalues))
-    # ax3.set_xlim(0, max(xvalues))
-    ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
-    #, title = "time evolution of 1D wave")
+  fig3, ax3 = plt.subplots()
+  ax3.set(xlabel = "x", ylabel = "phi(x)")
+  line, = ax3.plot(xvalues, np.zeros_like(xvalues))
+  # ax3.set_xlim(0, max(xvalues))
+  ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+  #, title = "time evolution of 1D wave")
 
-    timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
-    ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
+  timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
+  ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
 
-    ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
-    ani.save('WE-animation.gif', writer='imagemagick', fps=15)
+  ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
+  ani.save('WE-animation.gif', writer='imagemagick', fps=15)
 
-    ### write as mp4
-    Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
-    mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
-    ani.save('WE-animation.mp4', writer=mywriter)
+  ### write as mp4
+  Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
+  mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
+  ani.save('WE-animation.mp4', writer=mywriter)
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
@@ -178,18 +175,21 @@ if __name__ == "__main__":
     Nt = 100
     endX = 1
     Nx = 100
+    print(deltat)
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
-# choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
-    phi0 = f_4(xvalues)
-    Pi0  = f_4_prime(xvalues)
+# # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
+#     phi0 = f_4(xvalues)
+#     Pi0  = f_4_prime(xvalues)
     # phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
-    # phi0 = gaussian(xvalues,0.005,0.5)
-    # Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
+    phi0 = gaussian(xvalues,0.005,0.5)
+    Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
     phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
 
     Nt_plot = 5 # how many snap shots are plotted
     plot_xt_evolution(timevalues,xvalues,phi,Nt_plot)
-    # plot_animation(xvalues, timevalues, phi, Pi)
+    plot_animation(xvalues, timevalues, phi, Pi)
+
+# plot_animation(xvalues, timevalues, phi, Pi)
