@@ -22,7 +22,7 @@ def gaussian(x,sigma,mu):
 def gaussian_drv(x,sigma,mu):
   return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
 
-def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
+def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   Nt = len(timevalues)
   Nx = len(xvalues)
   deltax = xvalues[Nx-1]/Nx
@@ -32,13 +32,11 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
   ### first time step
   phi[0,1:Nx+1] = phi0
   ### fill ghost points with values at boundary
-  phi[0,0] = phi0[0]
-  phi[0,Nx+1] = phi0[Nx-1]
-
+  phi[0,0] = phi0[-1]
+  phi[0,Nx+1] = phi0[0]
   Pi[0,1:Nx+1] = Pi0
-  ### fill ghost points with values at boundary
-  Pi[0,0] = Pi0[0]
-  Pi[0,Nx+1] = Pi0[Nx-1]
+  Pi[0,0] = Pi0[-1]
+  Pi[0,Nx+1] = Pi0[0]
 
   def time_diff(phi, Pi, t): # where u = [phi, Pi]
     dphidt = Pi # because d/dt phi = Pi
@@ -46,21 +44,29 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
     d2phidx2 = np.zeros(Nx+2)
     for ix in range(1,Nx+1): # computing only inner points
       d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
-    d2phidx2[-1] = d2phidx2[1]
-    d2phidx2[0] = d2phidx2[-2]
+
+    if bc == "periodic":
+      d2phidx2[-1] = d2phidx2[1]
+      d2phidx2[0] = d2phidx2[-2]
+    elif bc == "Dirichlet": # reflecting
+      pass
+    elif bc == "vonNeumann": # like a string
+      d2phidx2[-1] = d2phidx2[-2]
+      d2phidx2[0] = d2phidx2[1]
+    elif bc == "open":
+      dphidt[0] = 1/deltax *(-phi[0] + phi[1]) #d2phidx2[0] dudt = dudx
+      d2phidx2[0] = 1/deltax *(-dphidt[0] + dphidt[1])
+      dphidt[-1] = -1/deltax *(-phi[-2] + phi[-1])
+      d2phidx2[-1] =  -1/deltax *(-dphidt[-2] + dphidt[-1])# dudt = -dudx
+    else:
+      print("unsuitable boundary condition")
+
     dPidt = c**2 * d2phidx2
     return dphidt, dPidt
 
-  t = 1
+  t = 1 #dummy value
   # time iteration (RK4 method)
   for i in range(0,Nt-1):
-    # right boundary
-    phi[i, -1] = phi[i,1]
-    Pi[i, -1] = Pi[i,1]
-    # left boundary
-    phi[i, 0] = phi[i,-2]
-    Pi[i, 0] = Pi[i,-2]
-
     k1_phi, k1_Pi  = time_diff(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = time_diff(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = time_diff(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
@@ -127,7 +133,7 @@ def plot_animation(xvalues, timevalues, phi, Pi):
   ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
 
   ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
-  ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
+  # ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
 
   ### write as mp4
   Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
@@ -151,7 +157,7 @@ if __name__ == "__main__":
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
     phi0 = gaussian(xvalues,0.005,0.5)
     Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
-    phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
+    phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues, "open")
 
     Nt_plot = 5 # how many snap shots are plotted
     # plot_xt_evolution(timevalues,xvalues,phi,Nt_plot)
