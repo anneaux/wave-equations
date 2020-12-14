@@ -19,7 +19,7 @@ def gridmaker(endT,nt,endX,nx):
     return dx,timevalues,dx, xvalues
 
 
-def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
+def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   Nt = len(timevalues)
   Nx = len(xvalues)
   deltax = xvalues[Nx-1]/Nx
@@ -29,13 +29,11 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
   ### first time step
   phi[0,1:Nx+1] = phi0
   ### fill ghost points with values at boundary
-  phi[0,0] = phi0[0]
-  phi[0,Nx+1] = phi0[Nx-1]
-
+  phi[0,0] = phi0[-1]
+  phi[0,Nx+1] = phi0[0]
   Pi[0,1:Nx+1] = Pi0
-  ### fill ghost points with values at boundary
-  Pi[0,0] = Pi0[0]
-  Pi[0,Nx+1] = Pi0[Nx-1]
+  Pi[0,0] = Pi0[-1]
+  Pi[0,Nx+1] = Pi0[0]
 
   def time_diff(phi, Pi, t): # where u = [phi, Pi]
     dphidt = Pi # because d/dt phi = Pi
@@ -43,22 +41,29 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
     d2phidx2= np.zeros(Nx+2)
     for ix in range(1,Nx+1): # computing only inner points
       d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
-    d2phidx2[-1] = d2phidx2[1]
-    d2phidx2[0] = d2phidx2[-2]
+
+    if bc == "periodic":
+      d2phidx2[-1] = d2phidx2[1]
+      d2phidx2[0] = d2phidx2[-2]
+    elif bc == "Dirichlet": # reflecting
+      pass
+    elif bc == "vonNeumann": # like a string
+      d2phidx2[-1] = d2phidx2[-2]
+      d2phidx2[0] = d2phidx2[1]
+    elif bc == "open":
+      dphidt[0] = 1/deltax *(-phi[0] + phi[1]) #d2phidx2[0] dudt = dudx
+      d2phidx2[0] = 1/deltax *(-dphidt[0] + dphidt[1])
+      dphidt[-1] = -1/deltax *(-phi[-2] + phi[-1])
+      d2phidx2[-1] =  -1/deltax *(-dphidt[-2] + dphidt[-1])# dudt = -dudx
+    else:
+      print("unsuitable boundary condition")
+
     dPidt = c**2 * d2phidx2
     return dphidt, dPidt
 
-  t = 1
+  t = 1 #dummy value
   # time iteration (RK4 method)
   for i in range(0,Nt-1):
-    # right boundary
-    phi[i, -1] = phi[i,1]
-    Pi[i, -1] = Pi[i,1]
-    # left boundary
-    phi[i, 0] = phi[i,-2]
-    Pi[i, 0] = Pi[i,-2]
-
-
     k1_phi, k1_Pi  = time_diff(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = time_diff(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = time_diff(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
@@ -89,7 +94,7 @@ def plot_xt(Nt, deltat, phi_t):
     # # plt.ylim(49.94,50.008)
     # plt.legend()
     plt.grid(color = 'gainsboro')
-    plt.savefig("plot-phi_t.png")
+    plt.savefig("plots/plot-phi_t.png")
 
 ### Plotting the time evolution in a diagram with multiple lines
 from matplotlib import cm
@@ -105,43 +110,46 @@ def plot_xt_evolution(timevalues,xvalues,phi,Nt_plot):
     plt.ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
     plt.legend()
     plt.grid(color = 'gainsboro')
-    plt.savefig("plot-phi(x,t).png")
+    plt.savefig("plots/plot-phi(x,t).png")
 
 
 ### Plotting the time evolution in an animation ######################
 import matplotlib
 import matplotlib.animation
 def plot_animation(xvalues, timevalues, phi, Pi):
-    matplotlib.use('Agg')
-    def init_animation(xvalues,phi):
-      global line
-      line, = ax.plot(xvalues, np.zeros_like(xvalues))
-      ax.set_xlim(0, max(xvalues))
-      ax.set_ylim(0,10)
+  matplotlib.use('Agg')
+  def init_animation(xvalues,phi):
+    global line
+    line, = ax.plot(xvalues, np.zeros_like(xvalues))
+    ax.set_xlim(0, max(xvalues))
+    # ax.set_ylim(0,10)
+    ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
 
-    def animate(i):
-      line.set_ydata(phi[i,:])
-      timelabel.set_text('time: %.2f s' % timevalues[i])
-      return line, timelabel
+  def animate(i):
+    line.set_ydata(phi[i,:])
+    timelabel.set_text('time: %.2f s' % timevalues[i])
+    return line, timelabel
 
-    fig3, ax3 = plt.subplots()
-    ax3.set(xlabel = "x", ylabel = "phi(x)")
-    line, = ax3.plot(xvalues, np.zeros_like(xvalues))
-    # ax3.set_xlim(0, max(xvalues))
-    # ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
-    ax3.set_ylim(0,10)
-    #, title = "time evolution of 1D wave")
+  fig3, ax3 = plt.subplots()
+  ax3.set(xlabel = "x", ylabel = "phi(x)")
+  line, = ax3.plot(xvalues, np.zeros_like(xvalues))
+  # ax3.set_xlim(0, max(xvalues))
+  ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+  # ax3.set_ylim(0,10)
+  #, title = "time evolution of 1D wave")
 
-    timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
-    ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
+  timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
+  ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
 
-    ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
-    ani.save('WE-animation.gif', writer='imagemagick', fps=15)
+  ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
+  # ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
 
-    ### write as mp4
-    Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
-    mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
-    ani.save('WE-animation.mp4', writer=mywriter)
+  ### write as mp4
+  Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
+  mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
+  ani.save('plots/WE-animation.mp4', writer=mywriter)
+
+
 #--------------------- take a look at the energy ------
 def energy(q,p):        #calculate enervy from position q(phi) and inertia p(pi)
     m=1
@@ -162,7 +170,8 @@ def plot_energy_evolution(Etotal,timevalues):
     ax1.grid(color = 'gainsboro')
     plt.show()
 
-# -------------------- now, do it ---------------------
+
+# -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
     Nt = 200
@@ -180,7 +189,7 @@ if __name__ == "__main__":
     # Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues)
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open")
     Etotal = total_energy(Phi,Pi)
     plot_energy_evolution(Etotal,timevalues)
     # print(Phi)
