@@ -29,8 +29,8 @@ def phi_select(phi,s):
     return new_phi
 
 
-def convergence_test(endT,Nt,endX,Nx,T,tests,startfunction,startfunction_prime):
-    print('input: ',endT,Nt,endX,Nx,T,tests)
+def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,startfunction,startfunction_prime):
+    # print('input: ',endT,Nt,endX,Nx,T,tests_T   )
     # nt_conv:  Zeitpunkt in Zeitschritten, bei dem
     #           eine Periode vergangen ist
     nt_conv = int(Nt*T)
@@ -46,7 +46,7 @@ def convergence_test(endT,Nt,endX,Nx,T,tests,startfunction,startfunction_prime):
         # print('dt = %.3f , dx = %.3f' %(dt,dx))
         # print('shape of timevalues:', np.shape(timevalues))
         cour_N = c * dt / dx
-        print("courant number = %.2f" % cour_N)
+        print("courant number = %.3f" % cour_N)
         # start conditions
         Phi0 = startfunction(xvalues)
         Pi0  = startfunction_prime(xvalues)
@@ -56,11 +56,11 @@ def convergence_test(endT,Nt,endX,Nx,T,tests,startfunction,startfunction_prime):
         Phis[k,:,:] = Phi
 # do the convergence tests
     # initialize arrays
-    abs_conv = np.zeros((tests, Nx))
-    self_conv = np.zeros((tests, Nx))
-    for k in range(tests):
+    abs_conv = np.zeros((tests_T, Nx))
+    self_conv = np.zeros((tests_T, Nx))
+    for k in range(tests_T):
     # set stage for convergence tests
-        analytical = f_4(np.linspace(0,endX,Nx))
+        analytical = startfunction(np.linspace(0,endX,Nx))
         num_h = Phis[0, (k+1)*nt_conv, :]
         num_half_h = Phis[1, (k+1)*nt_conv, :]
         num_quater_h = Phis[2, (k+1)*nt_conv, :]
@@ -68,6 +68,36 @@ def convergence_test(endT,Nt,endX,Nx,T,tests,startfunction,startfunction_prime):
         abs_conv[k,:] = convergence(analytical, num_h, num_half_h)
         self_conv[k,:] = self_convergence(num_h, num_half_h, num_quater_h)
     return abs_conv, self_conv
+
+def convergence_test_h_var(endT,Nt,endX,Nx,T_per,tests_h,startfunction,startfunction_prime):
+    abs_conv = [0]*tests_h  # np.zeros((tests_h, Nx))
+    self_conv = [0]*tests_h  # np.zeros((tests_h, Nx))
+    for i in range(tests_h):
+        abs_conv[i],self_conv[i] = convergence_test_T_var(endT,Nt,endX,(i+1)*Nx,T_per,1,startfunction,startfunction_prime)
+    return abs_conv, self_conv
+
+def convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,tests_cfl,startfunction,startfunction_prime):
+    abs_conv = [0]*tests_cfl  # np.zeros((tests_h, Nx))
+    self_conv = [0]*tests_cfl  # np.zeros((tests_h, Nx))
+    for i in range(tests_cfl):
+        abs_conv[i],self_conv[i] = convergence_test_T_var(endT,(i+1)*Nt,endX,(i+1)*Nx,T_per,1,startfunction,startfunction_prime)
+    return abs_conv, self_conv
+
+def convergence_mean(a):
+    if isinstance(a, list):
+        d1 = len(a)
+    else:
+        d1 = np.shape(a)[0]
+    # print(d1)
+    means = np.zeros((d1))
+    if isinstance(a, list):
+        for i in range(d1):
+            means[i] = np.mean(a[i])
+    else:
+        for i in range(d1):
+            means[i] = np.mean(a[i,:])
+    # print(np.shape(means))
+    return means
 
 def plot_convergence(abs_conv, self_conv, xvalues,tests):
     fig, (ax1,ax2) = plt.subplots(2,figsize=(10, 8))
@@ -91,6 +121,42 @@ def plot_convergence(abs_conv, self_conv, xvalues,tests):
     plt.show()
 
 
+def plot_means_T(abs_conv_mean,self_conv_mean,tests_T,Nx,Nt):
+    Ts = range(1,tests_T+1)
+    # print(np.shape(Ts))
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(Ts,abs_conv_mean,'o-', label= 'absolute convergence' )
+    ax1.plot(Ts,self_conv_mean,'o-', label= 'self convergence' )
+    ax1.legend(title='%d temporal grid points (CFL fixed) \n %d spatial grid points' %(Nt,Nx))
+    ax1.set(xlabel = 'periods integrated')
+    ax1.grid(color = 'gainsboro')
+    plt.show()
+
+def plot_means_h(abs_conv_mean,self_conv_mean,tests_h,Nx,Nt):
+    Nxs = np.arange(Nx,(tests_h+1)*Nx,Nx)
+    print(Nxs)
+    # print(np.shape(Ts))
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(Nxs,abs_conv_mean,'o-', label= 'absolute convergence' )
+    ax1.plot(Nxs,self_conv_mean,'o-', label= 'self convergence' )
+    ax1.legend(title='%d temporal grid points (CFL varies) \n 1 period integration' %Nt)
+    ax1.set(xlabel = 'number of spatial grid points')
+    plt.show()
+
+def plot_means_cfl(abs_conv_mean,self_conv_mean,tests_cfl,Nx,Nt):
+    print('plotting')
+    cfl = Nx/Nt
+    Nxs = np.arange(Nx,(tests_cfl+1)*Nx,Nx)
+    print(Nxs)
+    # print(np.shape(Ts))
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(Nxs,abs_conv_mean,'o-', label= 'absolute convergence' )
+    ax1.plot(Nxs,self_conv_mean,'o-', label= 'self convergence' )
+    ax1.legend(title='CFL fixed: %.3f \n 1 period integration' %cfl)
+    ax1.set(xlabel = 'number of spatial grid points')
+    ax1.grid(color = 'gainsboro')
+    plt.show()
+
 
 #--------------------------------------------------
 #--------------------------------------------------
@@ -103,27 +169,44 @@ if __name__ == "__main__":
     endX = 1
     Nx = 6**2
     T_per = 1/6 #T: Periodenlaenge
-    n_tests = 5 # tests: Anzahl der Konvergenztests
-    # test()
+    n_tests_T = 5 # tests: Anzahl der Konvergenztests
+    n_tests_h = 5
+    n_tests_cfl = 10
+# test()
 
-    dt, timevalues, dx, xvalues = gridmaker(endT,Nt,endX,Nx)
+    # dt, timevalues, dx, xvalues = gridmaker(endT,Nt,endX,Nx)
 
 # choose f_4, f_5, g_a (for latter specify a = ...)
 # or gaussian here (for latter specify sigma and mu)
     mu = 0.5
     sigma = mu/Nx
     a = 2
-    Phi0 = f_5(xvalues)
-    Pi0  = f_5_prime(xvalues)
+    # Phi0 = f_5(xvalues)
+    # Pi0  = f_5_prime(xvalues)
     # phi0 = g_a(xvalues,a)#
     # Pi0 =  g_a_prime(xvalues,a)
     # phi0 = gaussian(xvalues,sigma,mu)
     # Pi0 = -c * gaussian_drv(xvalues,sigma,mu)
 
-# run convergence tests
-    abs_conv, self_conv = convergence_test(endT,Nt,endX,Nx,T_per,n_tests,f_4,f_4_prime)
-# plot
-    plot_convergence(abs_conv, self_conv, xvalues,n_tests)
+# run convergence test for grid resolution
+    # abs_conv, self_conv = convergence_test_h_var(endT,Nt,endX,Nx,T_per,n_tests_h,f_4,f_4_prime)
+    # abs_conv_mean = convergence_mean(abs_conv)
+    # self_conv_mean = convergence_mean(self_conv)
+    # plot_means_h(abs_conv_mean,self_conv_mean,n_tests_h,Nx,Nt)
+
+# run convergence test for up to 6 periods
+    # abs_conv, self_conv = convergence_test_T_var(endT,Nt,endX,Nx,T_per,n_tests_T,f_4,f_4_prime)
+    # abs_conv_mean = convergence_mean(abs_conv)
+    # self_conv_mean = convergence_mean(self_conv)
+    # plot_means_T(abs_conv_mean,self_conv_mean,n_tests_T,Nx,Nt)
+
+# run convergence test for CFL number
+    abs_conv, self_conv = convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,n_tests_cfl,f_4,f_4_prime)
+    abs_conv_mean = convergence_mean(abs_conv)
+    self_conv_mean = convergence_mean(self_conv)
+    plot_means_cfl(abs_conv_mean,self_conv_mean,n_tests_cfl,Nx,Nt)
+    # plot_convergence(abs_conv, self_conv, xvalues, n_tests_T)
+
     # print('Format Phi_0:', np.shape(Phi0))
     # print('Format Pi_0:', np.shape(Pi0))
     # print('Format Phi:', np.shape(Phi))
