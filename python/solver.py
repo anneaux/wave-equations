@@ -117,7 +117,7 @@ def plot_animation(xvalues, timevalues, phi, Pi):
       global line
       line, = ax.plot(xvalues, np.zeros_like(xvalues))
       ax.set_xlim(0, max(xvalues))
-      ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+      ax.set_ylim(0,10)
 
     def animate(i):
       line.set_ydata(phi[i,:])
@@ -128,7 +128,8 @@ def plot_animation(xvalues, timevalues, phi, Pi):
     ax3.set(xlabel = "x", ylabel = "phi(x)")
     line, = ax3.plot(xvalues, np.zeros_like(xvalues))
     # ax3.set_xlim(0, max(xvalues))
-    ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+    # ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+    ax3.set_ylim(0,10)
     #, title = "time evolution of 1D wave")
 
     timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
@@ -147,13 +148,15 @@ if __name__ == "__main__":
     endT = 1
     Nt = 100
     endX = 1
-    Nx = 100
+    Nx = 50
+    sigma = 0.005
+    mu = 0.5
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
-    courant = c * deltat / deltax
+    # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
 # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
-    phi0 = f_4(xvalues)
-    Pi0  = f_4_prime(xvalues)
+    phi0 = gaussian(xvalues,sigma,mu)
+    Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
     # phi0 = gaussian(xvalues,0.005,0.5)
@@ -162,4 +165,4 @@ if __name__ == "__main__":
 
     Nt_plot = 5 # how many snap shots are plotted
     plot_xt_evolution(timevalues,xvalues,phi,Nt_plot)
-    # plot_animation(xvalues, timevalues, phi, Pi)
+    plot_animation(xvalues, timevalues, phi, Pi)

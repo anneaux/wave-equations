@@ -43,8 +43,8 @@ def convergence_test(endT,Nt,endX,Nx,T,tests,startfunction,startfunction_prime):
         # print('\n endT = %.1f, Nt = %d' %(endT,Nt))
         dt, timevalues, dx, xvalues = gridmaker(endT,Nt,endX,(2**k)*Nx)
         dt = endT/Nt
-        print('dt = %.3f , dx = %.3f' %(dt,dx))
-        print('shape of timevalues:', np.shape(timevalues))
+        # print('dt = %.3f , dx = %.3f' %(dt,dx))
+        # print('shape of timevalues:', np.shape(timevalues))
         cour_N = c * dt / dx
         print("courant number = %.2f" % cour_N)
         # start conditions
@@ -76,8 +76,8 @@ def plot_convergence(abs_conv, self_conv, xvalues,tests):
     ax1.set_yscale('linear')
     ax2.set_yscale('linear')
     for i in range(tests):
-        ax1.plot(xvalues,abs_conv[i,:],'-', label= '%d' %i)
-        ax2.plot(xvalues,self_conv[i,:],'-', label= '%d' %i)
+        ax1.plot(xvalues,abs_conv[i,:],'-', label= '%d' %(i+1))
+        ax2.plot(xvalues,self_conv[i,:],'-', label= '%d' %(i+1))
     ax1.set_title('absolute convergence')
     ax2.set_title('self convergence')#
     plt.xticks(np.arange(0, 1.1, 0.1))
