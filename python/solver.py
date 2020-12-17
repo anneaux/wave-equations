@@ -142,8 +142,26 @@ def plot_animation(xvalues, timevalues, phi, Pi):
     Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
     mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
     ani.save('WE-animation.mp4', writer=mywriter)
+#--------------------- take a look at the energy ------
+def energy(q,p):        #calculate enervy from position q(phi) and inertia p(pi)
+    m=1
+    E = 0.5* p**2 / m + 0.5* q**2 *m
+    return E
+def total_energy(phi,pi):
+    (rows,columns) = np.shape(phi)
+    Etotal = np.zeros(rows)
+    E = energy(phi,pi)
+    for i in range(rows):
+        Etotal[i] = sum(E[i,:])
+    return Etotal
+def plot_energy_evolution(Etotal,timevalues):
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(timevalues,Etotal, label='')
+    ax1.set(xlabel='time $t$', ylabel='energy $E$')
+    ax1.grid(color = 'gainsboro')
+    plt.show()
 
-# -------------------- now, do it ---------------
+# -------------------- now, do it ---------------------
 if __name__ == "__main__":
     endT = 1
     Nt = 100
@@ -155,14 +173,16 @@ if __name__ == "__main__":
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
 # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
-    phi0 = gaussian(xvalues,sigma,mu)
-    Pi0  = -gaussian_drv(xvalues,sigma,mu)
+    Phi0 = f_4(xvalues)
+    Pi0  = f_4_prime(xvalues)
+    # Phi0 = gaussian(xvalues,sigma,mu)
+    # Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
-    # phi0 = gaussian(xvalues,0.005,0.5)
-    # Pi0 = -c * gaussian_drv(xvalues,0.005,0.5)
-    phi, Pi = wave_evolution1D(phi0,Pi0,timevalues,xvalues)
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues)
+    Etotal = total_energy(Phi,Pi)
+    plot_energy_evolution(Etotal,timevalues)
 
     Nt_plot = 5 # how many snap shots are plotted
-    plot_xt_evolution(timevalues,xvalues,phi,Nt_plot)
-    plot_animation(xvalues, timevalues, phi, Pi)
+    plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
+    plot_animation(xvalues, timevalues, Phi, Pi)
