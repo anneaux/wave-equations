@@ -152,7 +152,8 @@ def total_energy(phi,pi):
     Etotal = np.zeros(rows)
     E = energy(phi,pi)
     for i in range(rows):
-        Etotal[i] = sum(E[i,:])
+        #divide by number of columns to make E independent of Nx
+        Etotal[i] = sum(E[i,:])/columns
     return Etotal
 def plot_energy_evolution(Etotal,timevalues):
     fig, (ax1) = plt.subplots(1)
@@ -164,9 +165,9 @@ def plot_energy_evolution(Etotal,timevalues):
 # -------------------- now, do it ---------------------
 if __name__ == "__main__":
     endT = 1
-    Nt = 100
+    Nt = 200
     endX = 1
-    Nx = 50
+    Nx = 80
     sigma = 0.005
     mu = 0.5
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
@@ -182,7 +183,8 @@ if __name__ == "__main__":
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues)
     Etotal = total_energy(Phi,Pi)
     plot_energy_evolution(Etotal,timevalues)
-
+    # print(Phi)
+    # print(Pi)
     Nt_plot = 5 # how many snap shots are plotted
     plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
     plot_animation(xvalues, timevalues, Phi, Pi)
