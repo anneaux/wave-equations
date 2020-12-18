@@ -58,7 +58,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues):
     phi[i, 0] = phi[i,-2]
     Pi[i, 0] = Pi[i,-2]
 
-
     k1_phi, k1_Pi  = time_diff(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = time_diff(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = time_diff(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
