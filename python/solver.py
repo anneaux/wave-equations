@@ -28,20 +28,30 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   Pi = np.zeros([Nt,Nx+2])
   ### first time step
   phi[0,1:Nx+1] = phi0
-  ### fill ghost points with values at boundary
-  phi[0,0] = phi0[-1]
-  phi[0,Nx+1] = phi0[0]
   Pi[0,1:Nx+1] = Pi0
-  Pi[0,0] = Pi0[-1]
-  Pi[0,Nx+1] = Pi0[0]
+  ### fill ghost points with values at boundary
+  if bc == "periodic":
+    phi[0,0] = phi0[-1]
+    phi[0,Nx+1] = phi0[0]
+    Pi[0,0] = Pi0[-1]
+    Pi[0,Nx+1] = Pi0[0]
+  elif bc == "Dirichlet": # reflecting
+    pass
+  elif bc == "vonNeumann": # like a string
+    pass
+  elif bc == "open":
+    phi[0,0] = phi0[0]/deltax
+    phi[0,Nx+1] = -phi0[-1]/deltax
+    Pi[0,0] = Pi0[0]/deltax
+    Pi[0,Nx+1] = -Pi0[-1]/deltax
+  else:
+    print("unsuitable boundary condition")
+
 
   def time_diff(phi, Pi, t): # where u = [phi, Pi]
     dphidt = Pi # because d/dt phi = Pi
     # d/dt Pi = c^2 * d2/dx2 phi, the latter shall be computed using FD (along the discretized x axis)
     d2phidx2= np.zeros(Nx+2)
-    for ix in range(1,Nx+1): # computing only inner points
-      d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
-
     if bc == "periodic":
       d2phidx2[-1] = d2phidx2[1]
       d2phidx2[0] = d2phidx2[-2]
@@ -51,12 +61,24 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
       d2phidx2[-1] = d2phidx2[-2]
       d2phidx2[0] = d2phidx2[1]
     elif bc == "open":
-      dphidt[0] = 1/deltax *(-phi[0] + phi[1]) #d2phidx2[0] dudt = dudx
-      d2phidx2[0] = 1/deltax *(-dphidt[0] + dphidt[1])
-      dphidt[-1] = -1/deltax *(-phi[-2] + phi[-1])
-      d2phidx2[-1] =  -1/deltax *(-dphidt[-2] + dphidt[-1])# dudt = -dudx
+      # dphidt[0] = 1/deltax *(-phi[0] + phi[1]) #d2phidx2[0] dudt = dudx
+      # d2phidx2[0] = 1/deltax *(-dphidt[0] + dphidt[1])
+      # dphidt[-1] = -1/deltax *(-phi[-2] + phi[-1])
+      # d2phidx2[-1] =  -1/deltax *(-dphidt[-2] + dphidt[-1])# dudt = -dudx
+      phi[0] = phi[1]
+      phi[-1] = -phi[-2]
+      dphidt[0] = Pi[1]
+      dphidt[-1] = Pi[-2]
+      # dphidt[0] = 1/deltax *(-phi[0] + phi[1]) #d2phidx2[0] dudt = dudx
+      # d2phidx2[0] = 1/deltax *(-dphidt[0] + dphidt[1])
+      # dphidt[-1] = -1/deltax *(-phi[-2] + phi[-1])
+      # d2phidx2[-1] =  -1/deltax *(-dphidt[-2] + dphidt[-1])# dudt = -dudx
     else:
       print("unsuitable boundary condition")
+
+
+    for ix in range(1,Nx+1): # computing only inner points
+      d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
 
     dPidt = c**2 * d2phidx2
     return dphidt, dPidt
@@ -176,24 +198,25 @@ if __name__ == "__main__":
     endT = 1
     Nt = 200
     endX = 1
-    Nx = 80
-    sigma = 0.005
-    mu = 0.5
+    Nx = 200
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
 # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
     Phi0 = f_4(xvalues)
     Pi0  = f_4_prime(xvalues)
+
+    # sigma = 0.005
+    # mu = 0.5
     # Phi0 = gaussian(xvalues,sigma,mu)
     # Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # phi0 = g_a(xvalues,20)#
-    # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
+    # Pi0 = 3 * np.zeros(len(Phi0))#- g_a_prime(xvalues,20)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open")
     Etotal = total_energy(Phi,Pi)
-    plot_energy_evolution(Etotal,timevalues)
+    # plot_energy_evolution(Etotal,timevalues)
     # print(Phi)
     # print(Pi)
     Nt_plot = 5 # how many snap shots are plotted
-    plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
+    # plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
     plot_animation(xvalues, timevalues, Phi, Pi)
