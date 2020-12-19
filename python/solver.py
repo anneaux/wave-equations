@@ -32,6 +32,38 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
 
   def rhs(phi,Pi,t):
     # compute second spatial derivative (d^2 phi / dx^2) with FD
+    if bc == "periodic":
+      phi[0] = phi[-3]
+      phi[-1] = phi[2]
+      Pi[0] = Pi[-3]
+      Pi[-1] = Pi[2]
+    elif bc == "Dirichlet": # like a string
+      phi[0] = 0
+      phi[-1] = 0
+      phi[1] = 0
+      phi[-2] = 0
+      Pi[0] = 0
+      Pi[1] = 0
+      Pi[-2] = 0
+      Pi[-1] = 0
+    elif bc == "vonNeumann": # like a reflected water wave
+      phi[0] = phi[1]
+      phi[-1] = phi[-2]
+      # phi[1] = 0
+      # phi[-2] = 0
+      Pi[0] = Pi[1]
+      # Pi[1] = 0
+      # Pi[-2] = 0
+      Pi[-1] = Pi[-2]
+      # d2phidx2[-1] = d2phidx2[-2]
+      # d2phidx2[0] = d2phidx2[1]
+    elif bc == "open":
+      phi[0] = - 2 * Pi[1] * deltax / c + phi[2]
+      phi[-1] = - 2 * Pi[-2] * deltax / c + phi[-3]
+      Pi[0] = - 2 * phi[1] * deltax / c + Pi[2]
+      Pi[-1] = - 2 * phi[-2] * deltax / c + Pi[-3]
+      pass
+
     d2phidx2= np.zeros(Nx+2)
     for ix in range(1,Nx+1): # computing only inner points
       d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
@@ -43,25 +75,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   t = 1 #dummy value
   # time iteration (RK4 method)
   for i in range(0,Nt-1):
-    if bc == "periodic":
-      phi[i,0] = phi[i,-3]
-      phi[i,-1] = phi[i,2]
-      Pi[i,0] = Pi[i,-3]
-      Pi[i,-1] = Pi[i,2]
-    elif bc == "Dirichlet": # reflecting
-      pass ### todo
-    elif bc == "vonNeumann": # like a string
-      pass
-      # d2phidx2[-1] = d2phidx2[-2]
-      # d2phidx2[0] = d2phidx2[1]
-    elif bc == "open":
-      # phi[i,0] = - 2 * Pi[i, 1] * deltax / c + phi[i, 2]
-      # phi[i,-1] = - 2 * Pi[i, -2] * deltax / c + phi[i, -3]
-      # Pi[i,0] = - 2 * phi[i, 1] * deltax / c + Pi[i, 2]
-      # Pi[i,-1] = - 2 * phi[i, -2] * deltax / c + Pi[i, -3]
-      pass
-
-
     k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
@@ -69,8 +82,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
 
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
-  # print(phi0)
-  # print(phi[0,:])
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
 
 
@@ -181,18 +192,19 @@ if __name__ == "__main__":
     # print("courant number = %.2f" % courant)
 # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
     Phi0 = f_4(xvalues)
-    Pi0  = f_4_prime(xvalues)
+    # Pi0  = f_4_prime(xvalues)
     # sigma = 0.005
     # mu = 0.5
     # Phi0 = gaussian(xvalues,sigma,mu)
     # Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # phi0 = g_a(xvalues,20)#
-    # Pi0 = 3 * np.zeros(len(Phi0))#- g_a_prime(xvalues,20)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "Dirichlet")
-    Etotal = total_energy(Phi,Pi)
+    Pi0 = np.zeros(len(Phi0))#- g_a_prime(xvalues,20)
+
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "vonNeumann")
+
+    # Etotal = total_energy(Phi,Pi)
     # plot_energy_evolution(Etotal,timevalues)
-    # print(Phi)
-    # print(Pi)
-    Nt_plot = 5 # how many snap shots are plotted
+
+    # Nt_plot = 5 # how many snap shots are plotted
     # plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
     plot_animation(xvalues, timevalues, Phi, Pi)
