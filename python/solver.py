@@ -29,58 +29,64 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   Pi = np.zeros([Nt,Nx+2])
   ### first time step
   phi[0,1:Nx+1] = phi0
-  ### fill ghost points with values at boundary
-  phi[0,0] = phi0[-1]
-  phi[0,Nx+1] = phi0[0]
   Pi[0,1:Nx+1] = Pi0
-  Pi[0,0] = Pi0[-1]
-  Pi[0,Nx+1] = Pi0[0]
 
-  def time_diff(phi, Pi, t): # where u = [phi, Pi]
-    dphidt = Pi # because d/dt phi = Pi
-    # d/dt Pi = c^2 * d2/dx2 phi, the latter shall be computed using FD (along the discretized x axis)
+  def rhs(phi,Pi,t):
+    if bc == "periodic":
+      phi[0] = phi[-3]
+      phi[-1] = phi[2]
+      Pi[0] = Pi[-3]
+      Pi[-1] = Pi[2]
+    elif bc == "Dirichlet": # like a string
+      # phi[0] = 0
+      # phi[-1] = 0
+      # phi[1] = 0
+      # phi[-2] = 0
+      # Pi[0] = 0
+      # Pi[1] = 0
+      # Pi[-2] = 0
+      # Pi[-1] = 0
+      phi[0] = - phi[2]
+      phi[-1] = - phi[-3]
+      Pi[0] = - Pi[2]
+      Pi[-1] = - Pi[-3]
+    elif bc == "vonNeumann": # like a reflected water wave
+      phi[0] = phi[1]
+      phi[-1] = phi[-2]
+      Pi[0] = Pi[1]
+      Pi[-1] = Pi[-2]
+    elif bc == "open":
+      # variant (i) WTF????
+      # phi[0] = 2 * phi[1] - phi[2]
+      # phi[-1] = 2 * phi[-2] - phi[-3]
+      # Pi[0] = 2 * Pi[1] - Pi[2]
+      # Pi[-1] = 2* Pi[-2] - Pi[-3]
+      # variant (ii)
+      phi[0] = phi[2] - 2*Pi[1] * deltax/c
+      phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
+      Pi[0] = Pi[2] - 2*phi[1] * deltax/c
+      Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
+      pass
+
+    # compute second spatial derivative (d^2 phi / dx^2) with FD
     d2phidx2= np.zeros(Nx+2)
     for ix in range(1,Nx+1): # computing only inner points
       d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
 
-    if bc == "periodic":
-      d2phidx2[-1] = d2phidx2[1]
-      d2phidx2[0] = d2phidx2[-2]
-    elif bc == "Dirichlet": # reflecting
-      pass
-    elif bc == "vonNeumann": # like a string
-      d2phidx2[-1] = d2phidx2[-2]
-      d2phidx2[0] = d2phidx2[1]
-    elif bc == "open":
-      dphidt[0] = 1/deltax *(-phi[0] + phi[1]) #d2phidx2[0] dudt = dudx
-      d2phidx2[0] = 1/deltax *(-dphidt[0] + dphidt[1])
-      dphidt[-1] = -1/deltax *(-phi[-2] + phi[-1])
-      d2phidx2[-1] =  -1/deltax *(-dphidt[-2] + dphidt[-1])# dudt = -dudx
-    else:
-      print("unsuitable boundary condition")
-
+    dphidt = Pi
     dPidt = c**2 * d2phidx2
     return dphidt, dPidt
 
   t = 1 #dummy value
   # time iteration (RK4 method)
   for i in range(0,Nt-1):
-    # right boundary
-    phi[i, -1] = phi[i,1]
-    Pi[i, -1] = Pi[i,1]
-    # left boundary
-    phi[i, 0] = phi[i,-2]
-    Pi[i, 0] = Pi[i,-2]
-
-
-    k1_phi, k1_Pi  = time_diff(phi[i,:], Pi[i], t)
-    k2_phi, k2_Pi = time_diff(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
-    k3_phi, k3_Pi = time_diff(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
-    k4_phi, k4_Pi = time_diff(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
+    k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
+    k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
+    k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
+    k4_phi, k4_Pi = rhs(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
 
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
-
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
 
 
@@ -205,18 +211,20 @@ def plot_energy_evolution(Etotal,timevalues):
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 1
-    Nt = 200
+    endT = 2
+    Nt = 400
     endX = 1
     Nx = 100
     sigma = 0.005
     mu = 0.5
     width= 0.2
     k = 1
+
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
 # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
+
     # Phi0 = f_4(xvalues)
     # Pi0  = - f_4_prime(xvalues)
     # Phi0 = gaussian(xvalues,sigma,mu)
