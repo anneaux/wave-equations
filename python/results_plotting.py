@@ -4,9 +4,6 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 
-### constants
-c = 1
-
 #### Plotting the solutions in a position-time diagram ###
 def plot_xt(Nt, deltat, phi_t):
     times = np.arange(0,Nt*deltat,deltat)
@@ -74,3 +71,13 @@ def plot_animation(xvalues, timevalues, phi, Pi):
   mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
   ani.save('plots/WE-animation.mp4', writer=mywriter)
 
+
+from matplotlib.ticker import FormatStrFormatter
+def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
+  fig, ax = plt.subplots()
+  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower')
+  # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
+  plt.xlabel('time')
+  plt.ylabel('position')
+  ### todo: set proper positions and times as ticks
+  plt.savefig("plots/plot-phi-evolution.png", bbox_inches = 'tight')

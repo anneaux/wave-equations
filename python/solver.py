@@ -124,8 +124,6 @@ def triangle_drv(x,width,mu):
     if x>mu-width:  return 0.5
     if x == mu: return 0
 
-############################################
-
 
 #--------------------- take a look at the energy ------
 def energy(q,p):        #calculate energy from position q(phi) and inertia p(pi)
@@ -161,16 +159,17 @@ if __name__ == "__main__":
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
-# choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
+
+    ### choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
 
     # Phi0 = f_4(xvalues)
     # Pi0  = - f_4_prime(xvalues)
-    # Phi0 = gaussian(xvalues,sigma,mu)
-    # Pi0  = -gaussian_drv(xvalues,sigma,mu)
+    Phi0 = gaussian(xvalues,sigma,mu)
+    Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # Phi0 = squares(xvalues, k)
     # Pi0  = -squares_drv(xvalues,k)
-    Phi0 = f_triangle(xvalues,width/2,mu)
-    Pi0 = -f_triangle_drv(xvalues,width/2,mu)
+    # Phi0 = f_triangle(xvalues,width/2,mu)
+    # Pi0 = -f_triangle_drv(xvalues,width/2,mu)
     # Phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
 
@@ -178,11 +177,11 @@ if __name__ == "__main__":
     # print(Pi0)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "periodic")
 
-    # Etotal = total_energy(Phi,Pi)
+    Etotal = total_energy(Phi,Pi)
     # Nt_plot = 7 # how many snap shots are plotted
-    # plot_energy_evolution(Etotal,timevalues)
-    # plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
+    plot_energy_evolution(Etotal,timevalues)
     # plot_animation(xvalues, timevalues, Phi, Pi)
+    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
