@@ -1,6 +1,7 @@
 import numpy as np
 from finite_differences.example_functions import *
 import matplotlib.pyplot as plt
+from scipy import signal
 
 ### constants
 c = 1
@@ -64,7 +65,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   t = 1 #dummy value
   # time iteration (RK4 method)
   for i in range(0,Nt-1):
-<<<<<<< HEAD
     # right boundary
     phi[i, -1] = phi[i,1]
     Pi[i, -1] = Pi[i,1]
@@ -72,8 +72,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
     phi[i, 0] = phi[i,-2]
     Pi[i, 0] = Pi[i,-2]
 
-=======
->>>>>>> c6c6e613a6ef1d5d8664aec214ffa013751424de
+
     k1_phi, k1_Pi  = time_diff(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = time_diff(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = time_diff(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
@@ -91,6 +90,32 @@ def gaussian(x,sigma,mu):
 def gaussian_drv(x,sigma,mu):
   return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
 
+### square pulse wave packet
+def squares(x,k):
+    return signal.square(2 * np.pi * k * (x-0.25))
+def squares_drv(x,k):
+    return np.zeros(len(x))
+### triangle pulse wave packet
+def f_triangle(xvalues,width,mu):
+    T = np.zeros(len(xvalues))
+    for i,x in enumerate(xvalues):
+        T[i] = triangle(x,width,mu)
+    return T
+def f_triangle_drv(xvalues,width,mu):
+    T = np.zeros(len(xvalues))
+    for i,x in enumerate(xvalues):
+        T[i] = triangle_drv(x,width,mu)
+    return T
+def triangle(x,width,mu):
+    if x>mu: return triangle(1-x, width, mu)
+    if x<mu-width:  return 0
+    if x>mu-width:  return x-(mu-width)
+    if x == mu: return 1
+def triangle_drv(x,width,mu):
+    if x>mu: return -1*triangle_drv(1-x, width, mu)
+    if x<mu-width:  return 0
+    if x>mu-width:  return 0.5
+    if x == mu: return 0
 ############################################
 
 #### Plotting the solutions in a position-time diagram ###
@@ -151,15 +176,13 @@ def plot_animation(xvalues, timevalues, phi, Pi):
   timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
   ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
 
-  ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
+  # ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
   # ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
 
   ### write as mp4
   Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
   mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
   ani.save('plots/WE-animation.mp4', writer=mywriter)
-
-
 #--------------------- take a look at the energy ------
 def energy(q,p):        #calculate enervy from position q(phi) and inertia p(pi)
     m=1
@@ -178,32 +201,39 @@ def plot_energy_evolution(Etotal,timevalues):
     ax1.plot(timevalues,Etotal, label='')
     ax1.set(xlabel='time $t$', ylabel='energy $E$')
     ax1.grid(color = 'gainsboro')
-    plt.show()
-
+    plt.savefig('plots/WE_energy_evolution.png')
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
     Nt = 200
     endX = 1
-    Nx = 80
+    Nx = 100
     sigma = 0.005
     mu = 0.5
+    width= 0.2
+    k = 1
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
 # choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
-    Phi0 = f_4(xvalues)
-    Pi0  = f_4_prime(xvalues)
+    # Phi0 = f_4(xvalues)
+    # Pi0  = - f_4_prime(xvalues)
     # Phi0 = gaussian(xvalues,sigma,mu)
     # Pi0  = -gaussian_drv(xvalues,sigma,mu)
-    # phi0 = g_a(xvalues,20)#
+    # Phi0 = squares(xvalues, k)
+    # Pi0  = -squares_drv(xvalues,k)
+    Phi0 = f_triangle(xvalues,width/2,mu)
+    Pi0 = -f_triangle_drv(xvalues,width/2,mu)
+    # Phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open")
+
+    # print(Phi0)
+    # print(Pi0)
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "periodic")
+
     Etotal = total_energy(Phi,Pi)
+    Nt_plot = 7 # how many snap shots are plotted
     plot_energy_evolution(Etotal,timevalues)
-    # print(Phi)
-    # print(Pi)
-    Nt_plot = 5 # how many snap shots are plotted
     plot_xt_evolution(timevalues, xvalues, Phi, Nt_plot)
     plot_animation(xvalues, timevalues, Phi, Pi)
