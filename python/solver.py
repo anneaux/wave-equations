@@ -91,40 +91,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
 
 
-### gaussian wave packet
-def gaussian(x,sigma,mu):
-  return 1/np.sqrt(2*np.pi*sigma**2) * np.exp(- (x-mu)**2/np.sqrt(2*sigma**2))
-def gaussian_drv(x,sigma,mu):
-  return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
-
-### square pulse wave packet
-def squares(x,k):
-    return signal.square(2 * np.pi * k * (x-0.25))
-def squares_drv(x,k):
-    return np.zeros(len(x))
-### triangle pulse wave packet
-def f_triangle(xvalues,width,mu):
-    T = np.zeros(len(xvalues))
-    for i,x in enumerate(xvalues):
-        T[i] = triangle(x,width,mu)
-    return T
-def f_triangle_drv(xvalues,width,mu):
-    T = np.zeros(len(xvalues))
-    for i,x in enumerate(xvalues):
-        T[i] = triangle_drv(x,width,mu)
-    return T
-def triangle(x,width,mu):
-    if x>mu: return triangle(1-x, width, mu)
-    if x<mu-width:  return 0
-    if x>mu-width:  return x-(mu-width)
-    if x == mu: return 1
-def triangle_drv(x,width,mu):
-    if x>mu: return -1*triangle_drv(1-x, width, mu)
-    if x<mu-width:  return 0
-    if x>mu-width:  return 0.5
-    if x == mu: return 0
-
-
 #--------------------- take a look at the energy ------
 def energy(q,p):        #calculate energy from position q(phi) and inertia p(pi)
     m=1
@@ -138,12 +104,6 @@ def total_energy(phi,pi):
         #divide by number of columns to make E independent of Nx
         Etotal[i] = sum(E[i,:])/columns
     return Etotal
-def plot_energy_evolution(Etotal,timevalues):
-    fig, (ax1) = plt.subplots(1)
-    ax1.plot(timevalues,Etotal, label='')
-    ax1.set(xlabel='time $t$', ylabel='energy $E$')
-    ax1.grid(color = 'gainsboro')
-    plt.savefig('plots/WE_energy_evolution.png')
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
@@ -175,14 +135,13 @@ if __name__ == "__main__":
 
     # print(Phi0)
     # print(Pi0)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "periodic")
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "Dirichlet")
 
     Etotal = total_energy(Phi,Pi)
     # Nt_plot = 7 # how many snap shots are plotted
     plot_energy_evolution(Etotal,timevalues)
-    # plot_animation(xvalues, timevalues, Phi, Pi)
     plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    plot_animation(xvalues, timevalues, Phi, Pi,'gif')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
-

@@ -37,7 +37,7 @@ def plot_xt_evolution(timevalues,xvalues,phi,Nt_plot):
 ### Plotting the time evolution in an animation ######################
 import matplotlib
 import matplotlib.animation
-def plot_animation(xvalues, timevalues, phi, Pi):
+def plot_animation(xvalues, timevalues, phi, Pi,format = 'mp4'):
   matplotlib.use('Agg')
   Nt = len(timevalues)
   def init_animation(xvalues,phi):
@@ -63,13 +63,15 @@ def plot_animation(xvalues, timevalues, phi, Pi):
   timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
   ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
 
-  # ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
-  # ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
+    ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
+  if format == 'gif':
+    ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
 
   ### write as mp4
-  Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
-  mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
-  ani.save('plots/WE-animation.mp4', writer=mywriter)
+  if format == 'mp4':
+    Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
+    mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
+    ani.save('plots/WE-animation.mp4', writer=mywriter)
 
 
 from matplotlib.ticker import FormatStrFormatter
@@ -81,3 +83,10 @@ def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   plt.ylabel('position')
   ### todo: set proper positions and times as ticks
   plt.savefig("plots/plot-phi-evolution.png", bbox_inches = 'tight')
+
+def plot_energy_evolution(Etotal,timevalues):
+    fig, (ax1) = plt.subplots(1)
+    ax1.plot(timevalues,Etotal, label='')
+    ax1.set(xlabel='time $t$', ylabel='energy $E$')
+    ax1.grid(color = 'gainsboro')
+    plt.savefig('plots/WE_energy_evolution.png')
