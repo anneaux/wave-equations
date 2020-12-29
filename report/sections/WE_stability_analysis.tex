@@ -1,0 +1,17 @@
+\section{von Neumann stability analysis}
+% Q:
+% Hirsch,_Numerical_Computation_of_Internal&External_Flows,v1,1994/
+
+\begin{equation}
+  u_i^n = \tilde{u}_i^n + \epsilon_i^n
+  \label{eq:error}
+\end{equation}
+where
+\begin{itemize}
+  \item $u_i^n$ : numerical result
+  \item $\tilde{u}_i^n$ : exact solution
+  \item $\epsilon_i^n$ : numerical error (round offs etc.)
+\end{itemize}
+at time step $n$ an position index $i$.
+Because numerical solver yields $u$ but is exactly satisifed with $\tilde{u}$, of course $\epsilon$ also fits into the numerical scheme.
+We put \ref{eq:error} into our numerical solving scheme and see what happens.
