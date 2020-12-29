@@ -103,6 +103,15 @@ def total_energy(phi,pi):
         #divide by number of columns to make E independent of Nx
         Etotal[i] = sum(E[i,1:Nx+1])/columns # do not consider ghost points
     return Etotal
+# -------------------- little helper function ---------------
+def IVmaker(func,xvalues):
+  funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
+  ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
+  ,"gauss":(gaussian(xvalues,sigma,mu),-gaussian_drv(xvalues,sigma,mu))
+  ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
+  ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
+  }
+  return funcDict[func]
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
@@ -110,36 +119,25 @@ if __name__ == "__main__":
     Nt = 400
     endX = 1
     Nx = 100
+    # for gaussian pulse
     sigma = 0.005
     mu = 0.5
     width= 0.2
+    # for square pulse
     k = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
 
-    ### choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
+    Phi0, Pi0 = IVmaker("gauss",xvalues)
 
-    Phi0 = f_4(xvalues)
-    Pi0  = - f_4_prime(xvalues)
-    # Phi0 = gaussian(xvalues,sigma,mu)
-    # Pi0  = -gaussian_drv(xvalues,sigma,mu)
-    # Phi0 = squares(xvalues, k)
-    # Pi0  = -squares_drv(xvalues,k)
-    # Phi0 = f_triangle(xvalues,width/2,mu)
-    # Pi0 = -f_triangle_drv(xvalues,width/2,mu)
-    # Phi0 = g_a(xvalues,20)#
-    # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
-
-    # print(Phi0)
-    # print(Pi0)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "periodic")
 
     Etotal = total_energy(Phi,Pi)
     # Nt_plot = 7 # how many snap shots are plotted
-    plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    # plot_energy_evolution(Etotal,timevalues)
+    # plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
     # plot_animation(xvalues, timevalues, Phi, Pi,'gif')
 
     # save as csv file

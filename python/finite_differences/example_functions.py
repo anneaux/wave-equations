@@ -1,4 +1,6 @@
 import numpy as np
+from scipy import signal
+
 ############# define analytical functions ###########
 def f_1(x):
     return (x-1/2)**2+x
