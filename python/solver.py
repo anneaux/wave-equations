@@ -56,13 +56,12 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
       phi[-1] = phi[-2]
       Pi[0] = Pi[1]
       Pi[-1] = Pi[-2]
-    elif bc == "open":
-      # variant (i) WTF????
-      # phi[0] = 2 * phi[1] - phi[2]
-      # phi[-1] = 2 * phi[-2] - phi[-3]
-      # Pi[0] = 2 * Pi[1] - Pi[2]
-      # Pi[-1] = 2* Pi[-2] - Pi[-3]
-      # variant (ii)
+    elif bc == "open_i":     # variant (i)     WTF????
+      phi[0] = 2 * phi[1] - phi[2]
+      phi[-1] = 2 * phi[-2] - phi[-3]
+      Pi[0] = 2 * Pi[1] - Pi[2]
+      Pi[-1] = 2* Pi[-2] - Pi[-3]
+    elif bc == "open_ii":         # variant (ii)
       phi[0] = phi[2] - 2*Pi[1] * deltax/c
       phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
@@ -91,40 +90,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
 
 
-### gaussian wave packet
-def gaussian(x,sigma,mu):
-  return 1/np.sqrt(2*np.pi*sigma**2) * np.exp(- (x-mu)**2/np.sqrt(2*sigma**2))
-def gaussian_drv(x,sigma,mu):
-  return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
-
-### square pulse wave packet
-def squares(x,k):
-    return signal.square(2 * np.pi * k * (x-0.25))
-def squares_drv(x,k):
-    return np.zeros(len(x))
-### triangle pulse wave packet
-def f_triangle(xvalues,width,mu):
-    T = np.zeros(len(xvalues))
-    for i,x in enumerate(xvalues):
-        T[i] = triangle(x,width,mu)
-    return T
-def f_triangle_drv(xvalues,width,mu):
-    T = np.zeros(len(xvalues))
-    for i,x in enumerate(xvalues):
-        T[i] = triangle_drv(x,width,mu)
-    return T
-def triangle(x,width,mu):
-    if x>mu: return triangle(1-x, width, mu)
-    if x<mu-width:  return 0
-    if x>mu-width:  return x-(mu-width)
-    if x == mu: return 1
-def triangle_drv(x,width,mu):
-    if x>mu: return -1*triangle_drv(1-x, width, mu)
-    if x<mu-width:  return 0
-    if x>mu-width:  return 0.5
-    if x == mu: return 0
-
-
 #--------------------- take a look at the energy ------
 def energy(q,p):        #calculate energy from position q(phi) and inertia p(pi)
     m=1
@@ -134,16 +99,10 @@ def total_energy(phi,pi):
     (rows,columns) = np.shape(phi)
     Etotal = np.zeros(rows)
     E = energy(phi,pi)
-    for i in range(rows):
+    for i in range(0,rows):   # for all times sum up individual energies
         #divide by number of columns to make E independent of Nx
-        Etotal[i] = sum(E[i,:])/columns
+        Etotal[i] = sum(E[i,1:Nx+1])/columns # do not consider ghost points
     return Etotal
-def plot_energy_evolution(Etotal,timevalues):
-    fig, (ax1) = plt.subplots(1)
-    ax1.plot(timevalues,Etotal, label='')
-    ax1.set(xlabel='time $t$', ylabel='energy $E$')
-    ax1.grid(color = 'gainsboro')
-    plt.savefig('plots/WE_energy_evolution.png')
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
@@ -162,10 +121,10 @@ if __name__ == "__main__":
 
     ### choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
 
-    # Phi0 = f_4(xvalues)
-    # Pi0  = - f_4_prime(xvalues)
-    Phi0 = gaussian(xvalues,sigma,mu)
-    Pi0  = -gaussian_drv(xvalues,sigma,mu)
+    Phi0 = f_4(xvalues)
+    Pi0  = - f_4_prime(xvalues)
+    # Phi0 = gaussian(xvalues,sigma,mu)
+    # Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # Phi0 = squares(xvalues, k)
     # Pi0  = -squares_drv(xvalues,k)
     # Phi0 = f_triangle(xvalues,width/2,mu)
@@ -180,9 +139,8 @@ if __name__ == "__main__":
     Etotal = total_energy(Phi,Pi)
     # Nt_plot = 7 # how many snap shots are plotted
     plot_energy_evolution(Etotal,timevalues)
-    # plot_animation(xvalues, timevalues, Phi, Pi)
     plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    # plot_animation(xvalues, timevalues, Phi, Pi,'gif')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
-
