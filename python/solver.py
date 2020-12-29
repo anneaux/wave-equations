@@ -56,7 +56,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
       phi[-1] = phi[-2]
       Pi[0] = Pi[1]
       Pi[-1] = Pi[-2]
-    elif bc == "open_i":     # variant (i)     WTF????
+    elif bc == "open_i":     # variant (i)
       phi[0] = 2 * phi[1] - phi[2]
       phi[-1] = 2 * phi[-2] - phi[-3]
       Pi[0] = 2 * Pi[1] - Pi[2]
@@ -66,7 +66,12 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
       phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
       Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
-      pass
+    # elif bc == "open_iii":         # variant (iii) ???
+    #   phi[0] = phi[1] + (Pi[1]-Pi[2])*deltax
+    #   phi[-1] = phi[-2] + (Pi[-2]-Pi[-3])*deltax
+    #   Pi[0] = Pi[1] + (phi[1]-phi[2])*deltat
+    #   Pi[-1] = Pi[-2] + (phi[-2]-phi[-3])*deltat
+
 
     # compute second spatial derivative (d^2 phi / dx^2) with FD
     d2phidx2= np.zeros(Nx+2)
@@ -132,13 +137,13 @@ if __name__ == "__main__":
 
     Phi0, Pi0 = IVmaker("gauss",xvalues)
 
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "periodic")
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_ii")
 
-    Etotal = total_energy(Phi,Pi)
+    # Etotal = total_energy(Phi,Pi)
     # Nt_plot = 7 # how many snap shots are plotted
     # plot_energy_evolution(Etotal,timevalues)
-    # plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    # plot_animation(xvalues, timevalues, Phi, Pi,'gif')
+    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')

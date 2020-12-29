@@ -74,7 +74,6 @@ def plot_animation(xvalues, timevalues, phi, Pi,format = 'mp4'):
     ani.save('plots/WE-animation.mp4', writer=mywriter)
 
 
-from matplotlib.ticker import FormatStrFormatter
 def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   fig, ax = plt.subplots()
   im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower')
