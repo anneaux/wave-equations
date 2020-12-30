@@ -18,7 +18,7 @@ def gridmaker(endT,nt,endX,nx):
   dx = (endX/nx)
   xvalues = np.linspace(0,endX,nx)
   # print('dt = %.3f, dx = %.3f' %(dt,dx))
-  return dx,timevalues,dx, xvalues
+  return dx,timevalues,dx,xvalues
 
 
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
@@ -66,11 +66,11 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
       phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
       Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
-    # elif bc == "open_iii":         # variant (iii) ???
-    #   phi[0] = phi[1] + (Pi[1]-Pi[2])*deltax
-    #   phi[-1] = phi[-2] + (Pi[-2]-Pi[-3])*deltax
-    #   Pi[0] = Pi[1] + (phi[1]-phi[2])*deltat
-    #   Pi[-1] = Pi[-2] + (phi[-2]-phi[-3])*deltat
+    elif bc == "open_iii":         # variant (iii)
+      phi[0] = - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
+      phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
+      Pi[0] = (phi[0] - phi[1])/deltax
+      Pi[-1] = (phi[-1] - phi[-2])/deltax
 
 
     # compute second spatial derivative (d^2 phi / dx^2) with FD
@@ -112,7 +112,7 @@ def total_energy(phi,pi):
 def IVmaker(func,xvalues):
   funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
   ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
-  ,"gauss":(gaussian(xvalues,sigma,mu),-gaussian_drv(xvalues,sigma,mu))
+  ,"gauss":(gaussian(xvalues,sigma,mu),gaussian_drv(xvalues,sigma,mu))
   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
   ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
   }
@@ -120,10 +120,10 @@ def IVmaker(func,xvalues):
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 2
-    Nt = 400
+    endT = 1
+    Nt = 500
     endX = 1
-    Nx = 100
+    Nx = 500
     # for gaussian pulse
     sigma = 0.005
     mu = 0.5
@@ -132,13 +132,10 @@ if __name__ == "__main__":
     k = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
-    # courant = c * deltat / deltax
-    # print("courant number = %.2f" % courant)
-
+    courant = c * deltat / deltax
+    print("courant number = %.2f" % courant)
     Phi0, Pi0 = IVmaker("gauss",xvalues)
-
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_ii")
-
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii")
     # Etotal = total_energy(Phi,Pi)
     # Nt_plot = 7 # how many snap shots are plotted
     # plot_energy_evolution(Etotal,timevalues)
