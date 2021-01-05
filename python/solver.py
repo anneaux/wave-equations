@@ -118,6 +118,16 @@ def IVmaker(func,xvalues):
   }
   return funcDict[func]
 
+
+
+# ------------------- potential ---------------
+def PTpot(xvalues):
+  V0 = 0.15
+  kappa = 0.1
+  beta = 1j*np.pi/2
+  theta = kappa*xvalues + beta
+  return V0*4/(np.exp(theta)+np.exp(-theta))**2 - V0
+
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
@@ -132,15 +142,24 @@ if __name__ == "__main__":
     k = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
-    courant = c * deltat / deltax
-    print("courant number = %.2f" % courant)
-    Phi0, Pi0 = IVmaker("gauss",xvalues)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii")
-    # Etotal = total_energy(Phi,Pi)
-    # Nt_plot = 7 # how many snap shots are plotted
-    # plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+    # courant = c * deltat / deltax
+    # print("courant number = %.2f" % courant)
+    xvalues = np.linspace(-2,2,401)
+    potential = PTpot(xvalues)
+    print(PTpot(0))
+    plot_potential(xvalues,potential.real)
+
+
+
+
+    # Phi0, Pi0 = IVmaker("gauss",xvalues)
+    # Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_ii")
+
+    # # Etotal = total_energy(Phi,Pi)
+    # # Nt_plot = 7 # how many snap shots are plotted
+    # # plot_energy_evolution(Etotal,timevalues)
+    # plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')

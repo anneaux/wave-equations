@@ -89,3 +89,10 @@ def plot_energy_evolution(Etotal,timevalues):
     ax1.set(xlabel='time $t$', ylabel='energy $E$')
     ax1.grid(color = 'gainsboro')
     plt.savefig('plots/WE_energy_evolution.png')
+
+def plot_potential(xvalues,potential):
+  fig, (ax1) = plt.subplots(1)
+  ax1.plot(xvalues,potential, label='')
+  ax1.set(xlabel='x', ylabel='potential')
+  ax1.grid(color = 'gainsboro')
+  plt.savefig('plots/WE_PT_potential.png')
