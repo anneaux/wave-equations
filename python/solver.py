@@ -102,16 +102,17 @@ def total_energy(phi,pi):
     for i in range(0,rows):   # for all times sum up individual energies
         #divide by number of columns to make E independent of Nx
         Etotal[i] = sum(E[i,1:Nx+1])/columns # do not consider ghost points
+    Etotal = Etotal/max(Etotal)
     return Etotal
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 2
+    endT = 1
     Nt = 400
     endX = 1
-    Nx = 100
+    Nx = 200
     sigma = 0.005
-    mu = 0.5
+    mu = 0.7
     width= 0.2
     k = 1
 
@@ -121,14 +122,14 @@ if __name__ == "__main__":
 
     ### choose f_4, f_5, g_a (for latter specify a = ...) or gaussian here (for latter specify sigma and mu)
 
-    Phi0 = f_4(xvalues)
-    Pi0  = - f_4_prime(xvalues)
+    # Phi0 = f_4(xvalues)
+    # Pi0  = - f_4_prime(xvalues)
     # Phi0 = gaussian(xvalues,sigma,mu)
     # Pi0  = -gaussian_drv(xvalues,sigma,mu)
     # Phi0 = squares(xvalues, k)
     # Pi0  = -squares_drv(xvalues,k)
-    # Phi0 = f_triangle(xvalues,width/2,mu)
-    # Pi0 = -f_triangle_drv(xvalues,width/2,mu)
+    Phi0 = f_triangle(xvalues,width/2,mu)
+    Pi0 = -f_triangle_drv(xvalues,width/2,mu)
     # Phi0 = g_a(xvalues,20)#
     # Pi0 = 3*np.zeros(len(phi0))#- g_a_prime(xvalues,20)
 

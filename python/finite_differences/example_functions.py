@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import signal
 ############# define analytical functions ###########
 def f_1(x):
     return (x-1/2)**2+x
@@ -60,6 +61,7 @@ def squares(x,k):
     return signal.square(2 * np.pi * k * (x-0.25))
 def squares_drv(x,k):
     return np.zeros(len(x))
+    
 ### triangle pulse wave packet
 def f_triangle(xvalues,width,mu):
     T = np.zeros(len(xvalues))
