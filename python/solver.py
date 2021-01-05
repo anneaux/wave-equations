@@ -21,7 +21,7 @@ def gridmaker(endT,nt,endX,nx):
   return dx,timevalues,dx,xvalues
 
 
-def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
+def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   Nt = len(timevalues)
   Nx = len(xvalues)
   deltax = xvalues[Nx-1]/Nx
@@ -31,7 +31,8 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
   ### first time step
   phi[0,1:Nx+1] = phi0
   Pi[0,1:Nx+1] = Pi0
-
+  potential = np.insert(potential,0,potential[0])
+  potential = np.append(potential,potential[-1])
   def rhs(phi,Pi,t):
     if bc == "periodic":
       phi[0] = phi[-3]
@@ -79,7 +80,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc):
       d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
 
     dphidt = Pi
-    dPidt = c**2 * d2phidx2
+    dPidt = c**2 * d2phidx2 - potential*phi
     return dphidt, dPidt
 
   t = 1 #dummy value
@@ -108,16 +109,17 @@ def total_energy(phi,pi):
         #divide by number of columns to make E independent of Nx
         Etotal[i] = sum(E[i,1:Nx+1])/columns # do not consider ghost points
     return Etotal
+
+
 # -------------------- little helper function ---------------
 def IVmaker(func,xvalues):
   funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
   ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
   ,"gauss":(gaussian(xvalues,sigma,mu),gaussian_drv(xvalues,sigma,mu))
   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
-  ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
+  # ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
   }
   return funcDict[func]
-
 
 
 # ------------------- potential ---------------
@@ -129,6 +131,7 @@ def PTpot(xvalues):
   kappa = 0.1 # width
   return -V0 * sech(kappa*xvalues)**2
 
+
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
@@ -137,7 +140,8 @@ if __name__ == "__main__":
     Nx = 500
     # for gaussian pulse
     sigma = 0.005
-    mu = 0.5
+    mu = 0.8
+    # for triangle pulse
     width= 0.2
     # for square pulse
     k = 1
@@ -145,21 +149,19 @@ if __name__ == "__main__":
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
     # courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
-    xvalues = np.linspace(-2,2,401)
+
+    ### potential
     potential = PTpot(xvalues)
-    plot_potential(xvalues,potential)
+    # plot_potential(xvalues,potential)
 
-
-
-
-    # Phi0, Pi0 = IVmaker("gauss",xvalues)
-    # Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_ii")
+    Phi0, Pi0 = IVmaker("gauss",xvalues)
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
 
     # # Etotal = total_energy(Phi,Pi)
     # # Nt_plot = 7 # how many snap shots are plotted
     # # plot_energy_evolution(Etotal,timevalues)
-    # plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
