@@ -121,12 +121,13 @@ def IVmaker(func,xvalues):
 
 
 # ------------------- potential ---------------
+def sech(x):
+  return 2/(np.exp(x)+np.exp(-x))
+
 def PTpot(xvalues):
-  V0 = 0.15
-  kappa = 0.1
-  beta = 1j*np.pi/2
-  theta = kappa*xvalues + beta
-  return V0*4/(np.exp(theta)+np.exp(-theta))**2 - V0
+  V0 = 0.15 # depth
+  kappa = 0.1 # width
+  return -V0 * sech(kappa*xvalues)**2
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
@@ -146,8 +147,7 @@ if __name__ == "__main__":
     # print("courant number = %.2f" % courant)
     xvalues = np.linspace(-2,2,401)
     potential = PTpot(xvalues)
-    print(PTpot(0))
-    plot_potential(xvalues,potential.real)
+    plot_potential(xvalues,potential)
 
 
 
