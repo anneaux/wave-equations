@@ -41,7 +41,7 @@ def f_5_prime_prime(sigma = 1,mu=1,a=1):
     return 4*((12*np.pi)**2)*(3*(np.sin(12*np.pi*x)**2)*(np.cos(12*np.pi*x)**2)-np.sin(12*np.pi*x)**4)
 tex_f_5 = r'$f_5=\sin^4 (12\pi x)$'
 
-#set parameter for function g_a
+### set parameter for function g_a
 def g_a(x,sigma = 1,mu=1,a=1):
     return np.exp(-a*x**2)
 def g_a_prime(x,sigma = 1,mu=1,a=1):
@@ -51,7 +51,7 @@ def g_a_prime_prime(x,sigma = 1,mu=1,a=1):
 tex_g_a = r'$g_a=\exp(-ax^2)$'
 
 ### gaussian wave packet
-def gaussian(x,sigma = 1,mu=1,a=1):
+def gaussian(x,sigma=1,mu=1,a=1):
   return 1/np.sqrt(2*np.pi*sigma**2) * np.exp(- (x-mu)**2/np.sqrt(2*sigma**2))
 def gaussian_drv(x,sigma = 1,mu=1,a=1):
   return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
@@ -61,7 +61,7 @@ def squares(x,k):
     return signal.square(2 * np.pi * k * (x-0.25))
 def squares_drv(x,k):
     return np.zeros(len(x))
-    
+
 ### triangle pulse wave packet
 def f_triangle(xvalues,width,mu):
     T = np.zeros(len(xvalues))

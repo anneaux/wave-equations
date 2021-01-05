@@ -74,7 +74,6 @@ def plot_animation(xvalues, timevalues, phi, Pi,format = 'mp4'):
     ani.save('plots/WE-animation.mp4', writer=mywriter)
 
 
-from matplotlib.ticker import FormatStrFormatter
 def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   fig, ax = plt.subplots()
   im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower')
@@ -90,3 +89,10 @@ def plot_energy_evolution(Etotal,timevalues):
     ax1.set(xlabel='time $t$', ylabel='energy $E$')
     ax1.grid(color = 'gainsboro')
     plt.savefig('plots/WE_energy_evolution.png')
+
+def plot_potential(xvalues,potential):
+  fig, (ax1) = plt.subplots(1)
+  ax1.plot(xvalues,potential, label='')
+  ax1.set(xlabel='x', ylabel='potential')
+  ax1.grid(color = 'gainsboro')
+  plt.savefig('plots/WE_PT_potential.png')
