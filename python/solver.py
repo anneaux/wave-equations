@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
-
+import math
 from finite_differences.example_functions import *
 from results_plotting import *
 ### constants
@@ -12,20 +12,21 @@ c = 1
 # d Pi / d t = c^2 d^2 phi / d x^2
 
 ### discretize time and space with uniform grid
-def gridmaker(endT,nt,endX,nx):
+def gridmaker(endT,nt,endX,nx,startX=0):
   dt = (endT/nt)
   timevalues = np.linspace(0,endT,nt)
-  dx = (endX/nx)
-  xvalues = np.linspace(0,endX,nx)
+  dx = ((endX-startX)/nx)
+  xvalues = np.linspace(startX,endX,nx)
   # print('dt = %.3f, dx = %.3f' %(dt,dx))
-  return dx,timevalues,dx,xvalues
+  return dt,timevalues,dx,xvalues
 
 
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   Nt = len(timevalues)
   Nx = len(xvalues)
-  deltax = xvalues[Nx-1]/Nx
+  deltax = (xvalues[Nx-1]-xvalues[0])/Nx
   deltat = timevalues[Nt-1]/Nt
+  # print('deltat = %.3f, deltax = %.3f' %(deltat,deltax))
   phi = np.zeros([Nt,Nx+2])
   Pi = np.zeros([Nt,Nx+2])
   ### first time step
@@ -73,7 +74,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
       Pi[0] = (phi[0] - phi[1])/deltax
       Pi[-1] = (phi[-1] - phi[-2])/deltax
 
-
     # compute second spatial derivative (d^2 phi / dx^2) with FD
     d2phidx2= np.zeros(Nx+2)
     for ix in range(1,Nx+1): # computing only inner points
@@ -81,6 +81,8 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
 
     dphidt = Pi
     dPidt = c**2 * d2phidx2 - potential*phi
+    print(dPidt[300])
+    print(c**2 * d2phidx2[300])
     return dphidt, dPidt
 
   t = 1 #dummy value
@@ -115,7 +117,7 @@ def total_energy(phi,pi):
 def IVmaker(func,xvalues):
   funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
   ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
-  ,"gauss":(gaussian(xvalues,sigma,mu),gaussian_drv(xvalues,sigma,mu))
+  ,"gauss":(gaussian(xvalues,sigma,mu,ampl),-gaussian_drv(xvalues,sigma,mu,ampl))
   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
   # ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
   }
@@ -127,7 +129,7 @@ def sech(x):
   return 2/(np.exp(x)+np.exp(-x))
 
 def PTpot(xvalues):
-  V0 = 0.15 # depth
+  V0 = 1.5 # depth
   kappa = 0.1 # width
   return -V0 * sech(kappa*xvalues)**2
 
@@ -135,28 +137,26 @@ def PTpot(xvalues):
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
-    Nt = 500
+    Nt = 300
     endX = 1
-    Nx = 500
-    # for gaussian pulse
-    sigma = 0.005
-    mu = 0.8
-    # for triangle pulse
-    width= 0.2
-    # for square pulse
-    k = 1
+    Nx = 600
 
-    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
-    # courant = c * deltat / deltax
+    sigma = 0.02 # for gaussian pulse
+    mu = -0.6
+    ampl = 0.03
+    width= 0.2 # for triangle pulse
+    k = 1  # for square pulse
+
+    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx,-1)
+    courant = c * deltat / deltax
     # print("courant number = %.2f" % courant)
-
     ### potential
+    # potential = np.zeros(len(xvalues))#
     potential = PTpot(xvalues)
-    # plot_potential(xvalues,potential)
 
     Phi0, Pi0 = IVmaker("gauss",xvalues)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
-
+    plot_potential(xvalues,potential)
     # # Etotal = total_energy(Phi,Pi)
     # # Nt_plot = 7 # how many snap shots are plotted
     # # plot_energy_evolution(Etotal,timevalues)
