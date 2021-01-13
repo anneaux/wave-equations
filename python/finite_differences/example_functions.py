@@ -33,6 +33,10 @@ def f_4_prime_prime(x,sigma = 1,mu=1,a=1):
     return -np.sin(12*np.pi*x)*(12*np.pi)**2
 tex_f_4 = r'$f_4=\sin (12\pi x)$'
 
+def sine_12_pi(x,t):
+    c = 1
+    return np.sin(12*np.pi*x-c*12*np.pi*t)
+
 def f_5(x,sigma = 1,mu=1,a=1):
     return np.sin(12*np.pi*x)**4
 def f_5_prime(x,sigma = 1,mu=1,a=1):

@@ -113,7 +113,7 @@ def total_energy(phi,pi):
 
 
 # -------------------- little helper function ---------------
-def IVmaker(func,xvalues):
+def IVmaker(func,xvalues,sigma,mu,width,k):
   funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
   ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
   ,"gauss":(gaussian(xvalues,sigma,mu),gaussian_drv(xvalues,sigma,mu))
@@ -132,7 +132,8 @@ def PTpot(xvalues):
   kappa = 0.1 # width
   return -V0 * sech(kappa*xvalues)**2
 
-
+def zero_potential(xvalues):
+    return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
@@ -155,7 +156,7 @@ if __name__ == "__main__":
     potential = PTpot(xvalues)
     # plot_potential(xvalues,potential)
 
-    Phi0, Pi0 = IVmaker("gauss",xvalues)
+    Phi0, Pi0 = IVmaker('sine',xvalues,sigma,mu,width,k)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
 
     # # Etotal = total_energy(Phi,Pi)

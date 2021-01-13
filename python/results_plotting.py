@@ -75,8 +75,9 @@ def plot_animation(xvalues, timevalues, phi, Pi,format = 'mp4'):
 
 
 def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
-  fig, ax = plt.subplots()
-  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower')
+  fig, ax1 = plt.subplots()
+  im = ax1.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower')
+  fig.colorbar(im, ax=ax1)
   # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
   plt.xlabel('time')
   plt.ylabel('position')

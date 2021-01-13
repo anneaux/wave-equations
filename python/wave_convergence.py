@@ -1,14 +1,13 @@
 import numpy as np
 from finite_differences.example_functions import *
 import matplotlib.pyplot as plt
-from solver import gridmaker, wave_evolution1D
+from solver import *
 import math
 from results_plotting import *
 from convergence_plotting import *
 
 
 def abs_convergence(analytical, num_h, num_half_h):
-    print(np.shape(analytical))
     n = len(num_h)
     Q = 0
     Z = [0]*n
@@ -62,8 +61,9 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         # start conditions
         Phi0 = func(xvalues,sigma,mu,a)
         Pi0  = func_prime(xvalues,sigma,mu,a)
+        potential = zero_potential(xvalues)
         # calculate
-        Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc)
+        Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
         Phi = phi_select(Phi,2**k)
         Phis[k,:,:] = Phi
 # do the convergence tests
@@ -77,6 +77,7 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         num_half_h = Phis[1, (k+1)*nt_conv, :]
         num_quater_h = Phis[2, (k+1)*nt_conv, :]
     # perform convergence tests
+        print(np.len(xvalues),np.len(timevalues))
         abs_conv[k] = abs_convergence(analytical, num_h, num_half_h)
         self_conv[k] = self_convergence(num_h, num_half_h, num_quater_h)
     return abs_conv, self_conv
@@ -104,11 +105,11 @@ def convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,tests_cfl,func,func_prime,sig
 if __name__ == "__main__":
 # set values for space time discretization
     c = 1
-    z = 10   # helper vairable for convergence over integrated periods
+    z = 1   # helper vairable for convergence over integrated periods
     endT = z
-    Nt = z*6**4
+    Nt = 2*z*6**3
     endX = 1
-    Nx = 6**3
+    Nx = 2*6**2
     T_per = 1/(z*6) #T: Periodenlaenge
     n_tests_T = z*6 - 1 # n_tests_T: Anzahl der perioden für die Konvergenz getestet wird
     n_tests_h = 10 # n_tests_h: Anzahl der x-Diskretisierungen bei konstanter CFL für die Konvergenz getestet wird
@@ -118,14 +119,14 @@ if __name__ == "__main__":
     sigma = mu/Nx
     a = 2
 # run convergence test for up to 6 periods
-    abs_conv, self_conv = convergence_test_T_var(endT,Nt,endX,Nx,T_per,n_tests_T,
-                        f_4,f_4_prime,sigma,mu,a,'open_i')
-    plot_norms_T(abs_conv,self_conv,n_tests_T,Nx,Nt)
+    # abs_conv, self_conv = convergence_test_T_var(endT,Nt,endX,Nx,T_per,n_tests_T,
+    #                     f_4,f_4_prime,sigma,mu,a,'open_iii')
+    # plot_norms_T(abs_conv,self_conv,n_tests_T,Nx,Nt)
 # run convergence test for increasing grid resolution (cfl increasing!)
     # abs_conv, self_conv = convergence_test_h_var(endT,Nt,endX,Nx,T_per,n_tests_h,
     #                     f_4,f_4_prime,sigma,mu,a,'periodic')
     # plot_norms_h(abs_conv,self_conv,n_tests_h,Nx,Nt)
 # run convergence test for increasing grid resolution (cfl fixed!!!)
-    # abs_conv, self_conv = convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,n_tests_cfl,
-    #                     f_4,f_4_prime,sigma,mu,a,'open_ii')
-    # plot_norms_cfl(abs_conv,self_conv,n_tests_cfl,Nx,Nt)
+    abs_conv, self_conv = convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,n_tests_cfl,
+                        f_4,f_4_prime,sigma,mu,a,'open_iii')
+    plot_norms_cfl(abs_conv,self_conv,n_tests_cfl,Nx,Nt)
