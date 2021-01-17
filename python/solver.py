@@ -17,7 +17,7 @@ def gridmaker(endT,nt,endX,nx,startX=0):
   timevalues = np.linspace(0,endT,nt)
   dx = ((endX-startX)/nx)
   xvalues = np.linspace(startX,endX,nx)
-  # print('dt = %.3f, dx = %.3f' %(dt,dx))
+  print('dt = %.3f, dx = %.3f' %(dt,dx))
   return dt,timevalues,dx,xvalues
 
 
@@ -81,8 +81,8 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
 
     dphidt = Pi
     dPidt = c**2 * d2phidx2 - potential*phi
-    print(dPidt[300])
-    print(c**2 * d2phidx2[300])
+    # print(dPidt[300])
+    # print(c**2 * d2phidx2[300])
     return dphidt, dPidt
 
   t = 1 #dummy value
@@ -129,39 +129,43 @@ def sech(x):
   return 2/(np.exp(x)+np.exp(-x))
 
 def PTpot(xvalues):
-  V0 = 1.5 # depth
+  V0 = 0.15 # depth
   kappa = 0.1 # width
   return -V0 * sech(kappa*xvalues)**2
 
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 1
-    Nt = 300
-    endX = 1
-    Nx = 600
+    endT = 400
+    Nt = 800
+    startX = -200
+    endX = 200
+    Nx = 800
 
-    sigma = 0.02 # for gaussian pulse
-    mu = -0.6
-    ampl = 0.03
+    sigma = 5 # for gaussian pulse
+    mu = -50
+    ampl = 150
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
-    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx,-1)
+    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx,startX)
     courant = c * deltat / deltax
-    # print("courant number = %.2f" % courant)
+    print("courant number = %.2f" % courant)
     ### potential
     # potential = np.zeros(len(xvalues))#
     potential = PTpot(xvalues)
 
     Phi0, Pi0 = IVmaker("gauss",xvalues)
+    # phi: zeilen: Zeit, Spalten: Ort
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
+    print("calculation finished.")
     plot_potential(xvalues,potential)
     # # Etotal = total_energy(Phi,Pi)
     # # Nt_plot = 7 # how many snap shots are plotted
     # # plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+    plot_xt_evolution_heatmap(timevalues,xvalues,np.log(Phi+1))
+    plot_amplitude_evolution(timevalues,Phi[:,250])
+    plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
