@@ -42,17 +42,17 @@ def phi_select(phi,s):
 
 
 def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,bc):
-# nt_conv:  Zeitpunkt in Zeitschritten, bei dem
-#           eine Periode vergangen ist
+# nt_conv:  point in time, at which 1 temporal period has passed
+    Nt = Nt + 1 # add 1 so phi is calculated at exact periods
+    Nx = Nx + 1
     nt_conv = int(Nt*T)
-    Phis = np.zeros((3,Nt,Nx+1))
+    Phis = np.zeros((3,Nt,Nx))
 # calculate 3 different phis vor 3 different
 # spatial grid resolutions
     for k in range(0,3):
         # make grid
         # print('\n endT = %.1f, Nt = %d' %(endT,Nt))
-        dt, timevalues, dx, xvalues = gridmaker(endT,Nt,endX,(2**k)*Nx+1)
-        dt = endT/Nt
+        dt, timevalues, dx, xvalues = gridmaker(endT,Nt,endX,(2**k)*Nx)
         # print('dt = %.3f , dx = %.3f' %(dt,dx))
         # print('shape of timevalues:', np.shape(timevalues))
         # print('shape of xvalues:', np.shape(xvalues))
@@ -63,7 +63,9 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         Pi0  = func_prime(xvalues,sigma,mu,a)
         potential = zero_potential(xvalues)
         # calculate
-        Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
+        Phi, Pi =  wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
+        # Phi, Pi =  wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
+        # Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
         Phi = phi_select(Phi,2**k)
         Phis[k,:,:] = Phi
 # do the convergence tests
@@ -72,14 +74,15 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         self_conv = np.zeros(tests_T)
     for k in range(tests_T):
     # select Phi at exact periods t = k*T
-        analytical = func(np.linspace(0,endX,Nx+1))
+        analytical = func(np.linspace(0,endX,Nx))
         num_h = Phis[0, (k+1)*nt_conv, :]
         num_half_h = Phis[1, (k+1)*nt_conv, :]
         num_quater_h = Phis[2, (k+1)*nt_conv, :]
     # perform convergence tests
-        print(np.len(xvalues),np.len(timevalues))
+        print('Number of x: ',np.shape(xvalues),'Number of t: ',np.shape(timevalues))
         abs_conv[k] = abs_convergence(analytical, num_h, num_half_h)
         self_conv[k] = self_convergence(num_h, num_half_h, num_quater_h)
+        # print('shape of ana and num_quater_h: ', np.shape(analytical) , np.shape(num_quater_h))
     return abs_conv, self_conv
 
 def convergence_test_h_var(endT,Nt,endX,Nx,T_per,tests_h,func,func_prime,sigma,mu,a,bc):
@@ -105,12 +108,12 @@ def convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,tests_cfl,func,func_prime,sig
 if __name__ == "__main__":
 # set values for space time discretization
     c = 1
-    z = 1   # helper vairable for convergence over integrated periods
+    z = 1  # helper vairable for convergence over integrated periods
     endT = z
     Nt = 2*z*6**3
     endX = 1
-    Nx = 2*6**2
-    T_per = 1/(z*6) #T: Periodenlaenge
+    Nx = 2*z*6**2
+    T_per = 1/(z*6) #T: zeitl. Periodenlaenge in Verhältnis zur Gesamtlänge
     n_tests_T = z*6 - 1 # n_tests_T: Anzahl der perioden für die Konvergenz getestet wird
     n_tests_h = 10 # n_tests_h: Anzahl der x-Diskretisierungen bei konstanter CFL für die Konvergenz getestet wird
     n_tests_cfl = 10
@@ -120,7 +123,7 @@ if __name__ == "__main__":
     a = 2
 # run convergence test for up to 6 periods
     # abs_conv, self_conv = convergence_test_T_var(endT,Nt,endX,Nx,T_per,n_tests_T,
-    #                     f_4,f_4_prime,sigma,mu,a,'open_iii')
+    #                     f_4,f_4_prime,sigma,mu,a,'peiodic')
     # plot_norms_T(abs_conv,self_conv,n_tests_T,Nx,Nt)
 # run convergence test for increasing grid resolution (cfl increasing!)
     # abs_conv, self_conv = convergence_test_h_var(endT,Nt,endX,Nx,T_per,n_tests_h,
@@ -128,5 +131,5 @@ if __name__ == "__main__":
     # plot_norms_h(abs_conv,self_conv,n_tests_h,Nx,Nt)
 # run convergence test for increasing grid resolution (cfl fixed!!!)
     abs_conv, self_conv = convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,n_tests_cfl,
-                        f_4,f_4_prime,sigma,mu,a,'open_iii')
+                        f_4,f_4_prime,sigma,mu,a,'periodic')
     plot_norms_cfl(abs_conv,self_conv,n_tests_cfl,Nx,Nt)

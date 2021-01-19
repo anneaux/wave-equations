@@ -13,7 +13,7 @@ def vonNeumann(phi,analytical):
     k = 2
     fouriers = np.zeros((rows,k*columns+1))
     for i in range(rows):
-        fouriers[i,:] = fourier_coeff(phi[i,:],1)
+        fouriers[i,:] = fourier_coeff(phi_err[i,:],1)
         # fouriers[i,:] = np.fft.fft(phi_err[i,:],k*columns)
         # fouriers[i,:] = sp.fft.fft(phi_err[i,:])
         # print('fourier coefficients %d' %i,fouriers[i,:])
@@ -33,13 +33,15 @@ def fourier_coeff(y,period):
     return c
 
 #--------------------------
-def vonNeumann_plot_heatmap(G_factor):
+def vonNeumann_plot_heatmap(G_factor,Nt,Nx):
+
     fig, ax1 = plt.subplots()
-    im = ax1.imshow(np.transpose(G_factor), cmap = 'viridis', origin = 'lower')
+    im = ax1.imshow(np.transpose(G_factor), cmap = 'viridis',
+            origin = 'lower', extent=[0, Nt, 0, Nx])
     fig.colorbar(im, ax=ax1)
     # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
     plt.xlabel('time')
-    plt.ylabel('position')
+    plt.ylabel('frequency')
     ### todo: set proper positions and times as ticks
     plt.savefig("plots/vonNeumann_heatmap.png", bbox_inches = 'tight')
 
@@ -70,7 +72,8 @@ def test():
     # plot_potential(xvalues,potential)
 
     Phi0, Pi0 = IVmaker('sine',xvalues,sigma,mu,width,k)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "periodic", potential)
+    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
 
     ana = np.zeros(np.shape(Phi))
     for i in range(Nx):
@@ -79,6 +82,6 @@ def test():
     G_factor = vonNeumann(Phi,ana)
     G_factor[0,:] = 0
 
-    vonNeumann_plot_heatmap(G_factor)
+    vonNeumann_plot_heatmap(G_factor,Nt,Nx)
 
 test()

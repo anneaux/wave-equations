@@ -58,7 +58,7 @@ def plot_norms_h(abs_conv,self_conv,tests_h,Nx,Nt):
 
 def plot_norms_cfl(abs_conv,self_conv,tests_cfl,Nx,Nt):
     Nxs = np.arange(Nx+1,(tests_cfl+1)*Nx+1,Nx)
-    cfl = min(Nxs)/Nt
+    cfl = Nx/(Nt)
         # print(np.shape(Nxs))
     fig, (ax1) = plt.subplots(1)
     ax2 = ax1.twiny()
@@ -68,7 +68,7 @@ def plot_norms_cfl(abs_conv,self_conv,tests_cfl,Nx,Nt):
     ax1.set(xlabel = 'number of spatial grid points', ylabel = '$Q= 2^p$' )
     ax1.grid(color = 'gainsboro')
     def tick_function(Nxs):
-        Nts = Nxs/cfl
+        Nts = (Nxs-1)/cfl +1
         return ["%d" % z for z in Nts]
     ax1.set_xticks(Nxs)
     ax2.set_xticks(ax1.get_xticks())
