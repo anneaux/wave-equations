@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
-
+import math
 from finite_differences.example_functions import *
 from results_plotting import *
 ### constants
@@ -12,19 +12,19 @@ c = 1
 # d Pi / d t = c^2 d^2 phi / d x^2
 
 ### discretize time and space with uniform grid
-def gridmaker(endT,nt,endX,nx):
+def gridmaker(endT,nt,endX,nx,startX=0):
   dt = (endT/nt)
   timevalues = np.linspace(0,endT,nt)
-  dx = (endX/nx)
-  xvalues = np.linspace(0,endX,nx)
-  # print('dt = %.3f, dx = %.3f' %(dt,dx))
+  dx = ((endX-startX)/nx)
+  xvalues = np.linspace(startX,endX,nx)
+  print('dt = %.3f, dx = %.3f' %(dt,dx))
   return dt,timevalues,dx,xvalues
 
 
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   Nt = len(timevalues)
   Nx = len(xvalues)
-  deltax = xvalues[Nx-1]/Nx
+  deltax = (xvalues[Nx-1]-xvalues[0])/Nx
   deltat = timevalues[Nt-1]/Nt
   phi = np.zeros([Nt,Nx+2])     # add 1 ghost point at each end
   Pi = np.zeros([Nt,Nx+2])
@@ -73,7 +73,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
       Pi[0] = (phi[0] - phi[1])/deltax
       Pi[-1] = (phi[-1] - phi[-2])/deltax
 
-
     # compute second spatial derivative (d^2 phi / dx^2) with FD
     d2phidx2= np.zeros(Nx+2)
     for ix in range(1,Nx+1): # computing only inner points
@@ -81,6 +80,8 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
 
     dphidt = Pi
     dPidt = c**2 * d2phidx2 - potential*phi
+    # print(dPidt[300])
+    # print(c**2 * d2phidx2[300])
     return dphidt, dPidt
 
   t = 1 #dummy value
@@ -225,7 +226,7 @@ def total_energy(phi,pi):
 def IVmaker(func,xvalues,sigma,mu,width,k):
   funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
   ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
-  ,"gauss":(gaussian(xvalues,sigma,mu),gaussian_drv(xvalues,sigma,mu))
+  ,"gauss":(gaussian(xvalues,sigma,mu,ampl),-gaussian_drv(xvalues,sigma,mu,ampl))
   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
   # ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
   }
@@ -245,36 +246,36 @@ def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 10
-    Nt = 1000
-    endX = 1
-    Nx = 50
-    # for gaussian pulse
-    sigma = 0.005
-    mu = 0.8
-    # for triangle pulse
-    width = 0.2
-    # for square pulse
-    k = 1
+    endT = 400
+    Nt = 800
+    startX = -200
+    endX = 200
+    Nx = 800
 
-    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx)
-    # courant = c * deltat / deltax
-    # print("courant number = %.2f" % courant)
+    sigma = 5 # for gaussian pulse
+    mu = -50
+    ampl = 150
+    width= 0.2 # for triangle pulse
+    k = 1  # for square pulse
 
+    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx,startX)
+    courant = c * deltat / deltax
+    print("courant number = %.2f" % courant)
     ### potential
-    potential = zero_potential(xvalues)
-    # plot_potential(xvalues,potential)
+    # potential = np.zeros(len(xvalues))#
+    potential = PTpot(xvalues)
 
-    Phi0, Pi0 = IVmaker('sine',xvalues,sigma,mu,width,k)
-    # Phi, Pi = wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,'periodic',potential)
-    Phi, Pi = wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,'periodic',potential)
-    # Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,'periodic',potential)
-
-    Etotal = total_energy(Phi,Pi)
+    Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k)
+    # phi: zeilen: Zeit, Spalten: Ort
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
+    print("calculation finished.")
+    plot_potential(xvalues,potential)
+    # # Etotal = total_energy(Phi,Pi)
     # # Nt_plot = 7 # how many snap shots are plotted
-    plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+    # # plot_energy_evolution(Etotal,timevalues)
+    plot_xt_evolution_heatmap(timevalues,xvalues,np.log(Phi+1))
+    plot_amplitude_evolution(timevalues,Phi[:,250])
+    plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')

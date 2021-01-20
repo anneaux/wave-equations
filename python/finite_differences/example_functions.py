@@ -56,9 +56,9 @@ tex_g_a = r'$g_a=\exp(-ax^2)$'
 
 ### gaussian wave packet
 def gaussian(x,sigma=1,mu=1,a=1):
-  return 1/np.sqrt(2*np.pi*sigma**2) * np.exp(- (x-mu)**2/np.sqrt(2*sigma**2))
+  return a * np.exp(-(x-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
 def gaussian_drv(x,sigma = 1,mu=1,a=1):
-  return  -(x-mu)/(sigma**2 * np.sqrt(np.pi)) * np.exp(-(x-mu)**2/np.sqrt(2 * sigma**2))
+  return  - a *(x-mu)/sigma**2 * np.exp(-(x-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
 
 ### square pulse wave packet
 def squares(x,k):
