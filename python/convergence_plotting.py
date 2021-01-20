@@ -56,15 +56,17 @@ def plot_norms_h(abs_conv,self_conv,tests_h,Nx,Nt):
     ax2.set_xlabel('cfl number')
     plt.show()
 
-def plot_norms_cfl(abs_conv,self_conv,tests_cfl,Nx,Nt):
+def plot_norms_cfl(abs_conv,self_conv,tests_cfl,Nx,Nt,endX,endT,bc):
     Nxs = np.arange(Nx+1,(tests_cfl+1)*Nx+1,Nx)
-    cfl = Nx/(Nt)
+    dx = endX/Nx
+    dt = endT/Nt
+    cfl = dt/dx
         # print(np.shape(Nxs))
     fig, (ax1) = plt.subplots(1)
     ax2 = ax1.twiny()
     ax1.plot(Nxs,abs_conv,'o-', label= 'absolute convergence' )
     ax1.plot(Nxs,self_conv,'o-', label= 'self convergence' )
-    ax1.legend(title='CFL fixed: %.3f \n 1 period integration' %cfl)
+    ax1.legend(title = 'CFL fixed: %.3f \n 1 period integration \n %s boundaries' %(cfl,bc))
     ax1.set(xlabel = 'number of spatial grid points', ylabel = '$Q= 2^p$' )
     ax1.grid(color = 'gainsboro')
     def tick_function(Nxs):
@@ -74,8 +76,8 @@ def plot_norms_cfl(abs_conv,self_conv,tests_cfl,Nx,Nt):
     ax2.set_xticks(ax1.get_xticks())
     # ax2.set_xbound(ax1.get_xbound())
     ax2.set_xlim(ax1.get_xlim())
-    ax1.tick_params(axis = 'y',direction = 'in')
-    ax1.tick_params( axis = 'x', direction = 'in')
+    ax1.tick_params(axis = 'y', direction = 'in')
+    ax1.tick_params(axis = 'x', direction = 'in')
     ax2.tick_params(direction = 'in')
     ax2.set_xticklabels(tick_function(Nxs))
     ax2.set_xlabel('number of temporal grid points')

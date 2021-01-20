@@ -30,10 +30,14 @@ def self_convergence(num_h, num_half_h, num_quater_h):
         N[i] = abs(num_half_h[i]-num_quater_h[i])**2
     Q = np.sqrt(sum(Z)) / np.sqrt(sum(N))
     return Q
-
+#------------------ function 'phi_select'--------
+# to compare solutions to the WE for different grid sizes
+# one needs to break them down to the minimal grid resolution
+# This function selects only columns with difference s
+#
 def phi_select(phi,s):
     (a,b) = np.shape(phi)       # a: timepoints, b: spacepoints
-    orig_length_phi = int((b-1)/s+1)
+    orig_length_phi = int(((b-1)/s+1))
     # print(orig_length_phi)
     new_phi = np.zeros((a,orig_length_phi))
     for i in range(orig_length_phi):
@@ -46,6 +50,7 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
     Nt = Nt + 1 # add 1 so phi is calculated at exact periods
     Nx = Nx + 1
     nt_conv = int(Nt*T)
+    # print('nt_conv: ' , nt_conv)
     Phis = np.zeros((3,Nt,Nx))
 # calculate 3 different phis vor 3 different
 # spatial grid resolutions
@@ -73,6 +78,8 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         abs_conv = np.zeros(tests_T)
         self_conv = np.zeros(tests_T)
     for k in range(tests_T):
+        # print('timevalues: \n',timevalues)
+        print('evaluation time:', timevalues[(k+1)*nt_conv])
     # select Phi at exact periods t = k*T
         analytical = func(np.linspace(0,endX,Nx))
         num_h = Phis[0, (k+1)*nt_conv, :]
@@ -108,28 +115,29 @@ def convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,tests_cfl,func,func_prime,sig
 if __name__ == "__main__":
 # set values for space time discretization
     c = 1
-    z = 1  # helper vairable for convergence over integrated periods
-    endT = 1/6
-    Nt = int(2*6**2)
+    z = 2/6  # helper vairable for convergence over integrated periods
+    endT = z
+    Nt = int(3*z*6**2)
     endX = 1
-    Nx = int(2*6**2)
-    T_per = 1    # T: zeitl. Periodenlaenge in Verhältnis zur Gesamtlänge
+    Nx = int(3*6**1)
+    T_per = 1/(6*z)    # T: zeitl. Periodenlaenge in Verhältnis zur Gesamtlänge
     n_tests_T = z*6 - 1 # n_tests_T: Anzahl der perioden für die Konvergenz getestet wird
     n_tests_h = 10 # n_tests_h: Anzahl der x-Diskretisierungen bei konstanter CFL für die Konvergenz getestet wird
-    n_tests_cfl = 10
+    n_tests_cfl = 2
+    bc = 'periodic'
 
     mu = 0.5
     sigma = mu/Nx
     a = 2
 # run convergence test for up to 6 periods
     # abs_conv, self_conv = convergence_test_T_var(endT,Nt,endX,Nx,T_per,n_tests_T,
-    #                     f_4,f_4_prime,sigma,mu,a,'peiodic')
+    #                     f_4,f_4_prime,sigma,mu,a,bc)
     # plot_norms_T(abs_conv,self_conv,n_tests_T,Nx,Nt)
 # run convergence test for increasing grid resolution (cfl increasing!)
     # abs_conv, self_conv = convergence_test_h_var(endT,Nt,endX,Nx,T_per,n_tests_h,
-    #                     f_4,f_4_prime,sigma,mu,a,'periodic')
+    #                     f_4,f_4_prime,sigma,mu,a,bc)
     # plot_norms_h(abs_conv,self_conv,n_tests_h,Nx,Nt)
 # run convergence test for increasing grid resolution (cfl fixed!!!)
     abs_conv, self_conv = convergence_test_cfl_var(endT,Nt,endX,Nx,T_per,n_tests_cfl,
-                        f_4,f_4_prime,sigma,mu,a,'periodic')
-    plot_norms_cfl(abs_conv,self_conv,n_tests_cfl,Nx,Nt)
+                        f_4,f_4_prime,sigma,mu,a,bc)
+    plot_norms_cfl(abs_conv,self_conv,n_tests_cfl,Nx,Nt,endX,endT,bc)

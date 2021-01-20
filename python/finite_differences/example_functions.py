@@ -56,6 +56,8 @@ tex_g_a = r'$g_a=\exp(-ax^2)$'
 
 ### gaussian wave packet
 def gaussian(x,sigma=1,mu=1,a=1):
+    # mu: mean value
+    # sigma: std deviation
   return a * np.exp(-(x-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
 def gaussian_drv(x,sigma = 1,mu=1,a=1):
   return  - a *(x-mu)/sigma**2 * np.exp(-(x-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)

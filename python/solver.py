@@ -223,9 +223,9 @@ def total_energy(phi,pi):
 
 
 # -------------------- little helper function ---------------
-def IVmaker(func,xvalues,sigma,mu,width,k):
-  funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
-  ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
+def IVmaker(func,xvalues,sigma,mu,width,k,ampl):
+  funcDict = {"sine4":(f_4(xvalues),- f_4_prime(xvalues))
+  ,"sine5":(f_5(xvalues),- f_5_prime(xvalues))
   ,"gauss":(gaussian(xvalues,sigma,mu,ampl),-gaussian_drv(xvalues,sigma,mu,ampl))
   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
   # ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
@@ -246,15 +246,15 @@ def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 400
-    Nt = 800
-    startX = -200
-    endX = 200
-    Nx = 800
+    endT = 2
+    Nt = 200
+    startX = 0
+    endX = 1
+    Nx = 50
 
-    sigma = 5 # for gaussian pulse
-    mu = -50
-    ampl = 150
+    sigma = 1/6 # for gaussian pulse
+    mu = 1/2
+    ampl = 1
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
@@ -263,19 +263,22 @@ if __name__ == "__main__":
     print("courant number = %.2f" % courant)
     ### potential
     # potential = np.zeros(len(xvalues))#
-    potential = PTpot(xvalues)
+    potential = zero_potential(xvalues)
 
     Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k)
     # phi: zeilen: Zeit, Spalten: Ort
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
+    bc = 'periodic'
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
+    # Phi, Pi = wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
+    # Phi, Pi = wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
     print("calculation finished.")
-    plot_potential(xvalues,potential)
-    # # Etotal = total_energy(Phi,Pi)
-    # # Nt_plot = 7 # how many snap shots are plotted
-    # # plot_energy_evolution(Etotal,timevalues)
+    # plot_potential(xvalues,potential)
+    # Nt_plot = 7 # how many snap shots are plotted
+    Etotal = total_energy(Phi,Pi)
+    plot_energy_evolution(Etotal,timevalues)
     plot_xt_evolution_heatmap(timevalues,xvalues,np.log(Phi+1))
-    plot_amplitude_evolution(timevalues,Phi[:,250])
-    plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
+    # plot_amplitude_evolution(timevalues,Phi[:,250])
+    # plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
