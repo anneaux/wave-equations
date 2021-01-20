@@ -63,9 +63,9 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         Pi0  = func_prime(xvalues,sigma,mu,a)
         potential = zero_potential(xvalues)
         # calculate
-        Phi, Pi =  wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
+        # Phi, Pi =  wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
         # Phi, Pi =  wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
-        # Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
+        Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
         Phi = phi_select(Phi,2**k)
         Phis[k,:,:] = Phi
 # do the convergence tests
@@ -109,11 +109,11 @@ if __name__ == "__main__":
 # set values for space time discretization
     c = 1
     z = 1  # helper vairable for convergence over integrated periods
-    endT = z
-    Nt = 2*z*6**3
+    endT = 1/6
+    Nt = int(2*6**2)
     endX = 1
-    Nx = 2*z*6**2
-    T_per = 1/(z*6) #T: zeitl. Periodenlaenge in Verhältnis zur Gesamtlänge
+    Nx = int(2*6**2)
+    T_per = 1    # T: zeitl. Periodenlaenge in Verhältnis zur Gesamtlänge
     n_tests_T = z*6 - 1 # n_tests_T: Anzahl der perioden für die Konvergenz getestet wird
     n_tests_h = 10 # n_tests_h: Anzahl der x-Diskretisierungen bei konstanter CFL für die Konvergenz getestet wird
     n_tests_cfl = 10

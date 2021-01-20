@@ -245,8 +245,8 @@ def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 1
-    Nt = 100
+    endT = 10
+    Nt = 1000
     endX = 1
     Nx = 50
     # for gaussian pulse
