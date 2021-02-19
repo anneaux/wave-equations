@@ -26,13 +26,12 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   Nx = len(xvalues)
   deltax = (xvalues[Nx-1]-xvalues[0])/Nx
   deltat = timevalues[Nt-1]/Nt
-  # print('deltat = %.3f, deltax = %.3f' %(deltat,deltax))
-  phi = np.zeros([Nt,Nx+2])
+  phi = np.zeros([Nt,Nx+2])     # add 1 ghost point at each end
   Pi = np.zeros([Nt,Nx+2])
   ### first time step
-  phi[0,1:Nx+1] = phi0
+  phi[0,1:Nx+1] = phi0          # fill inner points with given Phi0 and Pi0
   Pi[0,1:Nx+1] = Pi0
-  potential = np.insert(potential,0,potential[0])
+  potential = np.insert(potential,0,potential[0])   # expand potential to fit to ghosts
   potential = np.append(potential,potential[-1])
   def rhs(phi,Pi,t):
     if bc == "periodic":
@@ -88,7 +87,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   t = 1 #dummy value
   # time iteration (RK4 method)
   for i in range(0,Nt-1):
-    k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
+    k1_phi, k1_Pi = rhs(phi[i,:], Pi[i], t)
     k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
     k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
     k4_phi, k4_Pi = rhs(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
@@ -98,7 +97,116 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
 
 
-#--------------------- take a look at the energy ------
+def wave_evolution1D_4th_order(phi0,Pi0,timevalues,xvalues,bc,potential):
+  Nt = len(timevalues)
+  Nx = len(xvalues)
+  deltax = xvalues[Nx-1]/Nx
+  deltat = timevalues[Nt-1]/Nt
+  phi = np.zeros([Nt,Nx+4])     # add 4 ghost point, 2 on each side of x domain
+  Pi = np.zeros([Nt,Nx+4])       # add 4 ghost point, 2 on each side
+  ### first time step
+  phi[0,2:Nx+2] = phi0
+  Pi[0,2:Nx+2] = Pi0
+  potential = np.insert(potential,0,potential[0])
+  potential = np.insert(potential,0,potential[1])
+  potential = np.append(potential,potential[-1])
+  potential = np.append(potential,potential[-2])
+  def rhs(phi,Pi,t):
+    if bc == "periodic":
+      phi[0] = phi[-5]  # filling ghost points at the beginning
+      phi[1] = phi[-4]
+      phi[-1] = phi[4]  # filling ghost points at the end
+      phi[-2] = phi[3]
+      Pi[0] = Pi[-5]    # filling ghost points at the beginning
+      Pi[1] = Pi[-4]
+      Pi[-1] = Pi[4]    # filling ghost points at the end
+      Pi[-2] = Pi[3]
+
+    # compute second spatial derivative (d^2 phi / dx^2) with FiniteDiff
+    d2phidx2= np.zeros(Nx+4)
+    for ix in range(2,Nx+2): # computing only inner points
+      d2phidx2[ix] = 1/(12*(deltax**2)) * (
+      -phi[ix+2] + 16*phi[ix+1] -30*phi[ix]  +16*phi[ix-1] -phi[ix-2]
+      )
+
+    dphidt = Pi
+    # print(np.shape(d2phidx2))
+    # print(np.shape(phi),np.shape(potential))
+    dPidt = c**2 * d2phidx2 - potential*phi
+    return dphidt, dPidt
+
+  t = 1 #dummy value
+  # time iteration (RK4 method)
+  for i in range(0,Nt-1):
+    k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
+    k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
+    k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
+    k4_phi, k4_Pi = rhs(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
+
+    phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
+    Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
+  return phi[:,2:Nx+2], Pi[:,2:Nx+2]    # return only inner points
+
+def wave_evolution1D_6th_order(phi0,Pi0,timevalues,xvalues,bc,potential):
+  Nt = len(timevalues)
+  Nx = len(xvalues)
+  deltax = xvalues[Nx-1]/Nx
+  deltat = timevalues[Nt-1]/Nt
+  phi = np.zeros([Nt,Nx+6])     # add 6 ghost point, 3 on each side of x domain
+  Pi = np.zeros([Nt,Nx+6])       # add 6 ghost point, 3 on each side
+  ### first time step
+  phi[0,3:Nx+3] = phi0
+  Pi[0,3:Nx+3] = Pi0
+  potential = np.insert(potential,0,potential[0])
+  potential = np.insert(potential,0,potential[1])
+  potential = np.insert(potential,0,potential[2])
+  potential = np.append(potential,potential[-1])
+  potential = np.append(potential,potential[-2])
+  potential = np.insert(potential,0,potential[-3])
+  def rhs(phi,Pi,t):
+    if bc == "periodic":
+      phi[0] = phi[-7]  # filling ghost points at the beginning
+      phi[1] = phi[-6]
+      phi[2] = phi[-5]
+      phi[-1] = phi[6]  # filling ghost points at the end
+      phi[-2] = phi[5]
+      phi[-3] = phi[4]
+      Pi[0] = Pi[-7]    # filling ghost points at the beginning
+      Pi[1] = Pi[-6]
+      Pi[2] = Pi[-5]
+      Pi[-1] = Pi[6]    # filling ghost points at the end
+      Pi[-2] = Pi[5]
+      Pi[-3] = Pi[4]
+
+    # compute second spatial derivative (d^2 phi / dx^2) with FiniteDiff
+    d2phidx2= np.zeros(Nx+6)
+    for ix in range(3,Nx+3): # computing only inner points
+      d2phidx2[ix] = 1/(90*(deltax**2)) * (
+      phi[ix+3] -13.5*phi[ix+2] + 135*phi[ix+1] -245*phi[ix]
+        +135*phi[ix-1] -13.5*phi[ix-2]+phi[ix+3]
+      )
+
+    dphidt = Pi
+    # print(np.shape(d2phidx2))
+    # print(np.shape(phi),np.shape(potential))
+    dPidt = c**2 * d2phidx2 - potential*phi
+    return dphidt, dPidt
+
+  t = 1 #dummy value
+  # time iteration (RK4 method)
+  for i in range(0,Nt-1):
+    k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
+    k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
+    k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
+    k4_phi, k4_Pi = rhs(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
+
+    phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
+    Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
+  return phi[:,3:Nx+3], Pi[:,3:Nx+3] # return only inner points
+
+
+#--------------------- take a look at the energy -------------------
+#-------------------------------------------------------------------
 def energy(q,p):        #calculate energy from position q(phi) and inertia p(pi)
     m=1
     E = 0.5* p**2 / m + 0.5* q**2 *m
@@ -115,9 +223,9 @@ def total_energy(phi,pi):
 
 
 # -------------------- little helper function ---------------
-def IVmaker(func,xvalues,sigma,mu,width,k):
-  funcDict = {"sine":(f_4(xvalues),- f_4_prime(xvalues))
-  ,"sine4":(f_5(xvalues),- f_5_prime(xvalues))
+def IVmaker(func,xvalues,sigma,mu,width,k,ampl):
+  funcDict = {"sine4":(f_4(xvalues),- f_4_prime(xvalues))
+  ,"sine5":(f_5(xvalues),- f_5_prime(xvalues))
   ,"gauss":(gaussian(xvalues,sigma,mu,ampl),-gaussian_drv(xvalues,sigma,mu,ampl))
   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
   # ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
@@ -138,15 +246,15 @@ def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 400
-    Nt = 800
-    startX = -200
-    endX = 200
-    Nx = 800
+    endT = 2
+    Nt = 200
+    startX = 0
+    endX = 1
+    Nx = 50
 
-    sigma = 5 # for gaussian pulse
-    mu = -50
-    ampl = 150
+    sigma = 1/6 # for gaussian pulse
+    mu = 1/2
+    ampl = 1
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
@@ -155,19 +263,22 @@ if __name__ == "__main__":
     print("courant number = %.2f" % courant)
     ### potential
     # potential = np.zeros(len(xvalues))#
-    potential = PTpot(xvalues)
+    potential = zero_potential(xvalues)
 
     Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k)
     # phi: zeilen: Zeit, Spalten: Ort
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues, "open_iii", potential)
+    bc = 'periodic'
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
+    # Phi, Pi = wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
+    # Phi, Pi = wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
     print("calculation finished.")
-    plot_potential(xvalues,potential)
-    # # Etotal = total_energy(Phi,Pi)
-    # # Nt_plot = 7 # how many snap shots are plotted
-    # # plot_energy_evolution(Etotal,timevalues)
+    # plot_potential(xvalues,potential)
+    # Nt_plot = 7 # how many snap shots are plotted
+    Etotal = total_energy(Phi,Pi)
+    plot_energy_evolution(Etotal,timevalues)
     plot_xt_evolution_heatmap(timevalues,xvalues,np.log(Phi+1))
-    plot_amplitude_evolution(timevalues,Phi[:,250])
-    plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
+    # plot_amplitude_evolution(timevalues,Phi[:,250])
+    # plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
 
     # save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
