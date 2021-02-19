@@ -21,7 +21,6 @@ def gridmaker(endT,nt,endX,nx,startX=0):
   print('dt = %.3f, dx = %.3f' %(dt,dx))
   return dt,timevalues,dx,xvalues
 
-
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
   Nt = len(timevalues)
   Nx = len(xvalues)
@@ -96,7 +95,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
-
 
 def wave_evolution1D_4th_order(phi0,Pi0,timevalues,xvalues,bc,potential):
   Nt = len(timevalues)
@@ -247,15 +245,15 @@ def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 5
-    Nt = 200
-    startX = -3
-    endX = 3
-    Nx = 200
+    endT = 400
+    Nt = 800
+    startX = -200
+    endX = 200
+    Nx = 800
 
-    sigma = 1/6 # for gaussian pulse
-    mu = -2.5
-    ampl = 0.5
+    sigma = 5 # for gaussian pulse
+    mu = -50
+    ampl = 150
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
@@ -279,9 +277,9 @@ if __name__ == "__main__":
 
     ### Plotting the results
     plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,np.log(Phi+1))
+    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
     # plot_amplitude_evolution(timevalues,Phi[:,250])
-    plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
+    plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     ### save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
