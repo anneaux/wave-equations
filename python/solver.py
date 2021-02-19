@@ -237,7 +237,7 @@ def sech(x):
   return 2/(np.exp(x)+np.exp(-x))
 
 def PTpot(xvalues):
-  V0 = 0.15 # depth
+  V0 = 0.2 # depth
   kappa = 0.1 # width
   return -V0 * sech(kappa*xvalues)**2
 
@@ -278,9 +278,10 @@ if __name__ == "__main__":
     ### Plotting the results
     plot_energy_evolution(Etotal,timevalues)
     plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    xindex = 250
+    xindex = 225
     plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
-    plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+    plot_amplitude_timestamp(xvalues,Phi[225,:],timevalues[225])
+    # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     ### save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
