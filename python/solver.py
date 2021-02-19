@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
 import math
+
 from finite_differences.example_functions import *
 from results_plotting import *
 ### constants
@@ -246,39 +247,41 @@ def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 2
+    endT = 5
     Nt = 200
-    startX = 0
-    endX = 1
-    Nx = 50
+    startX = -3
+    endX = 3
+    Nx = 200
 
     sigma = 1/6 # for gaussian pulse
-    mu = 1/2
-    ampl = 1
+    mu = -2.5
+    ampl = 0.5
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx,startX)
     courant = c * deltat / deltax
     print("courant number = %.2f" % courant)
-    ### potential
-    # potential = np.zeros(len(xvalues))#
-    potential = zero_potential(xvalues)
 
-    Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k)
-    # phi: zeilen: Zeit, Spalten: Ort
+    ### potential
+    potential = PTpot(xvalues)
+    # potential = zero_potential(xvalues)
+    plot_potential(xvalues,potential)
+
+    Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
     bc = 'periodic'
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
     # Phi, Pi = wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
     # Phi, Pi = wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
     print("calculation finished.")
-    # plot_potential(xvalues,potential)
     # Nt_plot = 7 # how many snap shots are plotted
     Etotal = total_energy(Phi,Pi)
+
+    ### Plotting the results
     plot_energy_evolution(Etotal,timevalues)
     plot_xt_evolution_heatmap(timevalues,xvalues,np.log(Phi+1))
     # plot_amplitude_evolution(timevalues,Phi[:,250])
-    # plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
+    plot_animation(xvalues, timevalues, np.log(Phi+1), Pi,'mp4')
 
-    # save as csv file
+    ### save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
