@@ -233,16 +233,20 @@ def IVmaker(func,xvalues,sigma,mu,width,k,ampl):
 
 
 # ------------------- potential ---------------
+depth = 0.15
+kappa = 0.1 # width
+
 def sech(x):
   return 2/(np.exp(x)+np.exp(-x))
 
 def PTpot(xvalues):
-  V0 = 0.2 # depth
-  kappa = 0.1 # width
+  V0 = depth
+  # kappa = kappa
   return -V0 * sech(kappa*xvalues)**2
 
 def zero_potential(xvalues):
     return np.zeros_like(xvalues)
+
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 400
@@ -280,7 +284,8 @@ if __name__ == "__main__":
     plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
     xindex = 225
     plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
-    plot_amplitude_timestamp(xvalues,Phi[225,:],timevalues[225])
+    tindex = 290
+    plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
     # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     ### save as csv file

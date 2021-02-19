@@ -120,11 +120,13 @@ def plot_amplitude_evolution(timevalues,phi_at_xindex,x_at_xindex):
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_phi_evolution_onepoint.png')
 
-def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex):
+def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex,depth,width):
   fig, (ax1) = plt.subplots(1)
   ax1.plot(xvalues,phi_at_tindex, label='')
   ax1.set(xlabel='position', ylabel='phi')
   ax1.text(0.02, 0.95,"at t = %.2f s" % t_at_tindex,transform=ax1.transAxes)
   # ax1.set_yscale('log')
   ax1.grid(color = 'gainsboro')
-  plt.savefig('plots/WE_phi_timestamp.png')
+  # depth = 0.2
+  # width = 0.5
+  plt.savefig('plots/PT-timestamps-150s/WE_phi_timestamp_d%.2f_w%.2f.png' %(depth, width))
