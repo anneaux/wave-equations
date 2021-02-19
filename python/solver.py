@@ -79,7 +79,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
       d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
 
     dphidt = Pi
-    dPidt = c**2 * d2phidx2 - potential*phi
+    dPidt = c**2 * d2phidx2 + potential*phi
     # print(dPidt[300])
     # print(c**2 * d2phidx2[300])
     return dphidt, dPidt
@@ -267,7 +267,7 @@ if __name__ == "__main__":
     plot_potential(xvalues,potential)
 
     Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
-    bc = 'periodic'
+    bc = 'open_iii'
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
     # Phi, Pi = wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
     # Phi, Pi = wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
@@ -278,7 +278,8 @@ if __name__ == "__main__":
     ### Plotting the results
     plot_energy_evolution(Etotal,timevalues)
     plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    # plot_amplitude_evolution(timevalues,Phi[:,250])
+    xindex = 250
+    plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
     plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     ### save as csv file

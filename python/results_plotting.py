@@ -111,10 +111,11 @@ def plot_potential(xvalues,potential):
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_PT_potential.png')
 
-def plot_amplitude_evolution(timevalues,phi_at_x):
+def plot_amplitude_evolution(timevalues,phi_at_xindex,x_at_xindex):
   fig, (ax1) = plt.subplots(1)
-  ax1.plot(timevalues,phi_at_x, label='')
+  ax1.plot(timevalues,phi_at_xindex, label='')
   ax1.set(xlabel='time', ylabel='phi')
-  ax1.set_yscale('log')
+  ax1.text(0.02, 0.95,"at x = %.2f" % x_at_xindex,transform=ax1.transAxes)
+  # ax1.set_yscale('log')
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_phi_evolution_onepoint.png')
