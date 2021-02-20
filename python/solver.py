@@ -5,6 +5,7 @@ import math
 
 from finite_differences.example_functions import *
 from results_plotting import *
+
 ### constants
 c = 1
 coeffDict = {2:[1,-2,1],4:[-1/12,4/3,-5/2,4/3,-1/12], 6:[1/90,-3/20,3/2,-49/18,3/2,-3/20,1/90],
@@ -25,12 +26,14 @@ def gridmaker(endT,nt,endX,nx,startX=0,startT=0):
 
 
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
+  if bc != "periodic" and order != 2:
+      print("for this accuracy order we only implemented 'periodic' boundary conditions.")
   binomcoeffs = coeffDict[order]
   Nt = len(timevalues)
   Nx = len(xvalues)
 
   deltax = (xvalues[Nx-1]-xvalues[0])/(Nx-1)
-  print(deltax)
+  # print(deltax)
   deltat = timevalues[Nt-1]/(Nt-1)
   phi = np.zeros([Nt,Nx+order])     # add 1 ghost point at each end for each order
   Pi = np.zeros([Nt,Nx+order])
@@ -49,36 +52,26 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
       Pi[0:ho] = Pi[-order-1:-ho-1]  # filling ghost points at the beginning
       Pi[-1:-ho-1:-1] = Pi[order:order-ho:-1] # filling ghost points at the end
     elif bc == "Dirichlet": # like a string
-      if order != 2:
-        print("OMG here is an error!!!!")
       phi[0] = - phi[2]
       phi[-1] = - phi[-3]
       Pi[0] = - Pi[2]
       Pi[-1] = - Pi[-3]
     elif bc == "vonNeumann": # like a reflected water wave
-      if order != 2:
-        print("OMG here is an error!!!!")
       phi[0] = phi[1]
       phi[-1] = phi[-2]
       Pi[0] = Pi[1]
       Pi[-1] = Pi[-2]
     elif bc == "open_i":     # variant (i)
-      if order != 2:
-        print("OMG here is an error!!!!")
       phi[0] = 2 * phi[1] - phi[2]
       phi[-1] = 2 * phi[-2] - phi[-3]
       Pi[0] = 2 * Pi[1] - Pi[2]
       Pi[-1] = 2* Pi[-2] - Pi[-3]
     elif bc == "open_ii":         # variant (ii)
-      if order != 2:
-        print("OMG here is an error!!!!")
       phi[0] = phi[2] - 2*Pi[1] * deltax/c
       phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
       Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
     elif bc == "open_iii":         # variant (iii)
-      if order != 2:
-        print("OMG here is an error!!!!")
       phi[0] = - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
       phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
       Pi[0] = (phi[0] - phi[1])/deltax
@@ -106,7 +99,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
 
-  return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
+  return phi[:,ho:Nx+ho], Pi[:,ho:Nx+ho] # return only inner points
 
 #--------------------- take a look at the energy -------------------
 #-------------------------------------------------------------------
@@ -137,60 +130,13 @@ def IVmaker(func,xvalues,sigma=1,mu=1,width=1,k=1,ampl=1):
 
 
 # ------------------- potential ---------------
-depth = 0.15
-kappa = 0.1 # width
-
 def sech(x):
   return 2/(np.exp(x)+np.exp(-x))
 
-def PTpot(xvalues):
+def PT_potential(xvalues,depth,kappa):
   V0 = depth
-  # kappa = kappa
   return -V0 * sech(kappa*xvalues)**2
 
 def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 
-# -------------------- now, do it ---------------
-if __name__ == "__main__":
-    endT = 2
-    Nt = 200
-    startX = 0
-    endX = 1
-    Nx = 50
-
-    sigma = 1/6 # for gaussian pulse
-    mu = 1/2
-    ampl = 1
-    width= 0.2 # for triangle pulse
-    k = 1  # for square pulse
-
-    deltat, timevalues, deltax, xvalues = gridmaker(endT,Nt,endX,Nx,startX)
-    courant = c * deltat / deltax
-    print("courant number = %.2f" % courant)
-
-    ### potential
-    # potential = PTpot(xvalues)
-    potential = zero_potential(xvalues)
-    # plot_potential(xvalues,potential)
-
-    Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
-
-    bc = 'periodic'
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,6)
-
-    print("calculation finished.")
-    # Nt_plot = 7 # how many snap shots are plotted
-    # Etotal = total_energy(Phi,Pi)
-
-    ### Plotting the results
-    # plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    # xindex = 225
-    # plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
-    # tindex = 290
-    # plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
-    # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
-
-    ### save as csv file
-    # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')
