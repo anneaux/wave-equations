@@ -23,12 +23,12 @@ def abs_convergence(analytical, num_h, num_half_h):
 def self_convergence(num_h, num_half_h, num_quater_h):
     n = len(num_h)
     Q = 0
-    Z = [0]*n
-    N = [0]*n
+    Z = np.zeros(n)
+    N = np.zeros(n)
     for i in range(n):
         Z[i] = abs(num_h[i]-num_half_h[i])**2
         N[i] = abs(num_half_h[i]-num_quater_h[i])**2
-    Q = np.sqrt(sum(Z)) / np.sqrt(sum(N))
+    Q = np.sqrt(np.sum(Z)) / np.sqrt(np.sum(N))
     return Q
 #------------------ function 'phi_select'--------
 # to compare solutions to the WE for different grid sizes
@@ -71,8 +71,9 @@ def convergence_test_T_var(endT,Nt,endX,Nx,T,tests_T,func,func_prime,sigma,mu,a,
         # Phi, Pi =  wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
         # Phi, Pi =  wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
         Phi, Pi =  wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
-        Phi = phi_select(Phi,2**k)
+        Phi = Phi[:,::2**k]  # phi_select(Phi,2**k)
         Phis[k,:,:] = Phi
+        print(np.shpe(Phi))
 # do the convergence tests
     # initialize
         abs_conv = np.zeros(tests_T)
@@ -121,9 +122,9 @@ if __name__ == "__main__":
     endX = 1
     Nx = int(3*6**1)
     T_per = 1/(6*z)    # T: zeitl. Periodenlaenge in Verhältnis zur Gesamtlänge
-    n_tests_T = z*6 - 1 # n_tests_T: Anzahl der perioden für die Konvergenz getestet wird
+    n_tests_T = 1 # n_tests_T: Anzahl der perioden für die Konvergenz getestet wird
     n_tests_h = 10 # n_tests_h: Anzahl der x-Diskretisierungen bei konstanter CFL für die Konvergenz getestet wird
-    n_tests_cfl = 2
+    n_tests_cfl = 4
     bc = 'periodic'
 
     mu = 0.5

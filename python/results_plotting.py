@@ -39,7 +39,7 @@ def plot_xt_evolution(timevalues,xvalues,phi,Nt_plot):
 ### Plotting the time evolution in an animation ######################
 import matplotlib
 import matplotlib.animation
-def plot_animation(xvalues, timevalues, phi, Pi,format = 'mp4'):
+def plot_animation(xvalues, timevalues, phi, format = 'mp4'):
   print("start animation making...")
   matplotlib.use('Agg')
   Nt = len(timevalues)
@@ -84,6 +84,7 @@ def plot_animation(xvalues, timevalues, phi, Pi,format = 'mp4'):
     mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
     ani.save('plots/WE-animation.mp4', writer=mywriter)
   print("...animation finished.")
+  return ani
 
 
 def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
@@ -95,7 +96,10 @@ def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   ax.set_aspect('auto')
   plt.xlabel('time')
   plt.ylabel('position')
+  fig.colorbar(im)
   plt.savefig("plots/WE_phi_evolution_heatmap.png", bbox_inches = 'tight')
+  # plt.show()
+  return fig
 
 def plot_energy_evolution(Etotal,timevalues):
     fig, (ax1) = plt.subplots(1)
