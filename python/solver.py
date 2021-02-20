@@ -7,6 +7,8 @@ from finite_differences.example_functions import *
 from results_plotting import *
 ### constants
 c = 1
+coeffDict = {2:[1,-2,1],4:[-1/12,4/3,-5/2,4/3,-1/12], 6:[1/90,-3/20,3/2,-49/18,3/2,-3/20,1/90],
+8:[-1/560,8/315,-1/5,8/5,-205/72,8/5,-1/5,8/315,-1/560]} # from https://doi.org/10.1090/S0025-5718-1988-0935077-0 bzw. https://en.wikipedia.org/wiki/Finite_difference_coefficient
 
 ### wave equation 0.2
 # d phi / d t = phi
@@ -21,68 +23,74 @@ def gridmaker(endT,nt,endX,nx,startX=0):
   print('dt = %.3f, dx = %.3f' %(dt,dx))
   return dt,timevalues,dx,xvalues
 
-def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
+
+def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
+  binomcoeffs = coeffDict[order]
   Nt = len(timevalues)
   Nx = len(xvalues)
   deltax = (xvalues[Nx-1]-xvalues[0])/Nx
   deltat = timevalues[Nt-1]/Nt
-  phi = np.zeros([Nt,Nx+2])     # add 1 ghost point at each end
-  Pi = np.zeros([Nt,Nx+2])
+  phi = np.zeros([Nt,Nx+order])     # add 1 ghost point at each end for each order
+  Pi = np.zeros([Nt,Nx+order])
+  ho = int(order/2) # half order, i.e. number of ghosts on each side
   ### first time step
-  phi[0,1:Nx+1] = phi0          # fill inner points with given Phi0 and Pi0
-  Pi[0,1:Nx+1] = Pi0
-  potential = np.insert(potential,0,potential[0])   # expand potential to fit to ghosts
-  potential = np.append(potential,potential[-1])
+  phi[0,ho:Nx+ho] = phi0          # fill inner points with given Phi0 and Pi0
+  Pi[0,ho:Nx+ho] = Pi0
+  potential = np.insert(potential,0,ho*[potential[ho]])   # expand potential to fit to ghosts
+  potential = np.append(potential,ho*[potential[-1]])
+
   def rhs(phi,Pi,t):
     if bc == "periodic":
-      phi[0] = phi[-3]
-      phi[-1] = phi[2]
-      Pi[0] = Pi[-3]
-      Pi[-1] = Pi[2]
+      phi[0:ho] = phi[-order-1:-ho-1] # filling ghost points at the beginning
+      phi[-1:-ho-1:-1] = phi[order:order-ho:-1] # filling ghost points at the end
+      Pi[0:ho] = Pi[-order-1:-ho-1]  # filling ghost points at the beginning
+      Pi[-1:-ho-1:-1] = Pi[order:order-ho:-1] # filling ghost points at the end
     elif bc == "Dirichlet": # like a string
-      # phi[0] = 0
-      # phi[-1] = 0
-      # phi[1] = 0
-      # phi[-2] = 0
-      # Pi[0] = 0
-      # Pi[1] = 0
-      # Pi[-2] = 0
-      # Pi[-1] = 0
+      if order != 2:
+        print("OMG here is an error!!!!")
       phi[0] = - phi[2]
       phi[-1] = - phi[-3]
       Pi[0] = - Pi[2]
       Pi[-1] = - Pi[-3]
     elif bc == "vonNeumann": # like a reflected water wave
+      if order != 2:
+        print("OMG here is an error!!!!")
       phi[0] = phi[1]
       phi[-1] = phi[-2]
       Pi[0] = Pi[1]
       Pi[-1] = Pi[-2]
     elif bc == "open_i":     # variant (i)
+      if order != 2:
+        print("OMG here is an error!!!!")
       phi[0] = 2 * phi[1] - phi[2]
       phi[-1] = 2 * phi[-2] - phi[-3]
       Pi[0] = 2 * Pi[1] - Pi[2]
       Pi[-1] = 2* Pi[-2] - Pi[-3]
     elif bc == "open_ii":         # variant (ii)
+      if order != 2:
+        print("OMG here is an error!!!!")
       phi[0] = phi[2] - 2*Pi[1] * deltax/c
       phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
       Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
     elif bc == "open_iii":         # variant (iii)
+      if order != 2:
+        print("OMG here is an error!!!!")
       phi[0] = - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
       phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
       Pi[0] = (phi[0] - phi[1])/deltax
       Pi[-1] = (phi[-1] - phi[-2])/deltax
 
-    # compute second spatial derivative (d^2 phi / dx^2) with FD
-    d2phidx2= np.zeros(Nx+2)
-    for ix in range(1,Nx+1): # computing only inner points
-      d2phidx2[ix] = 1/deltax**2 * (phi[ix+1] - 2*phi[ix] + phi[ix-1])
-
+    # compute second spatial derivative (d^2 phi / dx^2) with FiniteDifferencing
+    d2phidx2= np.zeros(Nx+order)
+    for ix in range(ho,Nx+ho): # computing only inner points
+      d2phidx2[ix] = 1/deltax**2 * sum(binomcoeffs[i]*phi[ix+i-ho] for i in range(0,order+1))
     dphidt = Pi
     dPidt = c**2 * d2phidx2 + potential*phi
-    # print(dPidt[300])
-    # print(c**2 * d2phidx2[300])
     return dphidt, dPidt
+
+  # for i in range(0,order+1):
+  #     print("use index:", i-ho, "with coefficient ", binomcoeffs[i] )
 
   t = 1 #dummy value
   # time iteration (RK4 method)
@@ -95,113 +103,6 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential):
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
   return phi[:,1:Nx+1], Pi[:,1:Nx+1] # return only inner points
-
-def wave_evolution1D_4th_order(phi0,Pi0,timevalues,xvalues,bc,potential):
-  Nt = len(timevalues)
-  Nx = len(xvalues)
-  deltax = xvalues[Nx-1]/Nx
-  deltat = timevalues[Nt-1]/Nt
-  phi = np.zeros([Nt,Nx+4])     # add 4 ghost point, 2 on each side of x domain
-  Pi = np.zeros([Nt,Nx+4])       # add 4 ghost point, 2 on each side
-  ### first time step
-  phi[0,2:Nx+2] = phi0
-  Pi[0,2:Nx+2] = Pi0
-  potential = np.insert(potential,0,potential[0])
-  potential = np.insert(potential,0,potential[1])
-  potential = np.append(potential,potential[-1])
-  potential = np.append(potential,potential[-2])
-  def rhs(phi,Pi,t):
-    if bc == "periodic":
-      phi[0] = phi[-5]  # filling ghost points at the beginning
-      phi[1] = phi[-4]
-      phi[-1] = phi[4]  # filling ghost points at the end
-      phi[-2] = phi[3]
-      Pi[0] = Pi[-5]    # filling ghost points at the beginning
-      Pi[1] = Pi[-4]
-      Pi[-1] = Pi[4]    # filling ghost points at the end
-      Pi[-2] = Pi[3]
-
-    # compute second spatial derivative (d^2 phi / dx^2) with FiniteDiff
-    d2phidx2= np.zeros(Nx+4)
-    for ix in range(2,Nx+2): # computing only inner points
-      d2phidx2[ix] = 1/(12*(deltax**2)) * (
-      -phi[ix+2] + 16*phi[ix+1] -30*phi[ix]  +16*phi[ix-1] -phi[ix-2]
-      )
-
-    dphidt = Pi
-    # print(np.shape(d2phidx2))
-    # print(np.shape(phi),np.shape(potential))
-    dPidt = c**2 * d2phidx2 - potential*phi
-    return dphidt, dPidt
-
-  t = 1 #dummy value
-  # time iteration (RK4 method)
-  for i in range(0,Nt-1):
-    k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
-    k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
-    k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
-    k4_phi, k4_Pi = rhs(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
-
-    phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
-    Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
-  return phi[:,2:Nx+2], Pi[:,2:Nx+2]    # return only inner points
-
-def wave_evolution1D_6th_order(phi0,Pi0,timevalues,xvalues,bc,potential):
-  Nt = len(timevalues)
-  Nx = len(xvalues)
-  deltax = xvalues[Nx-1]/Nx
-  deltat = timevalues[Nt-1]/Nt
-  phi = np.zeros([Nt,Nx+6])     # add 6 ghost point, 3 on each side of x domain
-  Pi = np.zeros([Nt,Nx+6])       # add 6 ghost point, 3 on each side
-  ### first time step
-  phi[0,3:Nx+3] = phi0
-  Pi[0,3:Nx+3] = Pi0
-  potential = np.insert(potential,0,potential[0])
-  potential = np.insert(potential,0,potential[1])
-  potential = np.insert(potential,0,potential[2])
-  potential = np.append(potential,potential[-1])
-  potential = np.append(potential,potential[-2])
-  potential = np.insert(potential,0,potential[-3])
-  def rhs(phi,Pi,t):
-    if bc == "periodic":
-      phi[0] = phi[-7]  # filling ghost points at the beginning
-      phi[1] = phi[-6]
-      phi[2] = phi[-5]
-      phi[-1] = phi[6]  # filling ghost points at the end
-      phi[-2] = phi[5]
-      phi[-3] = phi[4]
-      Pi[0] = Pi[-7]    # filling ghost points at the beginning
-      Pi[1] = Pi[-6]
-      Pi[2] = Pi[-5]
-      Pi[-1] = Pi[6]    # filling ghost points at the end
-      Pi[-2] = Pi[5]
-      Pi[-3] = Pi[4]
-
-    # compute second spatial derivative (d^2 phi / dx^2) with FiniteDiff
-    d2phidx2= np.zeros(Nx+6)
-    for ix in range(3,Nx+3): # computing only inner points
-      d2phidx2[ix] = 1/(90*(deltax**2)) * (
-      phi[ix+3] -13.5*phi[ix+2] + 135*phi[ix+1] -245*phi[ix]
-        +135*phi[ix-1] -13.5*phi[ix-2]+phi[ix+3]
-      )
-
-    dphidt = Pi
-    # print(np.shape(d2phidx2))
-    # print(np.shape(phi),np.shape(potential))
-    dPidt = c**2 * d2phidx2 - potential*phi
-    return dphidt, dPidt
-
-  t = 1 #dummy value
-  # time iteration (RK4 method)
-  for i in range(0,Nt-1):
-    k1_phi, k1_Pi  = rhs(phi[i,:], Pi[i], t)
-    k2_phi, k2_Pi = rhs(phi[i,:] + 0.5*deltat*k1_phi,Pi[i,:] + 0.5*deltat*k1_Pi,t + 0.5*deltat)
-    k3_phi, k3_Pi = rhs(phi[i,:] + 0.5*deltat*k2_phi,Pi[i,:] + 0.5*deltat*k2_Pi ,t + 0.5*deltat)
-    k4_phi, k4_Pi = rhs(phi[i,:] + deltat*k3_phi,Pi[i,:] + deltat*k3_Pi ,t + deltat)
-
-    phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
-    Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
-  return phi[:,3:Nx+3], Pi[:,3:Nx+3] # return only inner points
 
 
 #--------------------- take a look at the energy -------------------
@@ -249,15 +150,15 @@ def zero_potential(xvalues):
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
-    endT = 400
-    Nt = 800
-    startX = -200
-    endX = 200
-    Nx = 800
+    endT = 2
+    Nt = 200
+    startX = 0
+    endX = 1
+    Nx = 50
 
-    sigma = 5 # for gaussian pulse
-    mu = -50
-    ampl = 150
+    sigma = 1/6 # for gaussian pulse
+    mu = 1/2
+    ampl = 1
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
@@ -266,26 +167,24 @@ if __name__ == "__main__":
     print("courant number = %.2f" % courant)
 
     ### potential
-    potential = PTpot(xvalues)
-    # potential = zero_potential(xvalues)
-    plot_potential(xvalues,potential)
+    # potential = PTpot(xvalues)
+    potential = zero_potential(xvalues)
+    # plot_potential(xvalues,potential)
 
     Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
-    bc = 'open_iii'
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
-    # Phi, Pi = wave_evolution1D_4th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
-    # Phi, Pi = wave_evolution1D_6th_order(Phi0,Pi0,timevalues,xvalues,bc,potential)
+    bc = 'periodic'
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,6)
     print("calculation finished.")
     # Nt_plot = 7 # how many snap shots are plotted
-    Etotal = total_energy(Phi,Pi)
+    # Etotal = total_energy(Phi,Pi)
 
     ### Plotting the results
-    plot_energy_evolution(Etotal,timevalues)
+    # plot_energy_evolution(Etotal,timevalues)
     plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-    xindex = 225
-    plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
-    tindex = 290
-    plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
+    # xindex = 225
+    # plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
+    # tindex = 290
+    # plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
     # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
 
     ### save as csv file
