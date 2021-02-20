@@ -1,7 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy import signal
-import math
 
 from finite_differences.example_functions import *
 
@@ -20,8 +17,22 @@ def gridmaker(endT,nt,endX,nx,startX=0,startT=0):
   timevalues = np.linspace(startT,endT,nt+1)
   dx = (endX-startX)/(nx)
   xvalues = np.linspace(startX,endX,nx+1)
-  print('dt = %.4f, dx = %.4f' %(dt,dx))
+  print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
   return dt,timevalues,dx,xvalues
+
+def gridmaker(endT,maxX,courant=1):
+  dt = 0.5
+  dx = c * dt / courant
+
+  # courant = c * deltat / deltax
+  nt = int(endT/dt)
+  timevalues = np.linspace(0,endT,nt+1)
+
+  nx = int(2*maxX/dx)
+  xvalues = np.linspace(-maxX,maxX,nx+1)
+  print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
+  return dt,timevalues,dx,xvalues
+
 
 
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
@@ -98,6 +109,7 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     phi[i+1,:] = phi[i,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:] = Pi[i,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
 
+  print("calculation finished.")
   return phi[:,ho:Nx+ho], Pi[:,ho:Nx+ho] # return only inner points
 
 #--------------------- take a look at the energy -------------------
@@ -118,7 +130,7 @@ def total_energy(phi,pi):
 
 
 # -------------------- little helper function (InitialValuesMaker)-----------
-def IVmaker(func,xvalues,sigma=1,mu=1,width=1,k=1,ampl=1):
+def IVmaker(func,xvalues,sigma=1,mu=1,ampl=1,width=1,k=1):
   funcDict = {"sine4":(f_4(xvalues),- f_4_prime(xvalues))
   ,"sine5":(f_5(xvalues),- f_5_prime(xvalues))
   ,"gauss":(gaussian(xvalues,sigma,mu,ampl),-gaussian_drv(xvalues,sigma,mu,ampl))

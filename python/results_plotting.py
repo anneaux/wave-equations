@@ -1,8 +1,7 @@
 import numpy as np
-from finite_differences.example_functions import *
 import matplotlib.pyplot as plt
-from scipy import signal
 
+from finite_differences.example_functions import *
 
 #### Plotting the solutions in a position-time diagram ###
 def plot_xt(Nt, deltat, phi_t):
@@ -134,3 +133,13 @@ def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex,depth,width):
   # depth = 0.2
   # width = 0.5
   plt.savefig('plots/PT-timestamps-150s/WE_phi_timestamp_d%.2f_w%.2f.png' %(depth, width))
+
+
+def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
+  fig, (ax1) = plt.subplots(1)
+  ax1.plot(timevalues,phi_at_xindex, label='')
+  ax1.set(xlabel='time', ylabel='phi')
+  ax1.text(0.02, 0.95,"at x = %.2f" % x_at_xindex,transform=ax1.transAxes)
+  # ax1.set_yscale('log')
+  ax1.grid(color = 'gainsboro')
+  plt.savefig('plots/WE_phi_abs_evolution_onepoint.png')

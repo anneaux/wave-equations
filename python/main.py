@@ -1,9 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy import signal # what for?
-import math # what for?
-
-from finite_differences.example_functions import *
 from solver import *
 from results_plotting import *
 
@@ -45,7 +39,7 @@ if __name__ == "__main__":
 
     ### Plotting the results
     # plot_energy_evolution(Etotal,timevalues)
-    plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
+    # plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
     # xindex = 225
     # plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
     # tindex = 290
