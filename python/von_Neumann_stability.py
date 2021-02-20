@@ -14,8 +14,8 @@ def vonNeumann(phi,analytical):
     k = 2
     fouriers = np.zeros((rows,k*columns+1))
     for i in range(rows):
-        fouriers[i,:] = fourier_coeff(phi_err[i,:],1)
-        # fouriers[i,:] = np.fft.fft(phi_err[i,:],k*columns)
+        # fouriers[i,:] = fourier_coeff(phi_err[i,:],1)
+        fouriers[i,:] = np.fft.fft(phi_err[i,:],k*columns+1)
         # fouriers[i,:] = sp.fft.fft(phi_err[i,:])
         # print('fourier coefficients %d' %i,fouriers[i,:])
     G_factor = np.zeros((rows-1,k*columns+1))
@@ -33,12 +33,13 @@ def fourier_coeff(y,period):
         c[n] = c_m/c_m.size
     return c
 
-#--------------------------
+#---------------------- plotting -------------------------------
 def vonNeumann_plot_heatmap(G_factor,endT,endX):
 
     fig, ax1 = plt.subplots()
     im = ax1.imshow(np.transpose(G_factor), cmap = 'viridis',
-            origin = 'lower', extent=[0, endT, 0, endX], norm=LogNorm(vmin=0.01, vmax=10))
+            origin = 'lower', extent=[0, endT, 0, endX],
+            norm=LogNorm(vmin=0.01, vmax=100) )
     fig.colorbar(im, ax=ax1)
     # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
     ax1.set(xlabel='time', ylabel='frequency')
@@ -47,7 +48,7 @@ def vonNeumann_plot_heatmap(G_factor,endT,endX):
 
 
 
-########################
+#------------------------------------------------------------
 
 def test():
     endT = 1
