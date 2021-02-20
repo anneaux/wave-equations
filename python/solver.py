@@ -4,7 +4,6 @@ from scipy import signal
 import math
 
 from finite_differences.example_functions import *
-from results_plotting import *
 
 ### constants
 c = 1
@@ -27,7 +26,7 @@ def gridmaker(endT,nt,endX,nx,startX=0,startT=0):
 
 def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   if bc != "periodic" and order != 2:
-      print("for this accuracy order we only implemented 'periodic' boundary conditions.")
+      print("for this accuracy order we only implemented 'periodic' boundary conditions, results may not be correct.")
   binomcoeffs = coeffDict[order]
   Nt = len(timevalues)
   Nx = len(xvalues)

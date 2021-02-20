@@ -36,12 +36,11 @@ if __name__ == "__main__":
     # plot_potential(xvalues,potential)
 
     Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
-    bc = 'open_iii'
-
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,2)
-
+    bc = 'periodic'
+    order= 8
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     print("calculation finished.")
-    # Nt_plot = 7 # how many snap shots are plotted
+
     # Etotal = total_energy(Phi,Pi)
 
     ### Plotting the results
