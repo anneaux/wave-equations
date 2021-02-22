@@ -143,3 +143,128 @@ def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
   # ax1.set_yscale('log')
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_phi_abs_evolution_onepoint.png')
+
+
+
+
+
+
+def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4'):
+  print("start animation making...")
+  matplotlib.use('Agg')
+  Nt = len(timevalues)
+  res_dpi=100
+  figsize=4 #inch
+
+  # a = phi[6,:,:]
+  # im = plt.imshow(a,interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+
+  # initialization function: plot the background of each frame
+  # def init():
+  #   global im
+  #   im, = plt.imshow(np.zeros_like(phi[0,:,:]))
+    # ax.set_xlim(0, max(xvalues))
+  #   im.set_data(np.zeros_like(phi[0,:,:]))
+    # return [im]
+
+  # animation function.  This is called sequentially
+  def animate(i):
+      a = phi[i,:,:]
+      # print(a)    
+      im.set_array(a)
+      timelabel.set_text('time: %.2f s' % timevalues[i])
+      return im, timelabel
+
+  fig, ax = plt.subplots()
+  # print(phi[1,:,:])
+  im = plt.imshow(phi[1,:,:],interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+
+  timelabel = ax.text(0.02, 0.95, '', transform=ax.transAxes)
+  ani = matplotlib.animation.FuncAnimation(fig, animate, frames=Nt, blit = True)
+
+
+  ### write as mp4
+  if format == 'mp4':
+    Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
+    mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
+    ani.save('plots/WE-2D-animation.mp4', writer=mywriter)
+  print("...animation finished.")
+  return ani
+
+
+  # im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower', extent = [min(timevalues),max(timevalues),min(xvalues),max(xvalues)])
+  # # norm=LogNorm(vmin=0.01, vmax=1)
+  # ax.set_aspect('auto')
+  # plt.xlabel('time')
+  # plt.ylabel('position')
+  # fig.colorbar(im)
+
+
+
+
+  # def init_animation(xvalues,yvalues,phi):
+    # global line
+    # line, = ax.plot(xvalues, np.zeros_like(xvalues))
+    # ax.set_xlim(0, max(xvalues))
+    
+  # def animate(i):
+  #   line.set_ydata(phi[i,:])
+  #   timelabel.set_text('time: %.2f s' % timevalues[i])
+  #   return line, timelabel
+
+  # fig3, ax3 = plt.subplots()
+  # ax3.set(xlabel = "x", ylabel = "phi(x)")
+  # line, = ax3.plot(xvalues, np.zeros_like(xvalues)+0.01)
+  # # ax3.set_xlim(0, max(xvalues))
+  # ax3.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
+  # # ax3.set_ylim(0,1000)
+  # # ax3.set_yscale('log')
+  # #, title = "time evolution of 1D wave")
+
+  # timelabel = ax3.text(0.02, 0.95, '', transform=ax3.transAxes)
+  # ani = matplotlib.animation.FuncAnimation(fig3, animate, frames=Nt, blit = True) #init_func=init_animation,
+
+  #   ### write as gif (gif stockt manchmal ein bisschen, geht außerdem sehr langsam zu speichern)
+  # if format == 'gif':
+  #   ani.save('plots/WE-animation.gif', writer='imagemagick', fps=15)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def plot_xyt_evolution_heatmap(timevalues,xvalues,phi):
+  from matplotlib.colors import LogNorm
+  fig, ax = plt.subplots()
+  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower', extent = [min(timevalues),max(timevalues),min(xvalues),max(xvalues)])
+  # norm=LogNorm(vmin=0.01, vmax=1)
+  # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
+  ax.set_aspect('auto')
+  plt.xlabel('time')
+  plt.ylabel('position')
+  fig.colorbar(im)
+  plt.savefig("plots/WE_phi_evolution_heatmap.png", bbox_inches = 'tight')
+  # plt.show()
+  return fig
