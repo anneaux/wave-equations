@@ -61,20 +61,20 @@ def abs_convergence(ana,num1,num2):
 
 #---------------main function -------------------------------------------
 
-def convergence_test(cfl,Nt,bc,endT=1,endX=1):
+def convergence_test(cfl,Nt,bc,funchandle,endT=1,endX=1):
     Nx = int(cfl*Nt/endT)
 
     # num1
-    dt,timevalues,dx,xvalues = gridmaker(endT, Nt, endX, Nx)
+    dt,timevalues,dx,xvalues = gridmaker1(endT, Nt, endX, Nx)
     # print('xvalues\n',xvalues)
     potential = zero_potential(xvalues)
-    Phi0, Pi0 = IVmaker('gauss',xvalues,1,1,1,1)
+    Phi0, Pi0 = IVmaker(funchandle,xvalues,1,1,1,1)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
     num1 = Phi[0::1]
     # print('num1(t=0):\n',num1[0])
     # print('timevalues:\n', timevalues )
-    print('timevalue for t=1', timevalues[int(Nt/endT)] )
-    print('num1(t= ',timevalues[int(Nt/endT)],' ):\n',num1[int(Nt/endT)])
+    # print('timevalue for t=1', timevalues[int(Nt/endT)] )
+    # print('num1(t= ',timevalues[int(Nt/endT)],' ):\n',num1[int(Nt/endT)])
     # print('shape(num1): ', np.shape(num1))
     # # print('shape(timevalues1): ',np.shape(timevalues[0::1]))
     # print('timevalues1:', timevalues)
@@ -86,19 +86,19 @@ def convergence_test(cfl,Nt,bc,endT=1,endX=1):
             ana[i,j] = sine_12_pi(xvalues[j],timevalues[i])
 
     # num 2
-    dt,timevalues,dx,xvalues = gridmaker(endT, 2*Nt, endX, 2*Nx)
+    dt,timevalues,dx,xvalues = gridmaker1(endT, 2*Nt, endX, 2*Nx)
     potential = zero_potential(xvalues)
-    Phi0, Pi0 = IVmaker('sine4',xvalues,1,1,1,1)
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
+    Phi0, Pi0 = IVmaker(funchandle,xvalues,1,1,1,1)
+    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,)
     num2 = Phi[0::2,0::2]
     # print('shape(num2): ', np.shape(num2))
     # # print('shape(timevalues2): ',np.shape(timevalues[0::2]))
     # print('timevalues2:\n', timevalues)
 
     # num3
-    dt,timevalues,dx,xvalues = gridmaker(endT, 4*Nt, endX, 4*Nx)
+    dt,timevalues,dx,xvalues = gridmaker1(endT, 4*Nt, endX, 4*Nx)
     potential = zero_potential(xvalues)
-    Phi0, Pi0 = IVmaker('sine4',xvalues,1,1,1,1)
+    Phi0, Pi0 = IVmaker(funchandle,xvalues,1,1,1,1)
     Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential)
     num3 = Phi[0::4,0::4]
     # print('shape(num2): ', np.shape(num2))
@@ -110,17 +110,18 @@ def convergence_test(cfl,Nt,bc,endT=1,endX=1):
 
 if __name__ == "__main__":
     cfl = 0.5
-    endT = 10
+    endT = 1
     endX = 1
-    tests = 5
-    bc = 'periodic'
+    tests = 1
+    bc = 'open_iii'
     Nt_step = 100
     k = 0         # k+Nt_step: starting value for Nts
     Nt = np.linspace(endT*(k+Nt_step),endT*(k+Nt_step*tests),tests)
     selfQs = []
     absQs = []
+    fhandle = "sine4"
     for i in range(len(Nt)):
-        selfQ, absQ = convergence_test(cfl,int(Nt[i]),bc,endT,endX)
+        selfQ, absQ = convergence_test(cfl,int(Nt[i]),bc,fhandle,endT,endX)
         selfQs.append(selfQ)
         absQs.append(absQ)
     fig1 = self_convergence_plotting_2(cfl, Nt, selfQs, endT)

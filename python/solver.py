@@ -12,12 +12,12 @@ coeffDict = {2:[1,-2,1],4:[-1/12,4/3,-5/2,4/3,-1/12], 6:[1/90,-3/20,3/2,-49/18,3
 # d Pi / d t = c^2 d^2 phi / d x^2
 
 ### discretize time and space with uniform grid
-def gridmaker(endT,nt,endX,nx,startX=0,startT=0):
+def gridmaker1(endT,nt,endX,nx,startX=0,startT=0):
   dt = (endT-startT)/(nt)
   timevalues = np.linspace(startT,endT,nt+1)
   dx = (endX-startX)/(nx)
   xvalues = np.linspace(startX,endX,nx+1)
-  print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
+  print('dt = %.3f (%.f points), dx = %.3f (%.f points)' %(dt,nt,dx,nx))
   return dt,timevalues,dx,xvalues
 
 def gridmaker(endT,maxX,courant=1):
@@ -35,7 +35,7 @@ def gridmaker(endT,maxX,courant=1):
 
 
 
-def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
+def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order=2):
   if bc != "periodic" and order != 2:
       print("for this accuracy order we only implemented 'periodic' boundary conditions, results may not be correct.")
   binomcoeffs = coeffDict[order]
@@ -82,10 +82,10 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
       Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
     elif bc == "open_iii":         # variant (iii)
-      phi[0] = - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
-      phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
-      Pi[0] = (phi[0] - phi[1])/deltax
-      Pi[-1] = (phi[-1] - phi[-2])/deltax
+      phi[0] =  - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
+      phi[-1] =  - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
+      Pi[0] =  (phi[0] - phi[1])/deltax #(2 * phi[1] - phi[2])/deltax + Pi[1] #
+      Pi[-1] = (phi[-1] - phi[-2])/deltax # (2 * phi[-2] - phi[-3])/deltax + Pi[-2] # 
 
     # compute second spatial derivative (d^2 phi / dx^2) with FiniteDifferencing
     d2phidx2= np.zeros(Nx+order)
@@ -150,4 +150,3 @@ def PT_potential(xvalues,depth,kappa):
 
 def zero_potential(xvalues):
     return np.zeros_like(xvalues)
-
