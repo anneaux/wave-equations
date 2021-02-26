@@ -53,7 +53,6 @@ def plot_animation(xvalues, timevalues, phi, format = 'mp4'):
     ax.set_xlim(0, max(xvalues))
     # ax.set_ylim(0,1000)
     # ax.set_yscale('log')
-
     # ax.set_ylim(np.amin(phi[:,:]),np.amax(phi[:,:]))
 
   def animate(i):
@@ -143,3 +142,50 @@ def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
   # ax1.set_yscale('log')
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_phi_abs_evolution_onepoint.png')
+
+
+
+
+
+
+def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4'):
+  print("start animation making...")
+  matplotlib.use('Agg')
+  Nt = len(timevalues)
+  res_dpi=100
+  figsize=4 #inch
+
+  # a = phi[6,:,:]
+  # im = plt.imshow(a,interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+
+  # initialization function: plot the background of each frame
+  # def init():
+  #   global im
+  #   im, = plt.imshow(np.zeros_like(phi[0,:,:]))
+    # ax.set_xlim(0, max(xvalues))
+  #   im.set_data(np.zeros_like(phi[0,:,:]))
+    # return [im]
+
+  # animation function.  This is called sequentially
+  def animate(i):
+      a = phi[i,:,:]
+      # print(a)    
+      im.set_array(a)
+      timelabel.set_text('time: %.2f s' % timevalues[i])
+      return im, timelabel
+
+  fig, ax = plt.subplots()
+  # print(phi[1,:,:])
+  im = plt.imshow(phi[1,:,:],interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+
+  timelabel = ax.text(0.02, 0.95, '', transform=ax.transAxes)
+  ani = matplotlib.animation.FuncAnimation(fig, animate, frames=Nt, blit = True)
+
+
+  ### write as mp4
+  if format == 'mp4':
+    Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
+    mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
+    ani.save('plots/WE-2D-animation.mp4', writer=mywriter)
+  print("...animation finished.")
+  return ani
