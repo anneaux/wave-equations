@@ -82,8 +82,8 @@ def wave_evolution1D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
       Pi[0] = Pi[2] - 2*phi[1] * deltax/c
       Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
     elif bc == "open_iii":         # variant (iii)
-      phi[0] = - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
-      phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
+      phi[0] = - deltax/c*(2*Pi[1] - Pi[2]) + phi[1]
+      phi[-1] = - deltax/c*(2*Pi[-2] - Pi[-3]) + phi[-2]
       Pi[0] = (phi[0] - phi[1])/deltax
       Pi[-1] = (phi[-1] - phi[-2])/deltax
 

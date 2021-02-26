@@ -163,9 +163,9 @@ def zero_potential(xvalues):
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
 
-    sigma = 5 # for gaussian pulse
+    sigma = 2 # for gaussian pulse
     mu = 0
-    ampl = 5
+    ampl = 1
     width= 0.2 # for triangle pulse
     k = 1  # for square pulse
 
@@ -175,8 +175,8 @@ if __name__ == "__main__":
 
 
     ### numerical grid
-    endT = 20
-    maxX = 50
+    endT = 50
+    maxX = 10
     courant = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
@@ -201,17 +201,19 @@ if __name__ == "__main__":
     # sigma: std deviation
       return a * np.exp(-(x-mu)**2/(2*sigma**2) - (y-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
     def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
-      return  - a *(x-mu)*(y-mu)/sigma**2 * np.exp(-(x-mu)**2/(2*sigma**2) -(y-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
+      return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
 
 
     Phi0 = np.zeros((Nx+1,Ny+1))
-    Pi0 = Phi0
+    Pi0 = np.zeros((Nx+1,Ny+1))
 
     for ix in range(Nx+1):
       for iy in range(Ny+1):
         Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu,ampl)
-        Pi0[ix,iy] = - gaussian_drv(xvalues[ix],yvalues[iy],sigma,mu,ampl)
+        # Pi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu+2,ampl)
 
+
+    # print(Phi0)
 
 
 
@@ -220,5 +222,5 @@ if __name__ == "__main__":
     Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     # print(Phi)
 
-    plot_xt_evolution_heatmap(xvalues,yvalues,Phi[0,:,:])
+    plot_xt_evolution_heatmap(xvalues,yvalues,Phi0)
     plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
