@@ -50,7 +50,7 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   deltay = deltax
   deltat = timevalues[Nt-1]/(Nt-1)
 
-  phi = np.zeros([Nt,Nx+order,Ny+order])     # add 1 ghost point at each end for each order
+  phi = np.zeros([Nt,Nx+order,Ny+order])  # add 1 ghost point at each end for each order
   Pi = np.zeros([Nt,Nx+order,Ny+order])
   ho = int(order/2) # half order, i.e. number of ghosts on each side
 
@@ -61,21 +61,7 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   # potential = np.append(potential,ho*[potential[-1]])
 
   def rhs(phi,Pi,t):
-    # if bc == "periodic":
-      # phi[0:ho] = phi[-order-1:-ho-1] # filling ghost points at the beginning
-      # phi[-1:-ho-1:-1] = phi[order:order-ho:-1] # filling ghost points at the end
-      # Pi[0:ho] = Pi[-order-1:-ho-1]  # filling ghost points at the beginning
-      # Pi[-1:-ho-1:-1] = Pi[order:order-ho:-1] # filling ghost points at the end
-    # elif bc == "Dirichlet": # like a string
-    #   phi[0] = - phi[2]
-    #   phi[-1] = - phi[-3]
-    #   Pi[0] = - Pi[2]
-    #   Pi[-1] = - Pi[-3]
-    # elif bc == "vonNeumann": # like a reflected water wave
-    #   phi[0] = phi[1]
-    #   phi[-1] = phi[-2]
-    #   Pi[0] = Pi[1]
-    #   Pi[-1] = Pi[-2]
+    deltaxy = 0.5*(deltax + deltay)
     # elif bc == "open_i":     # variant (i)
     #   phi[0] = 2 * phi[1] - phi[2]
     #   phi[-1] = 2 * phi[-2] - phi[-3]
@@ -91,6 +77,43 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     #   phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
     #   Pi[0] = (phi[0] - phi[1])/deltax
     #   Pi[-1] = (phi[-1] - phi[-2])/deltax
+    if bc == "open":         # variant (iii)
+      # phi[0,0] = 0
+      # phi[-1,-1] = 0
+      # phi[0,-1] = 0
+      # phi[-1,0] = 0
+      # Pi[0,0] = 0
+      # Pi[0,-1] = 0
+      # Pi[-1,0] = 0
+      # phi[0,0] = deltax*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2]) + phi[1,0] + phi[0,1]
+      # Pi[0,0] = -2*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2])
+    # for x boundaries
+      phi[0,:] = - deltax*(2*Pi[1,:] - Pi[2,:])/c + phi[1,:] 
+      phi[-1,:] = - deltax*(2*Pi[-2,:] - Pi[-3,:])/c + phi[-2,:] 
+      Pi[0,:] = (phi[0,:] - phi[1,:])/deltax 
+      Pi[-1,:] = (phi[-1,:] - phi[-2,:])/deltax 
+
+    # # for y boundaries
+      phi[:,0] = - deltay*(2*Pi[:,1] - Pi[:,2])/c + phi[:,1] 
+      phi[:,-1] = - deltay*(2*Pi[:,-2] - Pi[:,-3])/c + phi[:,-2] 
+      Pi[:,0] = (phi[:,0] - phi[:,1])/deltay
+      Pi[:,-1] = (phi[:,-1] - phi[:,-2])/deltay
+
+    # # # for corner points
+    # ## unten links
+      # phi[0,0] = (- deltax*(2*Pi[1,0] - Pi[2,0])/c + phi[1,0])/4 + (-deltay*(2*Pi[0,1] - Pi[0,2])/c + phi[0,1])/4 +(-deltaxy*(2*Pi[1,1] - Pi[2,2]) +phi[1,1])/2
+      # Pi[0,0] = ((phi[0,0] - phi[1,0])/deltax )/4 + ((phi[0,0] - phi[0,1])/deltay)/4 + (phi[0,0] - phi[1,2])/2/deltaxy
+    # ## oben rechts
+    #   phi[-1,-1] =  - 2*phi[-2,-2] + deltaxy*(2*Pi[-2,-2] - Pi[-3,-3])/c
+    #   Pi[-1,-1] =  - 2*(phi[-1,-1]-phi[-2,-2])/deltaxy
+    # ## unten rechts
+    #   phi[0,-1] = deltaxy*(2*Pi[1,-2] - Pi[2,-3])/c - 2*phi[1,-2]
+    #   Pi[0,-1] =  - 2*(phi[0,-1]-phi[1,-2])/deltaxy
+    # ## oben links
+    #   phi[-1,0] =  deltaxy*(2*Pi[-2,1] - Pi[-3,2])/c - 2*phi[-2,1]
+    #   Pi[-1,0] =  -2*(phi[-1,0]-phi[-2,1])/deltaxy
+
+
 
     # compute second spatial derivative (d^2 phi / dx^2) with FiniteDifferencing
     d2phidx2= np.zeros((Nx+order,Ny+order))
@@ -102,13 +125,15 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
     dphidt = Pi
     dPidt = c**2 * (d2phidx2 + d2phidy2) #+ potential*phi
+    # print("dphidt: ", dphidt[0,0])
+    # print("dPidt:  ", dPidt[0,0])
     return dphidt, dPidt
 
   # for i in range(0,order+1):
   #     print("use index:", i-ho, "with coefficient ", binomcoeffs[i] )
 
+  ### time iteration (RK4 method)
   t = 1 #dummy value
-  # time iteration (RK4 method)
   for i in range(0,Nt-1):
     k1_phi, k1_Pi = rhs(phi[i,:,:], Pi[i,:,:], t)
     k2_phi, k2_Pi = rhs(phi[i,:,:] +0.5*deltat*k1_phi, Pi[i,:,:] +0.5*deltat*k1_Pi,t +0.5*deltat)
@@ -117,6 +142,7 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
     phi[i+1,:,:] = phi[i,:,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:,:] = Pi[i,:,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
+    # print(phi[i,5,6])
 
   print("calculation finished.")
   return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho] # return only inner points
@@ -175,11 +201,12 @@ if __name__ == "__main__":
 
 
     ### numerical grid
-    endT = 50
-    maxX = 10
+    endT = 100
+    maxX = 20
     courant = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
+    courant = c * deltat / deltax
     print("courant number = %.2f" % courant)
 
     Nx = len(xvalues)-1
@@ -217,7 +244,7 @@ if __name__ == "__main__":
 
 
 
-    bc = 'periodic'
+    bc = 'open'
     order= 2
     Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     # print(Phi)
