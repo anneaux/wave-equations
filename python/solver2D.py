@@ -57,6 +57,19 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   ### first time step
   phi[0,ho:Nx+ho,ho:Ny+ho] = phi0          # fill inner points with given Phi0 and Pi0
   Pi[0,ho:Nx+ho,ho:Ny+ho] = Pi0
+
+  ### expand initial distro to ghosts -> TODO this should be done better! 
+  phi[0,0,ho:Nx+ho] = phi0[0,:]
+  phi[0,-1,ho:Nx+ho] = phi0[-1,:] 
+  phi[0,ho:Nx+ho,0] = phi0[:,0]
+  phi[0,ho:Nx+ho,-1] = phi0[:,-1]
+
+  Pi[0,0,ho:Nx+ho] = Pi0[0,:]
+  Pi[0,-1,ho:Nx+ho] = Pi0[-1,:] 
+  Pi[0,ho:Nx+ho,0] = Pi0[:,0]
+  Pi[0,ho:Nx+ho,-1] = Pi0[:,-1]
+
+
   # potential = np.insert(potential,0,ho*[potential[ho]])   # expand potential to fit to ghosts
   # potential = np.append(potential,ho*[potential[-1]])
 
@@ -143,6 +156,34 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
 
 
+### gaussian wave packet
+def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
+# mu: mean value
+# sigma: std deviation
+  return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
+def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
+  return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
+
+### plane wave front
+def planewave(x,sigma=1,mux=0,a=1):
+  # mu: mean value
+  # sigma: std deviation
+  return a * np.exp(-(x-mux)**2/(2*sigma**2))
+def planewave_drv(x,sigma = 1, mux =0, a=1):
+  return a *(x-mux)/sigma**2 * planewave(x,sigma,mux,a)
+
+
+
+
+# ------------------- potential ---------------
+def sech(x):
+  return 2/(np.exp(x)+np.exp(-x))
+
+def PT_potential(xvalues,yvalues,depth,kappa):
+  V0 = depth
+  return -V0 * sech(kappa*xvalues)**2
+
+
 def zero_potential(xvalues):
     return np.zeros_like(xvalues)
 
@@ -176,26 +217,25 @@ if __name__ == "__main__":
     # -------------------- now, do it ---------------
 
     ### potential
-    # potential = PT_potential(xvalues, depth, kappa)
+    # potential = PT_potential(xvalues,yvalues, depth, kappa)
     potential = zero_potential(xvalues)
     # plot_potential(xvalues,potential)
 
-### gaussian wave packet
-    def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
-    # mu: mean value
-    # sigma: std deviation
-      return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
-    def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
-      return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
 
 
+### initial values
     Phi0 = np.zeros((Nx+1,Ny+1))
     Pi0 = np.zeros((Nx+1,Ny+1))
 
+    ### plane wave
+    # for ix in range(Nx+1):
+    #   Phi0[ix,:] = planewave(xvalues[ix],sigma,mux,ampl)
+    #   Pi0[ix,:] = planewave_drv(xvalues[ix],sigma,mux,ampl)
+
+    ### gaussian blob
     for ix in range(Nx+1):
       for iy in range(Ny+1):
         Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mux,muy,ampl)
-          # Pi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu,ampl)
 
 
     bc = 'open'
