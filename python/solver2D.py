@@ -58,14 +58,14 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   phi[0,ho:Nx+ho,ho:Ny+ho] = phi0          # fill inner points with given Phi0 and Pi0
   Pi[0,ho:Nx+ho,ho:Ny+ho] = Pi0
 
-  ### expand initial distro to ghosts -> TODO this should be done better! 
+  ### expand initial distro to ghosts -> TODO this should be done better!
   phi[0,0,ho:Nx+ho] = phi0[0,:]
-  phi[0,-1,ho:Nx+ho] = phi0[-1,:] 
+  phi[0,-1,ho:Nx+ho] = phi0[-1,:]
   phi[0,ho:Nx+ho,0] = phi0[:,0]
   phi[0,ho:Nx+ho,-1] = phi0[:,-1]
 
   Pi[0,0,ho:Nx+ho] = Pi0[0,:]
-  Pi[0,-1,ho:Nx+ho] = Pi0[-1,:] 
+  Pi[0,-1,ho:Nx+ho] = Pi0[-1,:]
   Pi[0,ho:Nx+ho,0] = Pi0[:,0]
   Pi[0,ho:Nx+ho,-1] = Pi0[:,-1]
 
@@ -80,9 +80,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
       for iy in range(ho,Ny+ho): #iterate over inner points only
         first = not (iy==ho)
         last = not (iy==Ny+ho-1)
-        straightabove = 2*Pi[1,iy]-Pi[2,iy] 
-        diagleft = 2*Pi[1,iy-1]-Pi[2,iy-1] 
-        diagright = 2*Pi[1,iy+1]-Pi[2,iy+1] 
+        straightabove = 2*Pi[1,iy]-Pi[2,iy]
+        diagleft = 2*Pi[1,iy-1]-Pi[2,iy-1]
+        diagright = 2*Pi[1,iy+1]-Pi[2,iy+1]
 
         ghostrow_b[iy] = -deltax/c * (straightabove/2 + first*diagleft/4 + last*diagright/4) + phi[1,iy]/2 + last*phi[1,iy+1]/4 + first*phi[1,iy-1]/4
 
@@ -91,9 +91,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
       for iy in range(ho,Ny+ho): #iterate over inner points only
         first = not (iy==ho)
         last = not (iy==Ny+ho-1)
-        straightbelow = 2*Pi[-2,iy]-Pi[-3,iy] 
-        diagleft = 2*Pi[-2,iy-1]-Pi[-3,iy-1] 
-        diagright = 2*Pi[-2,iy+1]-Pi[-3,iy+1] 
+        straightbelow = 2*Pi[-2,iy]-Pi[-3,iy]
+        diagleft = 2*Pi[-2,iy-1]-Pi[-3,iy-1]
+        diagright = 2*Pi[-2,iy+1]-Pi[-3,iy+1]
 
         ghostrow_t[iy] = -deltax/c * (straightbelow/2 + first*diagleft/4 + last*diagright/4) + phi[-2,iy]/2 + last*phi[-2,iy+1]/4 + first*phi[-2,iy-1]/4
 
@@ -103,8 +103,8 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
         first = not (ix==ho)
         last = not (ix==Nx+ho-1)
         right = 2*Pi[ix,1]-Pi[ix,2]
-        diagabove = 2*Pi[ix+1,1]-Pi[ix+1,2] 
-        diagbelow = 2*Pi[ix-1,1]-Pi[ix-1,2] 
+        diagabove = 2*Pi[ix+1,1]-Pi[ix+1,2]
+        diagbelow = 2*Pi[ix-1,1]-Pi[ix-1,2]
 
         ghostcol_l[ix] = - deltay/c * (right/2 + last*diagabove/4 + first*diagbelow/4) + phi[ix,1]/2 + last*phi[ix+1,1]/4 + first*phi[ix-1,1]/4
 
@@ -114,13 +114,13 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
         first = not (ix==ho)
         last = not (ix==Nx+ho-1)
         left = 2*Pi[ix,-2]-Pi[ix,-3]
-        diagabove = 2*Pi[ix+1,-2]-Pi[ix+1,-3] 
-        diagbelow = 2*Pi[ix-1,-2]-Pi[ix-1,-3] 
+        diagabove = 2*Pi[ix+1,-2]-Pi[ix+1,-3]
+        diagbelow = 2*Pi[ix-1,-2]-Pi[ix-1,-3]
 
         ghostcol_r[ix] = - deltay/c * (left/2 + last*diagabove/4 + first*diagbelow/4) + phi[ix,-2]/2 + last*phi[ix+1,-2]/4 + first*phi[ix-1,-2]/4
 
-      phi[0,:] = ghostrow_b 
-      phi[-1,:] = ghostrow_t 
+      phi[0,:] = ghostrow_b
+      phi[-1,:] = ghostrow_t
       phi[:,0] = ghostcol_l
       phi[:,-1] = ghostcol_r
 
@@ -238,7 +238,6 @@ if __name__ == "__main__":
         Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mux,muy,ampl)
 
 
-<<<<<<< Updated upstream
     bc = 'open'
     order= 2
     Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
@@ -246,16 +245,3 @@ if __name__ == "__main__":
 
     plot_xt_evolution_heatmap(xvalues,yvalues,Phi[40,:,:])
     plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
-  
-=======
-    bc = 'periodic'
-    order = 2
-    Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
-    # print(Phi)
-
-    plot_xt_evolution_heatmap(xvalues,yvalues,Phi0)
-    plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
