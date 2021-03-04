@@ -5,7 +5,7 @@ from results_plotting import *
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
     endT = 1
-    Nt = 200
+    Nt = 100
     startX = 0
     endX = 1
     Nx = 50
@@ -29,11 +29,11 @@ if __name__ == "__main__":
     potential = zero_potential(xvalues)
     # plot_potential(xvalues,potential)
 
-    Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
+    Phi0, Pi0 = IVmaker('sine4',xvalues,sigma,mu,width,k,ampl) # phi: Zeilen: Zeit, Spalten: Ort
     bc = 'open_iii'
     order = 2
-    Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
-    print("calculation finished.")
+    Phi, Pi = wave_evolution1D(Phi0,-Pi0,timevalues,xvalues,bc,potential,order)
+    print("calculation finished. (main)")
 
     # Etotal = total_energy(Phi,Pi)
 
