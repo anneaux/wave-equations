@@ -148,7 +148,7 @@ def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
 
 
 
-def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4'):
+def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', filename = 'plots/WE-2D-animation.mp4'):
   print("start animation making...")
   matplotlib.use('Agg')
   Nt = len(timevalues)
@@ -186,6 +186,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4'):
   if format == 'mp4':
     Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
     mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
-    ani.save('plots/WE-2D-animation.mp4', writer=mywriter)
+    ani.save(filename, writer=mywriter)
   print("...animation finished.")
   return ani
+

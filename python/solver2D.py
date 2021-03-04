@@ -31,7 +31,7 @@ def gridmaker(endT,maxX,courant=1):
 
   nx = int(2*maxX/dx)
   xvalues = np.linspace(-maxX,maxX,nx+1)
-  print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
+  # print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
   return dt,timevalues,dx,xvalues
 
 
@@ -78,31 +78,61 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     #   Pi[0] = (phi[0] - phi[1])/deltax
     #   Pi[-1] = (phi[-1] - phi[-2])/deltax
     if bc == "open":         # variant (iii)
-      # phi[0,0] = 0
-      # phi[-1,-1] = 0
-      # phi[0,-1] = 0
-      # phi[-1,0] = 0
-      # Pi[0,0] = 0
-      # Pi[0,-1] = 0
-      # Pi[-1,0] = 0
-      # phi[0,0] = deltax*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2]) + phi[1,0] + phi[0,1]
-      # Pi[0,0] = -2*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2])
-    # for x boundaries
-      phi[0,:] = - deltax*(2*Pi[1,:] - Pi[2,:])/c + phi[1,:] 
-      phi[-1,:] = - deltax*(2*Pi[-2,:] - Pi[-3,:])/c + phi[-2,:] 
-      Pi[0,:] = (phi[0,:] - phi[1,:])/deltax 
-      Pi[-1,:] = (phi[-1,:] - phi[-2,:])/deltax 
+    #   phi[0,0] = 0
+    #   phi[-1,-1] = 0
+    #   phi[0,-1] = 0
+    #   phi[-1,0] = 0
+    #   Pi[0,0] = 0
+    #   Pi[0,-1] = 0
+    #   Pi[-1,0] = 0
+    #   Pi[-1,-1] = 0
+    #   # phi[0,0] = deltax*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2]) + phi[1,0] + phi[0,1]
+    #   # Pi[0,0] = -2*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2])
+
+    # # for x boundaries
+      ### unterer Rand
+      vonoben = - deltax/c*(2*Pi[1,:]-Pi[2,:]) + phi[1,:] 
+
+      Pi1R = np.roll(Pi[1,:],1)
+      Pi2R = np.roll(Pi[2,:],1)
+      phi1R = np.roll(phi[1,:],1)
+      vonlinksoben = - deltax/c*(2*Pi1R-Pi2R) + phi1R 
+
+      Pi1L = np.roll(Pi[1,:],-1)
+      Pi2L = np.roll(Pi[2,:],-1)
+      phi1L = np.roll(phi[1,:],-1)
+      vonrechtsoben = - deltax/c*(2*Pi1L-Pi2L) + phi1L 
+      phi[0,:] = vonoben/2 + vonlinksoben/4 + vonrechtsoben/4 
+
+      ### oberer Rand
+      vonunten = - deltax*(2*Pi[-2,:] - Pi[-3,:])/c + phi[-2,:] 
+      # - deltax/c*(2*Pi[1,:]-Pi[2,:]) + phi[1,:] 
+
+      Pim2R = np.roll(Pi[-2,:],1)
+      Pim3R = np.roll(Pi[-3,:],1)
+      phim2R = np.roll(phi[-2,:],1)
+      vonlinksunten = - deltax/c*(2*Pim2R-Pim3R) + phim2R 
+
+      Pim2L = np.roll(Pi[-2,:],-1)
+      Pim3L = np.roll(Pi[-3,:],-1)
+      phim2L = np.roll(phi[-2,:],-1)
+      vonrechtsunten = - deltax/c*(2*Pim2L-Pim3L) + phim2L 
+
+
+      phi[-1,:] = vonunten/2 + vonlinksunten/4 + vonrechtsunten/4
+    #   Pi[0,:] = (phi[0,:] - phi[1,:])/deltax 
+    #   Pi[-1,:] = (phi[-1,:] - phi[-2,:])/deltax 
 
     # # for y boundaries
       phi[:,0] = - deltay*(2*Pi[:,1] - Pi[:,2])/c + phi[:,1] 
       phi[:,-1] = - deltay*(2*Pi[:,-2] - Pi[:,-3])/c + phi[:,-2] 
-      Pi[:,0] = (phi[:,0] - phi[:,1])/deltay
-      Pi[:,-1] = (phi[:,-1] - phi[:,-2])/deltay
+    #   Pi[:,0] = (phi[:,0] - phi[:,1])/deltay
+    #   Pi[:,-1] = (phi[:,-1] - phi[:,-2])/deltay
 
     # # # for corner points
     # ## unten links
-      # phi[0,0] = (- deltax*(2*Pi[1,0] - Pi[2,0])/c + phi[1,0])/4 + (-deltay*(2*Pi[0,1] - Pi[0,2])/c + phi[0,1])/4 +(-deltaxy*(2*Pi[1,1] - Pi[2,2]) +phi[1,1])/2
-      # Pi[0,0] = ((phi[0,0] - phi[1,0])/deltax )/4 + ((phi[0,0] - phi[0,1])/deltay)/4 + (phi[0,0] - phi[1,2])/2/deltaxy
+      # phi[0,0] = + phi[1,1] - deltax*(2*Pi[1,1] - Pi[2,2])/c
+      # Pi[0,0] = -((phi[0,0] - phi[1,1])/deltax ) 
     # ## oben rechts
     #   phi[-1,-1] =  - 2*phi[-2,-2] + deltaxy*(2*Pi[-2,-2] - Pi[-3,-3])/c
     #   Pi[-1,-1] =  - 2*(phi[-1,-1]-phi[-2,-2])/deltaxy
@@ -112,8 +142,6 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     # ## oben links
     #   phi[-1,0] =  deltaxy*(2*Pi[-2,1] - Pi[-3,2])/c - 2*phi[-2,1]
     #   Pi[-1,0] =  -2*(phi[-1,0]-phi[-2,1])/deltaxy
-
-
 
     # compute second spatial derivative (d^2 phi / dx^2) with FiniteDifferencing
     d2phidx2= np.zeros((Nx+order,Ny+order))
@@ -145,43 +173,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     # print(phi[i,5,6])
 
   print("calculation finished.")
-  return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho] # return only inner points
-
-#--------------------- take a look at the energy -------------------
-#-------------------------------------------------------------------
-# def energy(q,p):        #calculate energy from position q(phi) and inertia p(pi)
-#     m=1
-#     E = 0.5* p**2 / m + 0.5* q**2 *m
-#     return E
-# def total_energy(phi,pi):
-#     (rows,columns) = np.shape(phi)
-#     Etotal = np.zeros(rows)
-#     E = energy(phi,pi)
-#     for i in range(0,rows):   # for all times sum up individual energies
-#         #divide by number of columns to make E independent of Nx
-#         Etotal[i] = sum(E[i,1:Nx+1])/columns # do not consider ghost points
-#     Etotal = Etotal/max(Etotal)
-#     return Etotal
+  return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho], phi[:,0:5,0:5], Pi[:,0:5,0:5] # return only inner points
 
 
-# # -------------------- little helper function (InitialValuesMaker)-----------
-# def IVmaker(func,xvalues,sigma=1,mu=1,ampl=1,width=1,k=1):
-#   funcDict = {"sine4":(f_4(xvalues),- f_4_prime(xvalues))
-#   ,"sine5":(f_5(xvalues),- f_5_prime(xvalues))
-#   ,"gauss":(gaussian(xvalues,sigma,mu,ampl),-gaussian_drv(xvalues,sigma,mu,ampl))
-#   ,"square":(squares(xvalues, k),-squares_drv(xvalues,k))
-#   # ,"triangle":(f_triangle(xvalues,width/2,mu),-f_triangle_drv(xvalues,width/2,mu))
-#   }
-#   return funcDict[func]
-
-
-# # ------------------- potential ---------------
-# def sech(x):
-#   return 2/(np.exp(x)+np.exp(-x))
-
-# def PT_potential(xvalues,depth,kappa):
-#   V0 = depth
-#   return -V0 * sech(kappa*xvalues)**2
 
 def zero_potential(xvalues):
     return np.zeros_like(xvalues)
@@ -192,27 +186,24 @@ if __name__ == "__main__":
     sigma = 2 # for gaussian pulse
     mu = 0
     ampl = 1
-    width= 0.2 # for triangle pulse
-    k = 1  # for square pulse
 
     depth = 0.15
     kappa = 0.1 # width
 
-
-
     ### numerical grid
     endT = 100
-    maxX = 20
+    maxX = 10
     courant = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
+    none, none, deltay, yvalues = gridmaker(endT,maxX,courant)
+    Nx = len(xvalues)-1
+    Ny = len(yvalues)-1
+    Nt = len(timevalues)-1
     courant = c * deltat / deltax
+    print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(deltat,Nt,deltax,Nx))
     print("courant number = %.2f" % courant)
 
-    Nx = len(xvalues)-1
-    Nt = len(timevalues)-1
-
-    deltay,yvalues,Ny = deltax,xvalues,Nx
 
 
     # -------------------- now, do it ---------------
@@ -237,17 +228,15 @@ if __name__ == "__main__":
     for ix in range(Nx+1):
       for iy in range(Ny+1):
         Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu,ampl)
-        # Pi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu+2,ampl)
-
-
-    # print(Phi0)
-
+          # Pi0[ix,iy] = gaussian_drv(xvalues[ix],yvalues[iy],sigma,mu,ampl)
+    #       # Pi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu+2,ampl)
 
 
     bc = 'open'
     order= 2
-    Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
+    Phi, Pi, PhiCorner, PiCorner = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     # print(Phi)
 
-    plot_xt_evolution_heatmap(xvalues,yvalues,Phi0)
+    plot_xt_evolution_heatmap(xvalues[0:5],yvalues[0:5],PhiCorner[40,:,:])
     plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
+    # plot_2D_heatmap_animation(xvalues[0:5],yvalues[0:5],timevalues, PhiCorner,'mp4', 'plots/WE-2D-animation-corner.mp4')
