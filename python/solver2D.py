@@ -61,24 +61,8 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   # potential = np.append(potential,ho*[potential[-1]])
 
   def rhs(phi,Pi,t):
-    # elif bc == "open_i":     # variant (i)
-    #   phi[0] = 2 * phi[1] - phi[2]
-    #   phi[-1] = 2 * phi[-2] - phi[-3]
-    #   Pi[0] = 2 * Pi[1] - Pi[2]
-    #   Pi[-1] = 2* Pi[-2] - Pi[-3]
-    # elif bc == "open_ii":         # variant (ii)
-    #   phi[0] = phi[2] - 2*Pi[1] * deltax/c
-    #   phi[-1] = phi[-3] - 2*Pi[-2] * deltax/c
-    #   Pi[0] = Pi[2] - 2*phi[1] * deltax/c
-    #   Pi[-1] = Pi[-3] - 2*phi[-2] * deltax/c
-    # elif bc == "open_iii":         # variant (iii)
-    #   phi[0] = - deltax*(2*Pi[1] - Pi[2])/c + phi[1]
-    #   phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
-    #   Pi[0] = (phi[0] - phi[1])/deltax
-    #   Pi[-1] = (phi[-1] - phi[-2])/deltax
-    phiorig = phi.copy()
     if bc == "open":         # variant (iii)
-    ### bottom row
+      ### bottom row
       ghostrow_b = np.zeros(Ny+order)
       for iy in range(ho,Ny+ho): #iterate over inner points only
         first = not (iy==ho)
@@ -87,9 +71,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
         diagleft = 2*Pi[1,iy-1]-Pi[2,iy-1] 
         diagright = 2*Pi[1,iy+1]-Pi[2,iy+1] 
 
-        ghostrow_b[iy] = -deltax/c * (straightabove/2 + first*diagleft/4 + last*diagright/4) + phiorig[1,iy]/2 + last*phiorig[1,iy+1]/4 + first*phiorig[1,iy-1]/4
+        ghostrow_b[iy] = -deltax/c * (straightabove/2 + first*diagleft/4 + last*diagright/4) + phi[1,iy]/2 + last*phi[1,iy+1]/4 + first*phi[1,iy-1]/4
 
-    ### top row
+      ### top row
       ghostrow_t = np.zeros(Ny+order)
       for iy in range(ho,Ny+ho): #iterate over inner points only
         first = not (iy==ho)
@@ -98,9 +82,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
         diagleft = 2*Pi[-2,iy-1]-Pi[-3,iy-1] 
         diagright = 2*Pi[-2,iy+1]-Pi[-3,iy+1] 
 
-        ghostrow_t[iy] = -deltax/c * (straightbelow/2 + first*diagleft/4 + last*diagright/4) + phiorig[-2,iy]/2 + last*phiorig[-2,iy+1]/4 + first*phiorig[-2,iy-1]/4
+        ghostrow_t[iy] = -deltax/c * (straightbelow/2 + first*diagleft/4 + last*diagright/4) + phi[-2,iy]/2 + last*phi[-2,iy+1]/4 + first*phi[-2,iy-1]/4
 
-    ### left column
+      ### left column
       ghostcol_l = np.zeros(Nx+order)
       for ix in range(ho,Nx+ho): #iterate over inner points only
         first = not (ix==ho)
@@ -109,48 +93,24 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
         diagabove = 2*Pi[ix+1,1]-Pi[ix+1,2] 
         diagbelow = 2*Pi[ix-1,1]-Pi[ix-1,2] 
 
-        ghostcol_l[ix] = - deltay/c * (right/2 + last*diagabove/4 + first*diagbelow/4) + phiorig[ix,1]/2 + last*phiorig[ix+1,1]/4 + first*phiorig[ix-1,1]/4
+        ghostcol_l[ix] = - deltay/c * (right/2 + last*diagabove/4 + first*diagbelow/4) + phi[ix,1]/2 + last*phi[ix+1,1]/4 + first*phi[ix-1,1]/4
 
-    ### right column
+      ### right column
       ghostcol_r = np.zeros(Nx+order)
       for ix in range(ho,Nx+ho): #iterate over inner points only
         first = not (ix==ho)
         last = not (ix==Nx+ho-1)
-
         left = 2*Pi[ix,-2]-Pi[ix,-3]
         diagabove = 2*Pi[ix+1,-2]-Pi[ix+1,-3] 
         diagbelow = 2*Pi[ix-1,-2]-Pi[ix-1,-3] 
 
-        ghostcol_r[ix] = - deltay/c * (left/2 + last*diagabove/4 + first*diagbelow/4) + phiorig[ix,-2]/2 + last*phiorig[ix+1,-2]/4 + first*phiorig[ix-1,-2]/4
-
-
+        ghostcol_r[ix] = - deltay/c * (left/2 + last*diagabove/4 + first*diagbelow/4) + phi[ix,-2]/2 + last*phi[ix+1,-2]/4 + first*phi[ix-1,-2]/4
 
       phi[0,:] = ghostrow_b 
       phi[-1,:] = ghostrow_t 
       phi[:,0] = ghostcol_l
       phi[:,-1] = ghostcol_r
 
-    #   Pi[0,:] = (phi[0,:] - phi[1,:])/deltax 
-    #   Pi[-1,:] = (phi[-1,:] - phi[-2,:])/deltax 
-
-    # # for y boundaries
-      # phi[:,-1] = - deltay*(2*Pi[:,-2] - Pi[:,-3])/c + phiorig[:,-2] 
-    #   Pi[:,0] = (phi[:,0] - phi[:,1])/deltay
-    #   Pi[:,-1] = (phi[:,-1] - phi[:,-2])/deltay
-
-    # # # for corner points
-    # ## unten links
-      # phi[0,0] = + phi[1,1] - deltax*(2*Pi[1,1] - Pi[2,2])/c
-      # Pi[0,0] = -((phi[0,0] - phi[1,1])/deltax ) 
-    # ## oben rechts
-    #   phi[-1,-1] =  - 2*phi[-2,-2] + deltaxy*(2*Pi[-2,-2] - Pi[-3,-3])/c
-    #   Pi[-1,-1] =  - 2*(phi[-1,-1]-phi[-2,-2])/deltaxy
-    # ## unten rechts
-    #   phi[0,-1] = deltaxy*(2*Pi[1,-2] - Pi[2,-3])/c - 2*phi[1,-2]
-    #   Pi[0,-1] =  - 2*(phi[0,-1]-phi[1,-2])/deltaxy
-    # ## oben links
-    #   phi[-1,0] =  deltaxy*(2*Pi[-2,1] - Pi[-3,2])/c - 2*phi[-2,1]
-    #   Pi[-1,0] =  -2*(phi[-1,0]-phi[-2,1])/deltaxy
 
     # compute second spatial derivative (d^2 phi / dx^2) with FiniteDifferencing
     d2phidx2= np.zeros((Nx+order,Ny+order))
@@ -162,8 +122,6 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
     dphidt = Pi
     dPidt = c**2 * (d2phidx2 + d2phidy2) #+ potential*phi
-    # print("dphidt: ", dphidt[0,0])
-    # print("dPidt:  ", dPidt[0,0])
     return dphidt, dPidt
 
   # for i in range(0,order+1):
@@ -179,10 +137,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
     phi[i+1,:,:] = phi[i,:,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:,:] = Pi[i,:,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
-    # print(phi[i,5,6])
 
   print("calculation finished.")
-  return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho], phi[:,0:5,0:5], Pi[:,0:5,0:5] # return only inner points
+  return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho] # return only inner points
 
 
 
@@ -193,7 +150,8 @@ def zero_potential(xvalues):
 if __name__ == "__main__":
 
     sigma = 2 # for gaussian pulse
-    mu = 2
+    mux = 0
+    muy = 3
     ampl = 1
 
     depth = 0.15
@@ -201,7 +159,7 @@ if __name__ == "__main__":
 
     ### numerical grid
     endT = 100
-    maxX = 10
+    maxX = 50
     courant = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
@@ -223,10 +181,10 @@ if __name__ == "__main__":
     # plot_potential(xvalues,potential)
 
 ### gaussian wave packet
-    def gaussian(x,y,sigma=1,mu=1,a=1):
+    def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
     # mu: mean value
     # sigma: std deviation
-      return a * np.exp(-(x-mu)**2/(2*sigma**2) - (y-mu)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
+      return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
     def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
       return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
 
@@ -236,16 +194,15 @@ if __name__ == "__main__":
 
     for ix in range(Nx+1):
       for iy in range(Ny+1):
-        Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu,ampl)
-          # Pi0[ix,iy] = gaussian_drv(xvalues[ix],yvalues[iy],sigma,mu,ampl)
-    #       # Pi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu+2,ampl)
+        Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mux,muy,ampl)
+          # Pi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mu,ampl)
 
 
     bc = 'open'
     order= 2
-    Phi, Pi, PhiCorner, PiCorner = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
+    Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     # print(Phi)
 
-    plot_xt_evolution_heatmap(xvalues[0:5],yvalues[0:5],PhiCorner[40,:,:])
+    plot_xt_evolution_heatmap(xvalues,yvalues,Phi[40,:,:])
     plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
-    # plot_2D_heatmap_animation(xvalues[0:5],yvalues[0:5],timevalues, PhiCorner,'mp4', 'plots/WE-2D-animation-corner.mp4')
+  
