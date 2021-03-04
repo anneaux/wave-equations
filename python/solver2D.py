@@ -160,9 +160,12 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
 # mu: mean value
 # sigma: std deviation
-  return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) # *1/np.sqrt(2*np.pi*sigma**2)
-def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
-  return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
+  x = x[:, np.newaxis]
+  y = y[np.newaxis, :]
+  return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) 
+
+# def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
+#   return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
 
 ### plane wave front
 def planewave(x,sigma=1,mux=0,a=1):
@@ -190,17 +193,17 @@ def zero_potential(xvalues):
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
 
-    sigma = 2 # for gaussian pulse
-    mux = 0
-    muy = 3
-    ampl = 1
+    sigma = 5 # for gaussian pulse
+    mux = -5
+    muy = -15
+    ampl = 5
 
     depth = 0.15
     kappa = 0.1 # width
 
     ### numerical grid
     endT = 100
-    maxX = 50
+    maxX = 30
     courant = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
@@ -221,8 +224,6 @@ if __name__ == "__main__":
     potential = zero_potential(xvalues)
     # plot_potential(xvalues,potential)
 
-
-
 ### initial values
     Phi0 = np.zeros((Nx+1,Ny+1))
     Pi0 = np.zeros((Nx+1,Ny+1))
@@ -233,9 +234,7 @@ if __name__ == "__main__":
     #   Pi0[ix,:] = planewave_drv(xvalues[ix],sigma,mux,ampl)
 
     ### gaussian blob
-    for ix in range(Nx+1):
-      for iy in range(Ny+1):
-        Phi0[ix,iy] = gaussian(xvalues[ix],yvalues[iy],sigma,mux,muy,ampl)
+    Phi0 = gaussian(xvalues,yvalues,sigma,mux,muy,ampl)
 
 
     bc = 'open'
@@ -243,6 +242,6 @@ if __name__ == "__main__":
     Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     # print(Phi)
 
-    plot_xt_evolution_heatmap(xvalues,yvalues,Phi[40,:,:])
-    plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
+    plot_2D_snapshot_heatmap(xvalues,yvalues,Phi0)
+    plot_2D_heatmap_animation(xvalues,yvalues,timevalues,np.transpose(Phi,(0,2,1)),'mp4')
   

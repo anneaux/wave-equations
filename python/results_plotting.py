@@ -175,7 +175,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
       return im, timelabel
 
   fig, ax = plt.subplots()
-  # print(phi[1,:,:])
+  ax.set(xlabel = "x", ylabel = "y")
   im = plt.imshow(phi[1,:,:],interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
 
   timelabel = ax.text(0.02, 0.95, '', transform=ax.transAxes)
@@ -190,3 +190,16 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
   print("...animation finished.")
   return ani
 
+def plot_2D_snapshot_heatmap(xvalues,yvalues,phi):
+  from matplotlib.colors import LogNorm
+  fig, ax = plt.subplots()
+  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower', extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+  # norm=LogNorm(vmin=0.01, vmax=1)
+  # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
+  ax.set_aspect('auto')
+  plt.xlabel('x')
+  plt.ylabel('y')
+  fig.colorbar(im)
+  plt.savefig("plots/WE_2D_snapshot.png", bbox_inches = 'tight')
+  # plt.show()
+  return fig
