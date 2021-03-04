@@ -61,7 +61,6 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   # potential = np.append(potential,ho*[potential[-1]])
 
   def rhs(phi,Pi,t):
-    deltaxy = 0.5*(deltax + deltay)
     # elif bc == "open_i":     # variant (i)
     #   phi[0] = 2 * phi[1] - phi[2]
     #   phi[-1] = 2 * phi[-2] - phi[-3]
@@ -77,55 +76,65 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     #   phi[-1] = - deltax*(2*Pi[-2] - Pi[-3])/c + phi[-2]
     #   Pi[0] = (phi[0] - phi[1])/deltax
     #   Pi[-1] = (phi[-1] - phi[-2])/deltax
+    phiorig = phi.copy()
     if bc == "open":         # variant (iii)
-    #   phi[0,0] = 0
-    #   phi[-1,-1] = 0
-    #   phi[0,-1] = 0
-    #   phi[-1,0] = 0
-    #   Pi[0,0] = 0
-    #   Pi[0,-1] = 0
-    #   Pi[-1,0] = 0
-    #   Pi[-1,-1] = 0
-    #   # phi[0,0] = deltax*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2]) + phi[1,0] + phi[0,1]
-    #   # Pi[0,0] = -2*(-Pi[1,0] +0.5*Pi[2,0]-Pi[0,1]+0.5*Pi[0,2])
+    ### bottom row
+      ghostrow_b = np.zeros(Ny+order)
+      for iy in range(ho,Ny+ho): #iterate over inner points only
+        first = not (iy==ho)
+        last = not (iy==Ny+ho-1)
+        straightabove = 2*Pi[1,iy]-Pi[2,iy] 
+        diagleft = 2*Pi[1,iy-1]-Pi[2,iy-1] 
+        diagright = 2*Pi[1,iy+1]-Pi[2,iy+1] 
 
-    # # for x boundaries
-      ### unterer Rand
-      vonoben = - deltax/c*(2*Pi[1,:]-Pi[2,:]) + phi[1,:] 
+        ghostrow_b[iy] = -deltax/c * (straightabove/2 + first*diagleft/4 + last*diagright/4) + phiorig[1,iy]/2 + last*phiorig[1,iy+1]/4 + first*phiorig[1,iy-1]/4
 
-      Pi1R = np.roll(Pi[1,:],1)
-      Pi2R = np.roll(Pi[2,:],1)
-      phi1R = np.roll(phi[1,:],1)
-      vonlinksoben = - deltax/c*(2*Pi1R-Pi2R) + phi1R 
+    ### top row
+      ghostrow_t = np.zeros(Ny+order)
+      for iy in range(ho,Ny+ho): #iterate over inner points only
+        first = not (iy==ho)
+        last = not (iy==Ny+ho-1)
+        straightbelow = 2*Pi[-2,iy]-Pi[-3,iy] 
+        diagleft = 2*Pi[-2,iy-1]-Pi[-3,iy-1] 
+        diagright = 2*Pi[-2,iy+1]-Pi[-3,iy+1] 
 
-      Pi1L = np.roll(Pi[1,:],-1)
-      Pi2L = np.roll(Pi[2,:],-1)
-      phi1L = np.roll(phi[1,:],-1)
-      vonrechtsoben = - deltax/c*(2*Pi1L-Pi2L) + phi1L 
-      phi[0,:] = vonoben/2 + vonlinksoben/4 + vonrechtsoben/4 
+        ghostrow_t[iy] = -deltax/c * (straightbelow/2 + first*diagleft/4 + last*diagright/4) + phiorig[-2,iy]/2 + last*phiorig[-2,iy+1]/4 + first*phiorig[-2,iy-1]/4
 
-      ### oberer Rand
-      vonunten = - deltax*(2*Pi[-2,:] - Pi[-3,:])/c + phi[-2,:] 
-      # - deltax/c*(2*Pi[1,:]-Pi[2,:]) + phi[1,:] 
+    ### left column
+      ghostcol_l = np.zeros(Nx+order)
+      for ix in range(ho,Nx+ho): #iterate over inner points only
+        first = not (ix==ho)
+        last = not (ix==Nx+ho-1)
+        right = 2*Pi[ix,1]-Pi[ix,2]
+        diagabove = 2*Pi[ix+1,1]-Pi[ix+1,2] 
+        diagbelow = 2*Pi[ix-1,1]-Pi[ix-1,2] 
 
-      Pim2R = np.roll(Pi[-2,:],1)
-      Pim3R = np.roll(Pi[-3,:],1)
-      phim2R = np.roll(phi[-2,:],1)
-      vonlinksunten = - deltax/c*(2*Pim2R-Pim3R) + phim2R 
+        ghostcol_l[ix] = - deltay/c * (right/2 + last*diagabove/4 + first*diagbelow/4) + phiorig[ix,1]/2 + last*phiorig[ix+1,1]/4 + first*phiorig[ix-1,1]/4
 
-      Pim2L = np.roll(Pi[-2,:],-1)
-      Pim3L = np.roll(Pi[-3,:],-1)
-      phim2L = np.roll(phi[-2,:],-1)
-      vonrechtsunten = - deltax/c*(2*Pim2L-Pim3L) + phim2L 
+    ### right column
+      ghostcol_r = np.zeros(Nx+order)
+      for ix in range(ho,Nx+ho): #iterate over inner points only
+        first = not (ix==ho)
+        last = not (ix==Nx+ho-1)
+
+        left = 2*Pi[ix,-2]-Pi[ix,-3]
+        diagabove = 2*Pi[ix+1,-2]-Pi[ix+1,-3] 
+        diagbelow = 2*Pi[ix-1,-2]-Pi[ix-1,-3] 
+
+        ghostcol_r[ix] = - deltay/c * (left/2 + last*diagabove/4 + first*diagbelow/4) + phiorig[ix,-2]/2 + last*phiorig[ix+1,-2]/4 + first*phiorig[ix-1,-2]/4
 
 
-      phi[-1,:] = vonunten/2 + vonlinksunten/4 + vonrechtsunten/4
+
+      phi[0,:] = ghostrow_b 
+      phi[-1,:] = ghostrow_t 
+      phi[:,0] = ghostcol_l
+      phi[:,-1] = ghostcol_r
+
     #   Pi[0,:] = (phi[0,:] - phi[1,:])/deltax 
     #   Pi[-1,:] = (phi[-1,:] - phi[-2,:])/deltax 
 
     # # for y boundaries
-      phi[:,0] = - deltay*(2*Pi[:,1] - Pi[:,2])/c + phi[:,1] 
-      phi[:,-1] = - deltay*(2*Pi[:,-2] - Pi[:,-3])/c + phi[:,-2] 
+      # phi[:,-1] = - deltay*(2*Pi[:,-2] - Pi[:,-3])/c + phiorig[:,-2] 
     #   Pi[:,0] = (phi[:,0] - phi[:,1])/deltay
     #   Pi[:,-1] = (phi[:,-1] - phi[:,-2])/deltay
 
@@ -184,7 +193,7 @@ def zero_potential(xvalues):
 if __name__ == "__main__":
 
     sigma = 2 # for gaussian pulse
-    mu = 0
+    mu = 2
     ampl = 1
 
     depth = 0.15
