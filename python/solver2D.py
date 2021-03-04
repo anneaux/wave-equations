@@ -36,19 +36,17 @@ def gridmaker(endT,maxX,courant=1):
 
 
 
-def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
+def wave_evolution2D(phi0,Pi0,timevalues,xvalues,yvalues,bc,pot,order):
   # if bc != "periodic" and order != 2:
   #     print("for this accuracy order we only implemented 'periodic' boundary conditions, results may not be correct.")
   binomcoeffs = coeffDict[order]
   Nt = len(timevalues)
   Nx = len(xvalues)
-  Ny = Nx
-  yvalues = xvalues
+  Ny = len(yvalues)
 
-  deltax = (xvalues[Nx-1]-xvalues[0])/(Nx-1)
-  # print(deltax)
-  deltay = deltax
   deltat = timevalues[Nt-1]/(Nt-1)
+  deltax = (xvalues[Nx-1]-xvalues[0])/(Nx-1)
+  deltay = (yvalues[Ny-1]-yvalues[0])/(Ny-1)
 
   phi = np.zeros([Nt,Nx+order,Ny+order])  # add 1 ghost point at each end for each order
   Pi = np.zeros([Nt,Nx+order,Ny+order])
@@ -59,19 +57,18 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
   Pi[0,ho:Nx+ho,ho:Ny+ho] = Pi0
 
   ### expand initial distro to ghosts -> TODO this should be done better! 
-  phi[0,0,ho:Nx+ho] = phi0[0,:]
-  phi[0,-1,ho:Nx+ho] = phi0[-1,:] 
-  phi[0,ho:Nx+ho,0] = phi0[:,0]
-  phi[0,ho:Nx+ho,-1] = phi0[:,-1]
+  # phi[0,0,ho:Nx+ho] = phi0[0,:]
+  # phi[0,-1,ho:Nx+ho] = phi0[-1,:] 
+  # phi[0,ho:Nx+ho,0] = phi0[:,0]
+  # phi[0,ho:Nx+ho,-1] = phi0[:,-1]
 
-  Pi[0,0,ho:Nx+ho] = Pi0[0,:]
-  Pi[0,-1,ho:Nx+ho] = Pi0[-1,:] 
-  Pi[0,ho:Nx+ho,0] = Pi0[:,0]
-  Pi[0,ho:Nx+ho,-1] = Pi0[:,-1]
+  # Pi[0,0,ho:Nx+ho] = Pi0[0,:]
+  # Pi[0,-1,ho:Nx+ho] = Pi0[-1,:] 
+  # Pi[0,ho:Nx+ho,0] = Pi0[:,0]
+  # Pi[0,ho:Nx+ho,-1] = Pi0[:,-1]
 
-
-  # potential = np.insert(potential,0,ho*[potential[ho]])   # expand potential to fit to ghosts
-  # potential = np.append(potential,ho*[potential[-1]])
+  potential = np.zeros([Nx+order,Ny+order])
+  potential[ho:Nx+ho,ho:Ny+ho] = pot
 
   def rhs(phi,Pi,t):
     if bc == "open":         # variant (iii)
@@ -134,7 +131,7 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
       d2phidy2[:,ix] = 1/deltay**2 * sum(binomcoeffs[i]*phi[:,ix+i-ho] for i in range(0,order+1))
 
     dphidt = Pi
-    dPidt = c**2 * (d2phidx2 + d2phidy2) #+ potential*phi
+    dPidt = c**2 * (d2phidx2 + d2phidy2) + potential*phi
     return dphidt, dPidt
 
   # for i in range(0,order+1):
@@ -150,6 +147,7 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
     phi[i+1,:,:] = phi[i,:,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:,:] = Pi[i,:,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
+    # print("timestep %.f of %.f" %(i,Nt))
 
   print("calculation finished.")
   return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho] # return only inner points
@@ -158,8 +156,6 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
 
 ### gaussian wave packet
 def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
-# mu: mean value
-# sigma: std deviation
   x = x[:, np.newaxis]
   y = y[np.newaxis, :]
   return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) 
@@ -182,28 +178,31 @@ def planewave_drv(x,sigma = 1, mux =0, a=1):
 def sech(x):
   return 2/(np.exp(x)+np.exp(-x))
 
-def PT_potential(xvalues,yvalues,depth,kappa):
+def PT_potential(x,y,depth,kappa):
   V0 = depth
-  return -V0 * sech(kappa*xvalues)**2
+  x = x[:, np.newaxis]
+  y = y[np.newaxis, :]
+  r = np.sqrt(x**2 + y**2)
+  return -V0 * sech(kappa*r)**2
 
 
-def zero_potential(xvalues):
-    return np.zeros_like(xvalues)
+def zero_potential(phi0):
+    return np.zeros_like(phi0)
 
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
 
-    sigma = 5 # for gaussian pulse
-    mux = -5
-    muy = -15
-    ampl = 5
+    sigma = 10 # for gaussian pulse
+    mux = -50
+    muy = -50
+    ampl = 50
 
     depth = 0.15
     kappa = 0.1 # width
 
     ### numerical grid
-    endT = 100
-    maxX = 30
+    endT = 200
+    maxX = 150
     courant = 1
 
     deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
@@ -219,10 +218,6 @@ if __name__ == "__main__":
 
     # -------------------- now, do it ---------------
 
-    ### potential
-    # potential = PT_potential(xvalues,yvalues, depth, kappa)
-    potential = zero_potential(xvalues)
-    # plot_potential(xvalues,potential)
 
 ### initial values
     Phi0 = np.zeros((Nx+1,Ny+1))
@@ -236,12 +231,15 @@ if __name__ == "__main__":
     ### gaussian blob
     Phi0 = gaussian(xvalues,yvalues,sigma,mux,muy,ampl)
 
+    ### potential
+    potential = PT_potential(xvalues,yvalues, depth, kappa)
+    # potential = zero_potential(Phi0)
+    # plot_potential(xvalues,potential)
 
     bc = 'open'
     order= 2
-    Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
-    # print(Phi)
+    Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,yvalues,bc,potential,order)
 
-    plot_2D_snapshot_heatmap(xvalues,yvalues,Phi0)
+    plot_2D_snapshot_heatmap(xvalues,yvalues,potential)
     plot_2D_heatmap_animation(xvalues,yvalues,timevalues,np.transpose(Phi,(0,2,1)),'mp4')
   
