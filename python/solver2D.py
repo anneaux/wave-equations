@@ -12,27 +12,21 @@ coeffDict = {2:[1,-2,1],4:[-1/12,4/3,-5/2,4/3,-1/12], 6:[1/90,-3/20,3/2,-49/18,3
 # d Pi / d t = c^2 (d^2 phi / d x^2 + d^2 phi / d y^2)
 
 ### discretize time and space with uniform grid
-def gridmaker(endT,nt,endX,nx,startX=0,startT=0):
-  dt = (endT-startT)/(nt)
-  timevalues = np.linspace(startT,endT,nt+1)
-  dx = (endX-startX)/(nx)
-  xvalues = np.linspace(startX,endX,nx+1)
-  print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
-  return dt,timevalues,dx,xvalues
-
-
-def gridmaker(endT,maxX,courant=1):
+def gridmaker2D(endT,maxX,maxY,courant=1):
   dt = 0.5
   dx = c * dt / courant
-
+  dy = dx
   # courant = c * deltat / deltax
   nt = int(endT/dt)
   timevalues = np.linspace(0,endT,nt+1)
 
   nx = int(2*maxX/dx)
   xvalues = np.linspace(-maxX,maxX,nx+1)
-  # print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(dt,nt,dx,nx))
-  return dt,timevalues,dx,xvalues
+
+  ny = int(2*maxY/dy)
+  yvalues = np.linspace(-maxY,maxY,ny+1)
+  print('dt = %.2f (%.f points), dx = %.2f (%.f points), dy = %.2f (%.f points)' %(dt,nt,dx,nx,dy,ny))
+  return timevalues,xvalues,yvalues
 
 
 
@@ -165,13 +159,9 @@ def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
 
 ### plane wave front
 def planewave(x,sigma=1,mux=0,a=1):
-  # mu: mean value
-  # sigma: std deviation
   return a * np.exp(-(x-mux)**2/(2*sigma**2))
 def planewave_drv(x,sigma = 1, mux =0, a=1):
   return a *(x-mux)/sigma**2 * planewave(x,sigma,mux,a)
-
-
 
 
 # ------------------- potential ---------------
@@ -192,54 +182,47 @@ def zero_potential(phi0):
 # -------------------- now, do it ---------------
 if __name__ == "__main__":
 
-    sigma = 10 # for gaussian pulse
-    mux = -50
-    muy = -50
-    ampl = 50
+  sigma = 5 # for gaussian pulse
+  mux = -5
+  muy = -5
+  ampl = 1
 
-    depth = 0.15
-    kappa = 0.1 # width
+  depth = 0.15
+  kappa = 0.1 # width
 
-    ### numerical grid
-    endT = 200
-    maxX = 150
-    courant = 1
+  ### numerical grid
+  endT = 100
+  maxX = 30
+  maxY = maxX
+  courant = 1
 
-    deltat, timevalues, deltax, xvalues = gridmaker(endT,maxX,courant)
-    none, none, deltay, yvalues = gridmaker(endT,maxX,courant)
-    Nx = len(xvalues)-1
-    Ny = len(yvalues)-1
-    Nt = len(timevalues)-1
-    courant = c * deltat / deltax
-    print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(deltat,Nt,deltax,Nx))
-    print("courant number = %.2f" % courant)
+  timevalues, xvalues, yvalues = gridmaker2D(endT,maxX,maxY,courant)
+  Nx = len(xvalues)-1
+  Ny = len(yvalues)-1
+  Nt = len(timevalues)-1
 
+  print("courant number = %.2f" % courant)
 
+  ### initial values
+  Phi0 = np.zeros((Nx+1,Ny+1))
+  Pi0 = np.zeros((Nx+1,Ny+1))
 
-    # -------------------- now, do it ---------------
+  ### plane wave
+  # for ix in range(Nx+1):
+  #   Phi0[ix,:] = planewave(xvalues[ix],sigma,mux,ampl)
+  #   Pi0[ix,:] = planewave_drv(xvalues[ix],sigma,mux,ampl)
 
+  ### gaussian blob
+  Phi0 = gaussian(xvalues,yvalues,sigma,mux,muy,ampl)
 
-### initial values
-    Phi0 = np.zeros((Nx+1,Ny+1))
-    Pi0 = np.zeros((Nx+1,Ny+1))
+  ### potential
+  # potential = PT_potential(xvalues,yvalues, depth, kappa)
+  potential = zero_potential(Phi0)
+  # plot_potential(xvalues,potential)
 
-    ### plane wave
-    # for ix in range(Nx+1):
-    #   Phi0[ix,:] = planewave(xvalues[ix],sigma,mux,ampl)
-    #   Pi0[ix,:] = planewave_drv(xvalues[ix],sigma,mux,ampl)
+  bc = 'open'
+  order= 2
+  Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,yvalues,bc,potential,order)
 
-    ### gaussian blob
-    Phi0 = gaussian(xvalues,yvalues,sigma,mux,muy,ampl)
-
-    ### potential
-    potential = PT_potential(xvalues,yvalues, depth, kappa)
-    # potential = zero_potential(Phi0)
-    # plot_potential(xvalues,potential)
-
-    bc = 'open'
-    order= 2
-    Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,yvalues,bc,potential,order)
-
-    plot_2D_snapshot_heatmap(xvalues,yvalues,potential)
-    plot_2D_heatmap_animation(xvalues,yvalues,timevalues,np.transpose(Phi,(0,2,1)),'mp4')
-  
+  plot_2D_snapshot_heatmap(xvalues,yvalues,Phi0)
+  plot_2D_heatmap_animation(xvalues,yvalues,timevalues,np.transpose(Phi,(0,2,1)),'mp4')

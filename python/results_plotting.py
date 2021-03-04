@@ -148,7 +148,7 @@ def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
 
 
 
-def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', filename = 'plots/WE-2D-animation.mp4'):
+def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', filename = 'plots/WE_2D_animation.mp4'):
   print("start animation making...")
   matplotlib.use('Agg')
   Nt = len(timevalues)
@@ -166,7 +166,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
   #   im.set_data(np.zeros_like(phi[0,:,:]))
     # return [im]
 
-  # animation function.  This is called sequentially
+  # animation function. This is called sequentially
   def animate(i):
       a = phi[i,:,:]
       # print(a)    
