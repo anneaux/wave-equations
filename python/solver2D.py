@@ -255,4 +255,7 @@ if __name__ == "__main__":
 
     plot_xt_evolution_heatmap(xvalues,yvalues,Phi0)
     plot_2D_heatmap_animation(xvalues,yvalues,timevalues, Phi,'mp4')
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
