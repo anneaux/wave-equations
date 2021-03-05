@@ -135,9 +135,9 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,yvalues,bc,pot,order):
   t = 1 #dummy value
   for i in range(0,Nt-1):
     k1_phi, k1_Pi = rhs(phi[i,:,:], Pi[i,:,:], t)
-    k2_phi, k2_Pi = rhs(phi[i,:,:] +0.5*deltat*k1_phi, Pi[i,:,:] +0.5*deltat*k1_Pi,t +0.5*deltat)
-    k3_phi, k3_Pi = rhs(phi[i,:,:] +0.5*deltat*k2_phi,Pi[i,:,:] +0.5*deltat*k2_Pi ,t +0.5*deltat)
-    k4_phi, k4_Pi = rhs(phi[i,:,:] + deltat*k3_phi,Pi[i,:,:] + deltat*k3_Pi ,t + deltat)
+    k2_phi, k2_Pi = rhs(phi[i,:,:] + 0.5*deltat*k1_phi, Pi[i,:,:]+0.5*deltat*k1_Pi, t+0.5*deltat)
+    k3_phi, k3_Pi = rhs(phi[i,:,:] + 0.5*deltat*k2_phi, Pi[i,:,:]+0.5*deltat*k2_Pi , t+0.5*deltat)
+    k4_phi, k4_Pi = rhs(phi[i,:,:] + deltat*k3_phi, Pi[i,:,:]+deltat*k3_Pi , t+deltat)
 
     phi[i+1,:,:] = phi[i,:,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:,:] = Pi[i,:,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
@@ -226,3 +226,4 @@ if __name__ == "__main__":
 
   plot_2D_snapshot_heatmap(xvalues,yvalues,Phi0)
   plot_2D_heatmap_animation(xvalues,yvalues,timevalues,np.transpose(Phi,(0,2,1)),'mp4')
+
