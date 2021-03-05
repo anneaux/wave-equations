@@ -118,7 +118,7 @@ def energy(q,p):        #calculate energy from position q(phi) and inertia p(pi)
     m=1
     E = 0.5* p**2 / m + 0.5* q**2 *m
     return E
-def total_energy(phi,pi):
+def total_energy(phi,pi,Nx):
     (rows,columns) = np.shape(phi)
     Etotal = np.zeros(rows)
     E = energy(phi,pi)
