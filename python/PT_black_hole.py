@@ -21,7 +21,7 @@ print("courant number = %.2f" % courant)
 
 potential = PT_potential(xvalues, depth, kappa)
 # potential = zero_potential(xvalues)
-# plot_potential(xvalues,potential)
+plot_potential(xvalues,potential)
 
 Phi0, Pi0 = IVmaker('gauss',xvalues,sigma,mu,ampl) # phi: Zeilen: Zeit, Spalten: Ort
 
@@ -29,14 +29,15 @@ bc = 'open_iii'
 order= 2
 Phi, Pi = wave_evolution1D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
 
-# Etotal = total_energy(Phi,Pi)
+Nx = len(xvalues)-1
+Etotal = total_energy(Phi,Pi,Nx)
 
 ### Plotting the results
-# plot_energy_evolution(Etotal,timevalues)
+plot_energy_evolution(Etotal,timevalues)
 plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
 xindex = 225
 plot_amplitude_abs_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
 # tindex = 290
 # plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
-# plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+plot_animation(xvalues, timevalues, abs(Phi), 'mp4')
 

@@ -35,7 +35,7 @@ if __name__ == "__main__":
     Phi, Pi = wave_evolution1D(Phi0,-Pi0,timevalues,xvalues,bc,potential,order)
     print("calculation finished. (main)")
 
-    # Etotal = total_energy(Phi,Pi)
+    # Etotal = total_energy(Phi,Pi,Nx)
 
     ### Plotting the results
     # plot_energy_evolution(Etotal,timevalues)
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # plot_amplitude_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
     # tindex = 290
     # plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
-    # plot_animation(xvalues, timevalues, Phi, Pi,'mp4')
+    # plot_animation(xvalues, timevalues, Phi,'mp4')
 
     ### save as csv file
     # np.savetxt("results.csv", Phi, delimiter = ',', fmt = '%.6e')

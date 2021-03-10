@@ -80,10 +80,9 @@ def plot_animation(xvalues, timevalues, phi, format = 'mp4'):
   if format == 'mp4':
     Writer = matplotlib.animation.writers['ffmpeg'] # Set up formatting for the movie files
     mywriter = Writer(fps=15, metadata=dict(artist='AW'), bitrate=1800)
-    ani.save('plots/WE-animation.mp4', writer=mywriter)
+    ani.save('plots/WE_animation.mp4', writer=mywriter)
   print("...animation finished.")
   return ani
-
 
 def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   from matplotlib.colors import LogNorm
@@ -123,7 +122,7 @@ def plot_potential(xvalues,potential):
   ax1.plot(xvalues,potential, label='')
   ax1.set(xlabel='x', ylabel='potential')
   ax1.grid(color = 'gainsboro')
-  plt.savefig('plots/WE_PT_potential.png')
+  plt.savefig('plots/PT_potential.png')
 
 def plot_amplitude_evolution(timevalues,phi_at_xindex,x_at_xindex):
   fig, (ax1) = plt.subplots(1)
@@ -133,6 +132,15 @@ def plot_amplitude_evolution(timevalues,phi_at_xindex,x_at_xindex):
   # ax1.set_yscale('log')
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_phi_evolution_onepoint.png')
+
+def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
+  fig, (ax1) = plt.subplots(1)
+  ax1.plot(timevalues,abs(phi_at_xindex), label='')
+  ax1.set(xlabel='time', ylabel='abs(phi)')
+  ax1.text(0.02, 0.95,"at x = %.2f" % x_at_xindex,transform=ax1.transAxes)
+  # ax1.set_yscale('log')
+  ax1.grid(color = 'gainsboro')
+  plt.savefig('plots/WE_phi_abs_evolution_onepoint.png')
 
 def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex,depth,width):
   fig, (ax1) = plt.subplots(1)
@@ -146,21 +154,13 @@ def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex,depth,width):
   plt.savefig('plots/PT-timestamps-150s/WE_phi_timestamp_d%.2f_w%.2f.png' %(depth, width))
 
 
-def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
-  fig, (ax1) = plt.subplots(1)
-  ax1.plot(timevalues,phi_at_xindex, label='')
-  ax1.set(xlabel='time', ylabel='phi')
-  ax1.text(0.02, 0.95,"at x = %.2f" % x_at_xindex,transform=ax1.transAxes)
-  # ax1.set_yscale('log')
-  ax1.grid(color = 'gainsboro')
-  plt.savefig('plots/WE_phi_abs_evolution_onepoint.png')
 
 
 
 
 
 
-def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', filename = 'plots/WE-2D-animation.mp4'):
+def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', filename = 'plots/WE_2D_animation.mp4'):
   print("start animation making...")
   matplotlib.use('Agg')
   Nt = len(timevalues)
@@ -178,7 +178,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
   #   im.set_data(np.zeros_like(phi[0,:,:]))
     # return [im]
 
-  # animation function.  This is called sequentially
+  # animation function. This is called sequentially
   def animate(i):
       a = phi[i,:,:]
       # print(a)
@@ -187,7 +187,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
       return im, timelabel
 
   fig, ax = plt.subplots()
-  # print(phi[1,:,:])
+  ax.set(xlabel = "x", ylabel = "y")
   im = plt.imshow(phi[1,:,:],interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
 
   timelabel = ax.text(0.02, 0.95, '', transform=ax.transAxes)
@@ -201,3 +201,17 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
     ani.save(filename, writer=mywriter)
   print("...animation finished.")
   return ani
+
+def plot_2D_snapshot_heatmap(xvalues,yvalues,phi):
+  from matplotlib.colors import LogNorm
+  fig, ax = plt.subplots()
+  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower', extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+  # norm=LogNorm(vmin=0.01, vmax=1)
+  # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
+  ax.set_aspect('auto')
+  plt.xlabel('x')
+  plt.ylabel('y')
+  fig.colorbar(im)
+  plt.savefig("plots/WE_2D_snapshot.png", bbox_inches = 'tight')
+  # plt.show()
+  return fig
