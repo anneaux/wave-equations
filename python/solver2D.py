@@ -151,7 +151,7 @@ def wave_evolution2D(phi0,Pi0,timevalues,xvalues,bc,potential,order):
     phi[i+1,:,:] = phi[i,:,:] + deltat*(1/6*k1_phi + 1/3*k2_phi +1/3*k3_phi + 1/6*k4_phi)
     Pi[i+1,:,:] = Pi[i,:,:] + deltat*(1/6*k1_Pi + 1/3*k2_Pi +1/3*k3_Pi + 1/6*k4_Pi)
 
-  print("calculation finished.")
+  print("Yihaa, calculation finished.")
   return phi[:,ho:Nx+ho,ho:Ny+ho], Pi[:,ho:Nx+ho,ho:Ny+ho] # return only inner points
 
 
@@ -191,7 +191,7 @@ def zero_potential(xvalues):
 if __name__ == "__main__":
 
     sigma = 2 # for gaussian pulse
-    mux = 0
+    mux = 10
     muy = 3
     ampl = 1
 
@@ -212,9 +212,6 @@ if __name__ == "__main__":
     print('dt = %.2f (%.f points), dx = %.2f (%.f points)' %(deltat,Nt,deltax,Nx))
     print("courant number = %.2f" % courant)
 
-
-
-    # -------------------- now, do it ---------------
 
     ### potential
     # potential = PT_potential(xvalues,yvalues, depth, kappa)
@@ -239,7 +236,7 @@ if __name__ == "__main__":
 
 
     bc = 'open'
-    order= 2
+    order = 2
     Phi, Pi = wave_evolution2D(Phi0,Pi0,timevalues,xvalues,bc,potential,order)
     # print(Phi)
 

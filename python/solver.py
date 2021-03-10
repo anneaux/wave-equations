@@ -107,7 +107,7 @@ def wave_evolution1D(phi0,pi0,timevalues,xvalues,bc,potential,order=2):
 
       # phi[0] = (2/3)*(2*phi[1] -(1/2)*phi[2] -deltax*pi[0])
       # phi[-1] = (2/3)*(2*phi[-2] -(1/2)*phi[-3] -deltax*pi[-1])
-      
+
     # compute second spatial derivative (d^2 phi / dx^2) with FiniteDifferencing
     d2phidx2= np.zeros(Nx+order)
     for ix in range(ho,Nx+ho): # computing only inner points

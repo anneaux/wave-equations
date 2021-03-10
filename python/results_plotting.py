@@ -98,7 +98,19 @@ def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   plt.savefig("plots/WE_phi_evolution_heatmap.png", bbox_inches = 'tight')
   # plt.show()
   return fig
-
+def plot_xy_evolution_heatmap(timevalues,xvalues,phi):
+  from matplotlib.colors import LogNorm
+  fig, ax = plt.subplots()
+  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower', extent = [min(timevalues),max(timevalues),min(xvalues),max(xvalues)])
+  # norm=LogNorm(vmin=0.01, vmax=1)
+  # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
+  ax.set_aspect('auto')
+  plt.xlabel('x')
+  plt.ylabel('y')
+  fig.colorbar(im)
+  plt.savefig("plots/WE_phi_evolution_heatmap.png", bbox_inches = 'tight')
+  # plt.show()
+  return fig
 def plot_energy_evolution(Etotal,timevalues):
     fig, (ax1) = plt.subplots(1)
     ax1.plot(timevalues,Etotal, label='')
@@ -169,7 +181,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
   # animation function.  This is called sequentially
   def animate(i):
       a = phi[i,:,:]
-      # print(a)    
+      # print(a)
       im.set_array(a)
       timelabel.set_text('time: %.2f s' % timevalues[i])
       return im, timelabel
@@ -189,4 +201,3 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
     ani.save(filename, writer=mywriter)
   print("...animation finished.")
   return ani
-

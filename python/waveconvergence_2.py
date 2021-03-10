@@ -4,30 +4,45 @@ from finite_differences.example_functions import *
 from results_plotting import *
 #------------------- plotting -------------
 
-def self_convergence_plotting_2(cfl, Nt, selfQ, endT):
+def self_convergence_plotting_2(cfls, Nts, selfQs, endT):
     fig, (ax1) = plt.subplots(1)
-    for i in range(len(Nt)):
-        timevalues = np.linspace(0,endT,int(Nt[i])+1)
-        ax1.plot(timevalues,selfQ[i],'-',
-                label = 'nt: %d, nx: %d ' %( int(Nt[i])+1, int(cfl*Nt[i])+1 )
-                )
+    if len(Nts)>= len(cfls):
+        for i in range(len(Nts)):
+            timevalues = np.linspace(0,endT,int(Nts[i])+1)
+            # print(np.shape(timevalues))
+            ax1.plot(timevalues,selfQs[i],'-',
+                    label = 'nt: %d, nx: %d' %( int(Nts[i])+1, int(cfls[0]*Nts[i])+1 )
+                    )
+    else:
+        for i in range(len(cfls)):
+            timevalues = np.linspace(0,endT,(2**i)*Nts[0]+1)
+            ax1.plot(timevalues,selfQs[i],'-',
+                    label = 'nt: %d, nx: %d' %( int((2**i)*Nts[0])+1, int(cfls[i]*(2**i)*Nts[0])+1 )
+                    )
+    ax1.legend()
     plt.xticks(np.linspace(0,endT,7))
     plt.title('self convergence')
-    ax1.legend(title = 'cfl=%.2f' %(cfl))
     ax1.set(xlabel = 'time', ylabel = '$p=log_2(Q)$')
     ax1.grid(color = 'gainsboro')
     # plt.show()
     return fig
-def abs_convergence_plotting_2(cfl, Nt, absQ, endT):
+def abs_convergence_plotting_2(cfsl, Nts, absQs, endT):
     fig, (ax1) = plt.subplots(1)
-    for i in range(len(Nt)):
-        timevalues = np.linspace(0,endT,int(Nt[i])+1)
-        ax1.plot(timevalues,absQ[i],'-',
-                label = 'nt: %d, nx: %d ' %( int(Nt[i])+1, int(cfl*Nt[i])+1 )
-                )
+    if len(Nts)>= len(cfls):
+        for i in range(len(Nts)):
+            timevalues = np.linspace(0,endT,int(Nts[i])+1)
+            ax1.plot(timevalues,absQs[i],'-',
+                    label = 'nt: %d, nx: %d' %( int(Nts[i])+1, int(cfls[0]*Nts[i])+1 )
+                    )
+    else:
+        for i in range(len(cfls)):
+            timevalues = np.linspace(0,endT,(2**i)*Nts[0]+1)
+            ax1.plot(timevalues,absQs[i],'-',
+                    label = 'nt: %d, nx: %d' %( int((2**i)*Nts[0])+1, int(cfls[i]*(2**i)*Nts[0])+1 )
+                    )
     plt.xticks(np.linspace(0,endT,endT*6+1))
     plt.title('absolute convergence')
-    ax1.legend(title = 'cfl=%.2f' %(cfl))
+    ax1.legend()
     ax1.set(xlabel = 'time', ylabel = '$p=log_2(Q)$')
     ax1.grid(color = 'gainsboro')
     # plt.show()
@@ -110,24 +125,46 @@ def convergence_test(cfl,Nt,bc,funchandle,endT=1,endX=1,order=1):
     absQ = abs_convergence(ana,num1,num2)
     return selfQ, absQ
 
-if __name__ == "__main__":
-    cfl = 0.5
-    endT = 2
-    endX = 1
-    tests = 1
-    bc = 'open_iii'
-    Nt_step = 100
-    k = 0         # k+Nt_step: starting value for Nts
-    Nt = np.linspace(endT*(k+Nt_step),endT*(k+Nt_step*tests),tests)
+def convergence_fixed_cfl(endT,endX,tests,bc,cfl,Nt_step,k,fhandle,o):
+    Nts = np.linspace(endT*(k+Nt_step),endT*(k+Nt_step*tests),tests)
     selfQs = []
     absQs = []
-    fhandle = "sine4"
-    o = 2
-    for i in range(len(Nt)):
-        selfQ, absQ = convergence_test(cfl,int(Nt[i]),bc,fhandle,endT,endX,o)
+    cfls = np.array([cfl])
+    for i in range(tests):
+        selfQ, absQ = convergence_test(cfls[0],int(Nts[i]),bc,fhandle,endT,endX,o)
         selfQs.append(selfQ)
         absQs.append(absQ)
-    fig1 = self_convergence_plotting_2(cfl, Nt, selfQs, endT)
-    fig2 = abs_convergence_plotting_2(cfl, Nt, absQs, endT)
+    return selfQs,absQs,cfls,Nts
+
+def convergence_decreased_cfl(endT,endX,tests,bc,cfl0,Nt_step,fhandle,o):
+    Nts = [endT*Nt_step]
+    selfQs = []
+    absQs = []
+    cfls = []
+    for i in range(tests):
+        cfls.append(cfl0/(2**i))
+        selfQ, absQ = convergence_test(cfls[i],(2**i)*Nts[0],bc,fhandle,endT,endX,o)
+        selfQs.append(selfQ)
+        absQs.append(absQ)
+    print(cfls)
+    return selfQs,absQs,cfls,Nts
+
+if __name__ == "__main__":
+    endT = 1
+    endX = 1
+    tests = 2
+    bc = 'open_iii'
+    cfl = 0.5
+    Nt_step = 100
+    k = 0         # k+Nt_step: starting value for Nts
+    fhandle = "sine4"
+    o = 2
+
+    # selfQs,absQs,cfls,Nts = convergence_fixed_cfl(endT,endX,tests,bc,cfl,Nt_step,k,fhandle,o)
+    selfQs,absQs,cfls,Nts = convergence_decreased_cfl(endT,endX,tests,bc,cfl,Nt_step,fhandle,o)
+
+    print(np.shape(selfQs))
+    fig1 = self_convergence_plotting_2(cfls, Nts, selfQs, endT)
+    fig2 = abs_convergence_plotting_2(cfls, Nts, absQs, endT)
     fig1.savefig('plots/convergence_2/self_conv_%s.png' %(bc))
     fig2.savefig('plots/convergence_2/abs_conv_%s.png' %(bc))
