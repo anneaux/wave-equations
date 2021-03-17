@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
 from finite_differences.example_functions import *
 
 #### Plotting the solutions in a position-time diagram ###
@@ -155,11 +154,6 @@ def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex,depth,width):
 
 
 
-
-
-
-
-
 def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', filename = 'plots/WE_2D_animation.mp4'):
   print("start animation making...")
   matplotlib.use('Agg')
@@ -167,18 +161,7 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
   res_dpi=100
   figsize=4 #inch
 
-  # a = phi[6,:,:]
-  # im = plt.imshow(a,interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
-
-  # initialization function: plot the background of each frame
-  # def init():
-  #   global im
-  #   im, = plt.imshow(np.zeros_like(phi[0,:,:]))
-    # ax.set_xlim(0, max(xvalues))
-  #   im.set_data(np.zeros_like(phi[0,:,:]))
-    # return [im]
-
-  # animation function. This is called sequentially
+   # animation function. This is called sequentially
   def animate(i):
       a = phi[i,:,:]
       # print(a)
@@ -188,7 +171,11 @@ def plot_2D_heatmap_animation(xvalues,yvalues,timevalues, phi, format = 'mp4', f
 
   fig, ax = plt.subplots()
   ax.set(xlabel = "x", ylabel = "y")
-  im = plt.imshow(phi[1,:,:],interpolation='none',cmap = 'viridis', origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
+  colmap = "nipy_spectral" # 
+  # colmap = "gist_ncar"
+  # colmap = "turbo"
+  # colmap = "CMRmap"
+  im = plt.imshow(phi[1,:,:],interpolation='none',cmap = colmap, origin = 'lower',extent = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)])
 
   timelabel = ax.text(0.02, 0.95, '', transform=ax.transAxes)
   ani = matplotlib.animation.FuncAnimation(fig, animate, frames=Nt, blit = True)
@@ -215,3 +202,21 @@ def plot_2D_snapshot_heatmap(xvalues,yvalues,phi):
   plt.savefig("plots/WE_2D_snapshot.png", bbox_inches = 'tight')
   # plt.show()
   return fig
+
+from matplotlib.colors import Normalize
+def plot_2D_snapshots_heatmaps(tvalues,xvalues,yvalues,phi,indices):
+  # plt.rcParams["font.family"] = "serif"
+  fig, axes = plt.subplots(1,len(indices),constrained_layout=True,figsize=(9.75, 3))
+  # cmap='viridis'
+  cmap = "turbo"
+  ext = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)]
+  normalizer=Normalize()#np.min(phi),np.max(phi))
+  im=cm.ScalarMappable(norm=normalizer,cmap=cmap)
+  for i,ax in enumerate(axes.flat):
+    ax.imshow(np.transpose(phi[indices[i],:,:]),cmap=cmap,norm=normalizer,extent=ext)
+    ax.set_title("t = %.1f" %(tvalues[indices[i]]))
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.label_outer()
+  fig.colorbar(im, ax=axes.ravel().tolist(),shrink=0.75)
+  plt.savefig("plots/WE_2D_multi_snapshots.png", bbox_inches = 'tight')
