@@ -36,9 +36,13 @@ Etotal = total_energy(Phi,Pi,Nx)
 ### Plotting the results
 # plot_energy_evolution(Etotal,timevalues)
 # plot_xt_evolution_heatmap(timevalues,xvalues,Phi)
-# xindex = 225
-# plot_amplitude_abs_evolution(timevalues,Phi[:,xindex],xvalues[xindex])
+# xindex = 100
+# plot_amplitude_abs_evolution(timevalues,Phi[:,xindex],xvalues[xindex],47)
+# xindex = 500
+# plot_amplitude_abs_evolution(timevalues,Phi[:,xindex],xvalues[xindex],0.06)
+
+plot_scattered_waves(timevalues,Phi[:,100],xvalues[100],Phi[:,500],xvalues[500])
+
 # tindex = 290
 # plot_amplitude_timestamp(xvalues,Phi[tindex,:],timevalues[tindex],depth,kappa)
-plot_animation(xvalues, timevalues, abs(Phi), 'mp4')
-
+# plot_animation(xvalues, timevalues, abs(Phi), 'mp4')

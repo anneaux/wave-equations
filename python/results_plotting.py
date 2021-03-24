@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 from finite_differences.example_functions import *
 
 #### Plotting the solutions in a position-time diagram ###
@@ -37,6 +38,8 @@ def plot_xt_evolution(timevalues,xvalues,phi,Nt_plot):
 ### Plotting the time evolution in an animation ######################
 import matplotlib
 import matplotlib.animation
+matplotlib.rcParams.update({'font.size': 20})
+
 def plot_animation(xvalues, timevalues, phi, format = 'mp4'):
   print("start animation making...")
   matplotlib.use('Agg')
@@ -85,8 +88,8 @@ def plot_animation(xvalues, timevalues, phi, format = 'mp4'):
 
 def plot_xt_evolution_heatmap(timevalues,xvalues,phi):
   from matplotlib.colors import LogNorm
-  fig, ax = plt.subplots()
-  im = ax.imshow(np.transpose(phi), cmap = 'viridis', origin = 'lower', extent = [min(timevalues),max(timevalues),min(xvalues),max(xvalues)])
+  fig, ax = plt.subplots() #twilight_shifted
+  im = ax.imshow(np.transpose(phi), cmap = 'twilight_shifted', origin = 'lower', extent = [min(timevalues),max(timevalues),min(xvalues),max(xvalues)])
   # norm=LogNorm(vmin=0.01, vmax=1)
   # maybe find better colormap? https://matplotlib.org/tutorials/colors/colormaps.html
   ax.set_aspect('auto')
@@ -132,14 +135,16 @@ def plot_amplitude_evolution(timevalues,phi_at_xindex,x_at_xindex):
   ax1.grid(color = 'gainsboro')
   plt.savefig('plots/WE_phi_evolution_onepoint.png')
 
-def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex):
+def plot_amplitude_abs_evolution(timevalues,phi_at_xindex,x_at_xindex,maxphi):
   fig, (ax1) = plt.subplots(1)
   ax1.plot(timevalues,abs(phi_at_xindex), label='')
+  ax1.set_ylim(0,maxphi)
+  # ax1.set_yscale('log')
   ax1.set(xlabel='time', ylabel='abs(phi)')
   ax1.text(0.02, 0.95,"at x = %.2f" % x_at_xindex,transform=ax1.transAxes)
-  # ax1.set_yscale('log')
   ax1.grid(color = 'gainsboro')
-  plt.savefig('plots/WE_phi_abs_evolution_onepoint.png')
+  plt.savefig('plots/WE_phi_abs_evolution_onepoint_x%.1f.png' %(x_at_xindex))
+
 
 def plot_amplitude_timestamp(xvalues,phi_at_tindex,t_at_tindex,depth,width):
   fig, (ax1) = plt.subplots(1)
@@ -205,8 +210,15 @@ def plot_2D_snapshot_heatmap(xvalues,yvalues,phi):
 
 from matplotlib.colors import Normalize
 def plot_2D_snapshots_heatmaps(tvalues,xvalues,yvalues,phi,indices):
-  # plt.rcParams["font.family"] = "serif"
-  fig, axes = plt.subplots(1,len(indices),constrained_layout=True,figsize=(9.75, 3))
+  # define circle 
+  radius = 6.5
+  theta = np.linspace(0,2*np.pi,100)
+  circlex = radius * np.sin(theta)
+  circley = radius *np.cos(theta)
+
+  fig, axes = plt.subplots(1,len(indices)
+    ,constrained_layout=True
+    ,figsize=(20, 4.8))
   # cmap='viridis'
   cmap = "turbo"
   ext = [min(xvalues),max(xvalues),min(yvalues),max(yvalues)]
@@ -218,5 +230,42 @@ def plot_2D_snapshots_heatmaps(tvalues,xvalues,yvalues,phi,indices):
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.label_outer()
+    ax.plot(circlex,circley,color ="gainsboro")
   fig.colorbar(im, ax=axes.ravel().tolist(),shrink=0.75)
+  # plt.tight_layout()
   plt.savefig("plots/WE_2D_multi_snapshots.png", bbox_inches = 'tight')
+
+
+def plot_scattered_waves(timevalues,phi_refl,x_refl,phi_trans,x_trans):
+  fig, ax = plt.subplots(
+        constrained_layout=True
+        ,figsize=(6.4,4.8)
+        )
+  ax.plot(timevalues,abs(phi_refl), color = "tab:orange", label ="|φ| at x = -100")
+  # ax.set_yscale('log')
+  # ax.set_ylim(0,51)
+  ax.set_xlabel('time')#, fontsize=fs)
+  # ax.set_ylabel('|φ| at x = -100', color="tab:orange")#, fontsize=fs)
+  # at x = %.2f" % x_refl
+  ax.text(0.02, 0.9,"reflected wave",transform=ax.transAxes, color="tab:orange")
+  ax.tick_params(axis="y",colors="tab:orange")
+  # plt.yticks(fontsize=fs)
+  # plt.xticks(fontsize=fs)
+  ax.spines['left'].set_color('red')
+
+  ax2=ax.twinx()
+  ax2.plot(timevalues,abs(phi_trans), color = "tab:blue", label ="|φ| at x = 100")
+  ax2.tick_params(axis="y",colors="tab:blue")
+  # ax2.set_ylim(0,0.059)
+
+  # ax2.set_ylabel('|φ| at x = 100', color="tab:blue")#, fontsize=fs)
+  # at x = %.2f" % x_trans
+  ax2.text(0.02, 0.8,"transmitted wave",transform=ax2.transAxes, color="tab:blue")
+
+  ax.grid(color = 'gainsboro')
+  # ax.legend()
+  # ax2.legend()
+  # plt.yticks(fontsize=fs)
+  # plt.tight_layout()
+  plt.savefig('plots/scattered_waves.png')
+

@@ -164,9 +164,6 @@ def gaussian(x,y,sigma=1,mux=0,muy=0,a=1):
   y = y[np.newaxis, :]
   return a * np.exp(-(x-mux)**2/(2*sigma**2) - (y-muy)**2/(2*sigma**2)) 
 
-# def gaussian_drv(x,y,sigma = 1,mu=1,a=1):
-#   return  a *(x-mu)/sigma**2 * gaussian(x,y,sigma,mu,a) # *1/np.sqrt(2*np.pi*sigma**2)
-
 ### plane wave front
 def planewave(x,sigma=1,mux=0,a=1):
   # mu: mean value
@@ -249,12 +246,12 @@ if __name__ == "__main__":
     # print('Calculation time in seconds: ' + str(executionTime))
 
     # np.save("PhiArray", Phi)
-
     Phi = np.load("PhiArray.npy")
+    # print("loaded phi array")
 
-    # plot_2D_snapshot_heatmap(xvalues,yvalues,potential)
-    # plot_2D_heatmap_animation(xvalues,yvalues,timevalues, np.transpose(Phi,(0,2,1)),'mp4')
-    # print(yvalues[300])
-    # plot_animation(xvalues, timevalues, abs(Phi[:,:,300]), 'mp4')
+        # # plot_2D_snapshot_heatmap(xvalues,yvalues,potential)
+    # # plot_2D_heatmap_animation(xvalues,yvalues,timevalues, np.transpose(Phi,(0,2,1)),'mp4')
+    # # print(yvalues[300])
+    # # plot_animation(xvalues, timevalues, abs(Phi[:,:,300]), 'mp4')
 
     plot_2D_snapshots_heatmaps(timevalues,xvalues,yvalues,Phi,[0,100,200,300])
